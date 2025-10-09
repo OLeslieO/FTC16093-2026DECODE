@@ -1,5 +1,6 @@
 package pedroPathing;
 
+import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
@@ -20,8 +21,10 @@ public class Constants {
         .mass(2.5)
         .forwardZeroPowerAcceleration(-25.7425)
         .lateralZeroPowerAcceleration(-45.1)
-        .translationalPIDFCoefficients(new PIDFCoefficients(0.1, 0, 0.01, 0.03))
-        .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.03, 0.03));
+        .translationalPIDFCoefficients(new PIDFCoefficients(0.04, 0, 0.005, 0.02))
+        .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.03, 0.03))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025,0.0,1e-5,0.6,0.01))
+            .centripetalScaling(0.005);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
@@ -41,7 +44,6 @@ public class Constants {
             .leftRearMotorName("leftBackMotor")
             .leftFrontMotorName("leftFrontMotor")
             .xVelocity(87.4514)
-
             .yVelocity(69.3625);
 
             //.rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
