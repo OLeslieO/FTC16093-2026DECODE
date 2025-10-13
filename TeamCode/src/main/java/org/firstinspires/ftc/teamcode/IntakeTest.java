@@ -45,11 +45,11 @@ public class IntakeTest extends LinearOpMode {
                 // 舵机快速抖动（往复角度）
                 intakeLeft.setPosition(0.3);
                 intakeRight.setPosition(0.3);
-                sleep(50);
+                sleep(20);
 
                 intakeLeft.setPosition(0.7);
                 intakeRight.setPosition(0.7);
-                sleep(50);
+                sleep(20);
 
             } else if (gamepad1.left_bumper) {
                 // 吐球：电机反转
