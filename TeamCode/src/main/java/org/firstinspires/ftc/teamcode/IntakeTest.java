@@ -11,7 +11,6 @@ public class IntakeTest extends LinearOpMode {
     private DcMotorEx intakeMotor;
     private Servo intakeLeft;
     private Servo intakeRight;
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -21,7 +20,7 @@ public class IntakeTest extends LinearOpMode {
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD); // only for this robot (Broken motor)
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // only for this robot (Broken motor)
 
         double motorInput = 1.0;
 
@@ -37,41 +36,11 @@ public class IntakeTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            // ---- Intake 控制 ----
-            if (gamepad1.right_bumper) {
-                // 吸球：电机正转
                 intakeMotor.setPower(motorInput);
 
-                // 舵机快速抖动（往复角度）
-                intakeLeft.setPosition(0.3);
-                intakeRight.setPosition(0.3);
-                sleep(20);
+                intakeLeft.setPosition(1);
+                intakeRight.setPosition(1);
 
-                intakeLeft.setPosition(0.7);
-                intakeRight.setPosition(0.7);
-                sleep(20);
-
-            } else if (gamepad1.left_bumper) {
-                // 吐球：电机反转
-                intakeMotor.setPower(-motorInput);
-
-                // 舵机反向抖动
-                intakeLeft.setPosition(0.7);
-                intakeRight.setPosition(0.7);
-                sleep(50);
-
-                intakeLeft.setPosition(0.3);
-                intakeRight.setPosition(0.3);
-                sleep(50);
-
-            } else {
-                // 停止
-                intakeMotor.setPower(0);
-                intakeLeft.setPosition(0.5);  // 回到中位
-                intakeRight.setPosition(0.5);
-            }
-
-            // ---- Mecanum 驱动 ----
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
@@ -88,6 +57,7 @@ public class IntakeTest extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower * powerCoefficient);
             frontRightMotor.setPower(frontRightPower * powerCoefficient);
             backRightMotor.setPower(backRightPower * powerCoefficient);
+            }
         }
     }
-}
+
