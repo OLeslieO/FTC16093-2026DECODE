@@ -23,7 +23,7 @@ public class TeleOpDrive extends CommandOpMode {
     private GamepadEx gamepadEx1;
     private State state;
 
-    public enum State { FREE, VISION, SHOOT }
+    public enum State {  }
 
 
 
