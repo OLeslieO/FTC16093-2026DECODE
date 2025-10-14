@@ -8,20 +8,20 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 public class IntakeCommand extends CommandBase {
 
     private final Intake intake;
-    private final GamepadEx gamepadEx;
+    private final GamepadEx gamepadEx1;
 
-    public IntakeCommand(Intake intake, GamepadEx gamepadEx) {
+    public IntakeCommand(Intake intake, GamepadEx gamepadEx1) {
         this.intake = intake;
-        this.gamepadEx = gamepadEx;
+        this.gamepadEx1 = gamepadEx1;
         addRequirements(intake);
     }
 
     @Override
     public void execute() {
 
-        if (gamepadEx.getButton(GamepadKeys.Button.X)) {
+        if (gamepadEx1.getButton(GamepadKeys.Button.X)) {
             intake.intakeIn();
-        } else if (gamepadEx.getButton(GamepadKeys.Button.Y)) {
+        } else if (gamepadEx1.getButton(GamepadKeys.Button.Y)) {
             intake.intakeOut();
         } else {
             intake.stop();

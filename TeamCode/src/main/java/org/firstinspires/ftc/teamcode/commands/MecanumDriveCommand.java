@@ -9,9 +9,9 @@ public class MecanumDriveCommand extends CommandBase {
     private final MecanumDrive drive;
     private final GamepadEx gamepadEx1;
 
-    public MecanumDriveCommand(MecanumDrive drive, GamepadEx gamepadEx) {
+    public MecanumDriveCommand(MecanumDrive drive, GamepadEx gamepadEx1) {
         this.drive = drive;
-        this.gamepadEx1 = gamepadEx;
+        this.gamepadEx1 = gamepadEx1;
         addRequirements(drive);
     }
 
