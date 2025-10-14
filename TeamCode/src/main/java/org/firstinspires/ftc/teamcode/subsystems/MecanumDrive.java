@@ -1,36 +1,35 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class MecanumDrive extends SubsystemBase{
-    public DcMotorEx frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor;
-    public Telemetry telemetry;
+public class MecanumDrive extends SubsystemBase {
 
+    private final DcMotorEx frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor;
+    private final Telemetry telemetry;
 
-    public MecanumDrive(Telemetry telemetry, final HardwareMap hardwareMap){
+    public MecanumDrive(Telemetry telemetry, final HardwareMap hardwareMap) {
         this.telemetry = telemetry;
-        this.frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFrontMotor");
-        this.backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBackMotor");
-        this.frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
-        this.backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
+
+        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "leftFrontMotor");
+        backLeftMotor = hardwareMap.get(DcMotorEx.class, "leftBackMotor");
+        frontRightMotor = hardwareMap.get(DcMotorEx.class, "rightFrontMotor");
+        backRightMotor = hardwareMap.get(DcMotorEx.class, "rightBackMotor");
+
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
-
     }
-    public void drive() {
-        double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x * 1.1;
-        double rx = gamepad1.right_stick_x;
 
+    /**
+     * 控制小车运动
+     * @param y 前后（-1 ~ 1）
+     * @param x 左右平移（-1 ~ 1）
+     * @param rx 旋转（-1 ~ 1）
+     */
+    public void drive(double y, double x, double rx) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
         double backLeftPower = (y - x + rx) / denominator;
@@ -43,6 +42,16 @@ public class MecanumDrive extends SubsystemBase{
         backLeftMotor.setPower(backLeftPower * powerCoefficient);
         frontRightMotor.setPower(frontRightPower * powerCoefficient);
         backRightMotor.setPower(backRightPower * powerCoefficient);
+
+        telemetry.addData("Drive", "FL: %.2f, FR: %.2f, BL: %.2f, BR: %.2f",
+                frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+        telemetry.update();
     }
 
+    public void stop() {
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+    }
 }
