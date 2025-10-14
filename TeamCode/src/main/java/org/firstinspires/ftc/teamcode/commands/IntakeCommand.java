@@ -19,9 +19,9 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if (gamepadEx1.getButton(GamepadKeys.Button.X)) {
+        if (gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) {
             intake.intakeIn();
-        } else if (gamepadEx1.getButton(GamepadKeys.Button.Y)) {
+        } else if (gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
             intake.intakeOut();
         } else {
             intake.stop();
