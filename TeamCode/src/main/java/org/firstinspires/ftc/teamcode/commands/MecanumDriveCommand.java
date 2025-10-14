@@ -7,19 +7,20 @@ import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive;
 public class MecanumDriveCommand extends CommandBase {
 
     private final MecanumDrive drive;
-    private final GamepadEx gamepadEx;
+    private final GamepadEx gamepadEx1;
 
     public MecanumDriveCommand(MecanumDrive drive, GamepadEx gamepadEx) {
         this.drive = drive;
-        this.gamepadEx = gamepadEx;
+        this.gamepadEx1 = gamepadEx;
         addRequirements(drive);
     }
 
     @Override
     public void execute() {
-        double y = -gamepadEx.getLeftY();
-        double x = gamepadEx.getLeftX() * 1.1;
-        double rx = gamepadEx.getRightX();
+
+        double y = -gamepadEx1.getLeftY();
+        double x = gamepadEx1.getLeftX() * 1.1;
+        double rx = gamepadEx1.getRightX();
 
         drive.drive(y, x, rx);
     }
