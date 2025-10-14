@@ -23,12 +23,7 @@ public class MecanumDrive extends SubsystemBase {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    /**
-     * 控制小车运动
-     * @param y 前后（-1 ~ 1）
-     * @param x 左右平移（-1 ~ 1）
-     * @param rx 旋转（-1 ~ 1）
-     */
+
     public void drive(double y, double x, double rx) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
