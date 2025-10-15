@@ -1,108 +1,75 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "Field Relative Mecanum Drive", group = "Main")
 public class FieldRelativeMecanumDrive extends LinearOpMode {
-
-    // Declare motors
-    private DcMotorEx frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor;
-    
-    // Declare IMU
-    private IMU imu;
-
     @Override
-    public void runOpMode() {
-        // Initialize motors with hardware mapping matching Chasis.java
-        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "leftFrontMotor");
-        backLeftMotor = hardwareMap.get(DcMotorEx.class, "leftBackMotor");
-        frontRightMotor = hardwareMap.get(DcMotorEx.class, "rightFrontMotor");
-        backRightMotor = hardwareMap.get(DcMotorEx.class, "rightBackMotor");
+    public void runOpMode() throws InterruptedException {
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("leftFrontMotor");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("leftBackMotor");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("rightFrontMotor");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("rightBackMotor");
 
-        // Set motor directions to match Chasis.java
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        // Reverse the right side motors. This may be wrong for your setup.
+        // If your robot moves backwards when commanded to go forwards,
+        // reverse the left side instead.
+        // See the note about this earlier on this page.
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // Initialize IMU
-        imu = hardwareMap.get(IMU.class, "imu");
-        
-        // Configure IMU orientation (adjust as needed for your robot)
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = 
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = 
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-        
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
-        
-        telemetry.addLine("Field Relative Mecanum Drive Initialized");
-        telemetry.addLine("Press A to reset Yaw");
-        telemetry.update();
-        
+        // Retrieve the IMU from the hardware map
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        // Adjust the orientation parameters to match your robot
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+        imu.initialize(parameters);
+
         waitForStart();
 
+        if (isStopRequested()) return;
+
         while (opModeIsActive()) {
-            // Reset IMU yaw when A button is pressed
-            if (gamepad1.a) {
+            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double rx = gamepad1.right_stick_x;
+
+            // This button choice was made so that it is hard to hit on accident,
+            // it can be freely changed based on preference.
+            // The equivalent button is start on Xbox-style controllers.
+            if (gamepad1.options) {
                 imu.resetYaw();
             }
-            
-            // Get joystick values
-            double forward = -gamepad1.left_stick_y;  // Forward/Backward
-            double right = gamepad1.left_stick_x;     // Left/Right
-            double rotate = -gamepad1.right_stick_x;   // Rotation
-            
-            // Drive with field relative control
-            driveFieldRelative(forward, right, rotate);
-            
-            // Update telemetry
-            telemetry.addData("Forward", "%.2f", forward);
-            telemetry.addData("Right", "%.2f", right);
-            telemetry.addData("Rotate", "%.2f", rotate);
-            telemetry.addData("Yaw", "%.2f", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-            telemetry.update();
+
+            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+            // Rotate the movement direction counter to the bot's rotation
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio,
+            // but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+            double frontLeftPower = (rotY + rotX + rx) / denominator;
+            double backLeftPower = (rotY - rotX + rx) / denominator;
+            double frontRightPower = (rotY - rotX - rx) / denominator;
+            double backRightPower = (rotY + rotX - rx) / denominator;
+
+            frontLeftMotor.setPower(frontLeftPower);
+            backLeftMotor.setPower(backLeftPower);
+            frontRightMotor.setPower(frontRightPower);
+            backRightMotor.setPower(backRightPower);
         }
-    }
-
-    // Field relative drive method
-    private void driveFieldRelative(double forward, double right, double rotate) {
-        // Convert direction to polar coordinates
-        double theta = Math.atan2(forward, right);
-        double r = Math.hypot(right, forward);
-
-        // Rotate angle by the robot's current yaw
-        theta = AngleUnit.normalizeRadians(theta - 
-                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-
-        // Convert back to cartesian coordinates
-        double newForward = r * Math.sin(theta);
-        double newRight = r * Math.cos(theta);
-
-        // Drive with robot relative values
-        drive(newForward, newRight, rotate);
-    }
-
-    // Basic mecanum drive method with power normalization like Chasis.java
-    public void drive(double forward, double right, double rotate) {
-        // Calculate power for each wheel
-        double frontLeftPower = forward + right + rotate;
-        double backLeftPower = forward - right + rotate;
-        double frontRightPower = forward - right - rotate;
-        double backRightPower = forward + right - rotate;
-
-        // Normalize powers using the method from Chasis.java
-        double denominator = Math.max(Math.abs(forward) + Math.abs(right) + Math.abs(rotate), 1);
-        
-        // Set motor powers
-        frontLeftMotor.setPower(frontLeftPower / denominator);
-        backLeftMotor.setPower(backLeftPower / denominator);
-        frontRightMotor.setPower(frontRightPower / denominator);
-        backRightMotor.setPower(backRightPower / denominator);
     }
 }
