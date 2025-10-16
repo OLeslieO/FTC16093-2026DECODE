@@ -18,7 +18,7 @@ public class MecanumDriveCommand extends CommandBase {
     @Override
     public void execute() {
 
-        double y = -gamepadEx1.getLeftY();
+        double y = gamepadEx1.getLeftY();
         double x = gamepadEx1.getLeftX() * 1.1;
         double rx = gamepadEx1.getRightX();
 

@@ -28,6 +28,7 @@ public class Intake extends SubsystemBase {
         intakeRight = hardwareMap.get(Servo.class, "intakeRight");
         intakeRight.setDirection(Servo.Direction.REVERSE);
         intakeLeft.setDirection(Servo.Direction.FORWARD);
+
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
