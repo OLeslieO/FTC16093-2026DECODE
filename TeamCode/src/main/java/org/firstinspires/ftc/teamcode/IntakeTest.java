@@ -36,10 +36,11 @@ public class IntakeTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-                intakeMotor.setPower(motorInput);
+            intakeMotor.setPower(motorInput);
 
-                intakeLeft.setPosition(1);
-                intakeRight.setPosition(1);
+            intakeLeft.setPosition(1);
+            intakeRight.setPosition(1);
+
 
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
