@@ -14,8 +14,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class ServoTest extends LinearOpMode {
 
-    private final Telemetry telemetry_M =
-            new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     public static boolean read_only = false;
     public static boolean reverse = false;
     public static double servo_pos = 1;
