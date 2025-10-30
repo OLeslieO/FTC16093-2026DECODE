@@ -19,9 +19,6 @@ public class Intake extends SubsystemBase {
     public Servo intakeRight;
     private final double motorInput = 1.0;
 
-
-
-
     public Intake(final HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeLeft = hardwareMap.get(Servo.class, "intakeLeft");
