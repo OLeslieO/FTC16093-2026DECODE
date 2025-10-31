@@ -6,16 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "IntakeTest")
-public class IntakeTest extends LinearOpMode {
+@TeleOp(name = "Shooter")
+public class Shooter extends LinearOpMode {
 
-    private DcMotorEx spinMotor;
 
-    private DcMotorEx shooterMotorR;
-    private DcMotorEx shooterMotorL;
-    private DcMotorEx intakeMotor;
+
     private Servo intakeLeft;
     private Servo intakeRight;
+
+    private Servo benz1;
+    private Servo benz2;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -23,19 +23,25 @@ public class IntakeTest extends LinearOpMode {
         DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBackMotor");
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
+
         DcMotorEx shooterMotorL = hardwareMap.get(DcMotorEx.class,"shooterMotorL");
         DcMotorEx shooterMotorR = hardwareMap.get(DcMotorEx.class,"shooterMotorR");
+
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class,"intakeMotor");
-        DcMotorEx spinMotor = hardwareMap.get(DcMotorEx.class,"spinMotor");
+
+        DcMotorEx benzMotor = hardwareMap.get(DcMotorEx.class,"benzMotor");
+
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // only for this robot (Broken motor)
 
         double motorInput = 1.0;
 
-        intakeMotor = hardwareMap.get(DcMotorEx.class,"intakeMotor");
         intakeLeft = hardwareMap.get(Servo.class,"intakeLeft");
         intakeRight = hardwareMap.get(Servo.class,"intakeRight");
+
+        benz1 = hardwareMap.get(Servo.class,"benz1");
+        benz2 = hardwareMap.get(Servo.class,"benz2");
 
         intakeRight.setDirection(Servo.Direction.REVERSE);
         intakeLeft.setDirection(Servo.Direction.FORWARD);
@@ -46,6 +52,7 @@ public class IntakeTest extends LinearOpMode {
 
         while(opModeIsActive()) {
             intakeMotor.setPower(motorInput);
+            benzMotor.setPower(motorInput);
 
             intakeLeft.setPosition(1);
             intakeRight.setPosition(1);
@@ -67,7 +74,7 @@ public class IntakeTest extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower * powerCoefficient);
             frontRightMotor.setPower(frontRightPower * powerCoefficient);
             backRightMotor.setPower(backRightPower * powerCoefficient);
-            }
         }
     }
+}
 
