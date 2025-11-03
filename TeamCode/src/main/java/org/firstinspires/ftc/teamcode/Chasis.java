@@ -20,7 +20,7 @@ public class Chasis extends LinearOpMode {
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
 
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+
 
         waitForStart();
 

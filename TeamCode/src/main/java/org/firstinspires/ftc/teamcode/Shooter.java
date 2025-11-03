@@ -14,8 +14,8 @@ public class Shooter extends LinearOpMode {
     private Servo intakeLeft;
     private Servo intakeRight;
 
-    private Servo benz1;
-    private Servo benz2;
+    private Servo door;
+    private Servo tail;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -40,8 +40,8 @@ public class Shooter extends LinearOpMode {
         intakeLeft = hardwareMap.get(Servo.class,"intakeLeft");
         intakeRight = hardwareMap.get(Servo.class,"intakeRight");
 
-        benz1 = hardwareMap.get(Servo.class,"benz1");
-        benz2 = hardwareMap.get(Servo.class,"benz2");
+        door = hardwareMap.get(Servo.class,"door");
+        tail = hardwareMap.get(Servo.class,"tail");
 
         intakeRight.setDirection(Servo.Direction.REVERSE);
         intakeLeft.setDirection(Servo.Direction.FORWARD);

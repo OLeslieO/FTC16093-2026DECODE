@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "IntakeTest")
 public class IntakeTest extends LinearOpMode {
 
-    private DcMotorEx spinMotor;
+    private DcMotorEx benzMotor;
 
     private DcMotorEx shooterMotorR;
     private DcMotorEx shooterMotorL;
@@ -26,7 +26,7 @@ public class IntakeTest extends LinearOpMode {
         DcMotorEx shooterMotorL = hardwareMap.get(DcMotorEx.class,"shooterMotorL");
         DcMotorEx shooterMotorR = hardwareMap.get(DcMotorEx.class,"shooterMotorR");
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class,"intakeMotor");
-        DcMotorEx spinMotor = hardwareMap.get(DcMotorEx.class,"spinMotor");
+        DcMotorEx benzMotor = hardwareMap.get(DcMotorEx.class,"benzMotor");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // only for this robot (Broken motor)
