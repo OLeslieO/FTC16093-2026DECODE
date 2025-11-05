@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Shooter")
@@ -51,27 +52,43 @@ public class Shooter extends LinearOpMode {
 
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        benzMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        benzMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+
         waitForStart();
+        int initialPosition = benzMotor.getCurrentPosition();
 
         while(opModeIsActive()) {
+            int targetPosition = initialPosition + 165;
+            benzMotor.setTargetPosition(targetPosition);
+            benzMotor.setPower(0.2);
+            benzMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            while (benzMotor.isBusy() && opModeIsActive()) {
+
+                telemetry.addData("Target Position", targetPosition);
+                telemetry.addData("Current Position", benzMotor.getCurrentPosition());
+
+                telemetry.update();
+
+            }
+
+            benzMotor.setPower(0);
             intakeMotor.setPower(motorInput);
-            shooterMotorR.setVelocity(900);
-            shooterMotorL.setVelocity(900);
+            shooterMotorR.setVelocity(-800);
+            shooterMotorL.setVelocity(-800);
             tail.setPosition(1);
             intakeLeft.setPosition(1);
             intakeRight.setPosition(1);
-            if (gamepad1.right_bumper){
-                benzMotor.setPower(0.15);
-            } else  {
-                benzMotor.setPower(0);
+
 
             }
-            if (gamepad1.left_bumper){
+            if (gamepad1.left_bumper) {
                 tail.setPosition(0.3);
-
-
             }
-                
+
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
@@ -88,7 +105,9 @@ public class Shooter extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower * powerCoefficient);
             frontRightMotor.setPower(frontRightPower * powerCoefficient);
             backRightMotor.setPower(backRightPower * powerCoefficient);
+
+
+
         }
     }
-}
 
