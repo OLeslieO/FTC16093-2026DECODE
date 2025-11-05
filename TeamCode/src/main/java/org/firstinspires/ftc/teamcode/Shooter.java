@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,33 +16,34 @@ public class Shooter extends LinearOpMode {
     private Servo intakeLeft;
     private Servo intakeRight;
 
-    private Servo door;
+
     private Servo tail;
     @Override
     public void runOpMode() throws InterruptedException {
 
+
+        DcMotorEx shooterMotorR = hardwareMap.get(DcMotorEx.class,"shooterMotorR");
+        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFrontMotor");
         DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBackMotor");
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
-        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
 
         DcMotorEx shooterMotorL = hardwareMap.get(DcMotorEx.class,"shooterMotorL");
-        DcMotorEx shooterMotorR = hardwareMap.get(DcMotorEx.class,"shooterMotorR");
+
 
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class,"intakeMotor");
 
         DcMotorEx benzMotor = hardwareMap.get(DcMotorEx.class,"benzMotor");
 
 
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // only for this robot (Broken motor)
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         double motorInput = 1.0;
 
         intakeLeft = hardwareMap.get(Servo.class,"intakeLeft");
         intakeRight = hardwareMap.get(Servo.class,"intakeRight");
 
-        door = hardwareMap.get(Servo.class,"door");
+
         tail = hardwareMap.get(Servo.class,"tail");
 
         intakeRight.setDirection(Servo.Direction.REVERSE);
@@ -52,15 +55,26 @@ public class Shooter extends LinearOpMode {
 
         while(opModeIsActive()) {
             intakeMotor.setPower(motorInput);
-            benzMotor.setPower(motorInput);
-
+            shooterMotorR.setVelocity(900);
+            shooterMotorL.setVelocity(900);
+            tail.setPosition(1);
             intakeLeft.setPosition(1);
             intakeRight.setPosition(1);
+            if (gamepad1.right_bumper){
+                benzMotor.setPower(0.15);
+            } else  {
+                benzMotor.setPower(0);
+
+            }
+            if (gamepad1.left_bumper){
+                tail.setPosition(0.3);
 
 
+            }
+                
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
-            double rx = gamepad1.right_stick_x;
+            double rx = -gamepad1.right_stick_x;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
