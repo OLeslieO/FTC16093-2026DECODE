@@ -54,16 +54,17 @@ public class Shooter extends LinearOpMode {
 
         benzMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         benzMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        benzMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
         waitForStart();
-        int initialPosition = benzMotor.getCurrentPosition();
+
 
         while(opModeIsActive()) {
-            int targetPosition = initialPosition + 165;
+            int targetPosition = 165;
             benzMotor.setTargetPosition(targetPosition);
             benzMotor.setPower(0.2);
-            benzMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
 
             while (benzMotor.isBusy() && opModeIsActive()) {
