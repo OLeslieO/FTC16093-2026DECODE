@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Shooter")
@@ -71,12 +70,12 @@ public class Shooter extends LinearOpMode {
 
                 telemetry.addData("Target Position", targetPosition);
                 telemetry.addData("Current Position", benzMotor.getCurrentPosition());
-
                 telemetry.update();
 
             }
 
             benzMotor.setPower(0);
+
             intakeMotor.setPower(motorInput);
             shooterMotorR.setVelocity(-800);
             shooterMotorL.setVelocity(-800);
