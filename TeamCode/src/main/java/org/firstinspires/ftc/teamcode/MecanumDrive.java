@@ -15,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 
-//这是数学方法计算的云台和底盘移动结合
 @TeleOp(name="nancy")
 public class MecanumDrive extends LinearOpMode {
     //    private Limelight3A cameraFront;
@@ -29,11 +28,9 @@ public class MecanumDrive extends LinearOpMode {
 
 
 
-        //      初始化硬件路径
-//        cameraFront= hardwareMap.get(Limelight3A.class, "camera1");
         odo = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         cameraMotor=hardwareMap.get(DcMotorEx.class, "cameraMotor");
-//初始化odo
+
         odo.setOffsets(100,90, DistanceUnit.MM);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         Pose2D pose2D = new Pose2D(DistanceUnit.MM,-1420,-1350, AngleUnit.DEGREES, Math.toRadians(0));
@@ -41,13 +38,13 @@ public class MecanumDrive extends LinearOpMode {
 
         double localx,localy;
         double headingAngle;
-//        初始化电机
+
         cameraMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         cameraMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         cameraMotor.setTargetPosition(0);
         cameraMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         cameraMotor.setPower(1);
-        // Declare our motors
+
 
         // Make sure your ID's match your configuration
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFrontMotor");
@@ -55,10 +52,7 @@ public class MecanumDrive extends LinearOpMode {
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
 
-        // Reverse the right side motors. This may be wrong for your setup.
-        // If your robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
-        // See the note about this earlier on this page.[]\
+
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -78,7 +72,7 @@ public class MecanumDrive extends LinearOpMode {
             telemetry.addData("angle",angle);
             angle=headingAngle+angle;
             cameraMotor.setTargetPosition((int) (angle));
-//            cameraMotor.setTargetPosition((int) odo.getPosition().getHeading(RADIANS));
+            //cameraMotor.setTargetPosition((int) odo.getPosition().getHeading(RADIANS));
             telemetry.addData("degree", angle);
             telemetry.addData("motor Target Pos",cameraMotor.getTargetPosition());
             telemetry.addData("motor pos", cameraMotor.getCurrentPosition());

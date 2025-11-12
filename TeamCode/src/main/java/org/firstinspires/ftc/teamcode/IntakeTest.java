@@ -42,6 +42,7 @@ public class IntakeTest extends LinearOpMode {
 
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
+
         waitForStart();
 
         while(opModeIsActive()) {
