@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@TeleOp(name = "Limelighttest1112")
-public class limelight1112 extends LinearOpMode {
+@TeleOp(name = "Limelighttest")
+public class limelight extends LinearOpMode {
 
     private Limelight3A limelight;
 
