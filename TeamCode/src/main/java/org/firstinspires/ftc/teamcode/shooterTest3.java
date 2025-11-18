@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+//shooter电机的闭环控制
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
