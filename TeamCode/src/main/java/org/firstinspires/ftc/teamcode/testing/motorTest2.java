@@ -19,7 +19,7 @@ public class motorTest2 extends LinearOpMode {
     public static boolean reverse = false;
     public static double motor_pow = 0.1;
 
-    public static String motor_name1 = "benzMotor" ;
+    public static String motor_name1 = "ShooterMotor" ;
     private DcMotorEx motor0 = null;
 
 
