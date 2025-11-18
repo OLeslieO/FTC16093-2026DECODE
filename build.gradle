@@ -11,8 +11,12 @@ buildscript {
     }
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
-        classpath 'com.android.tools.build:gradle:8.10.1'
+        classpath 'com.android.tools.build:gradle:8.7.0'
     }
+}
+
+plugins {
+    id "com.diffplug.spotless" version "6.25.0"
 }
 
 // This is now required because aapt2 has to be downloaded from the
@@ -21,9 +25,6 @@ allprojects {
     repositories {
         mavenCentral()
         google()
-        maven {
-            url = "https://mymaven.bylazar.com/releases"
-        }
     }
 }
 
