@@ -1,292 +1,292 @@
-package org.firstinspires.ftc.teamcode.opmodes.autos;
-
-import androidx.annotation.NonNull;
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
-import com.pedropathing.follower.FollowerConstants;
-
-import org.firstinspires.ftc.teamcode.Subsystems.FrontArm;
-import org.firstinspires.ftc.teamcode.Subsystems.LiftArm;
-import org.firstinspires.ftc.teamcode.utils.FollowerEx;
-import org.firstinspires.ftc.teamcode.utils.PathChainList;
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import pedroPathing.constants.FConstants;
-import pedroPathing.constants.LConstants;
-
-//@Autonomous(name = "Auto Chamber", group = "Competition")
-public class AutoChamber_pushSample extends AutoOpModeEx {
-    private FollowerEx follower;
-    private AutoCommand autoCommand;
-    private List<Command> actions;
-    private FrontArm frontArm;
-    private LiftArm liftArm;
-    private Boolean actionRunning;
-
-
-    /*
-     * -----------------------
-     * |                     |
-     * |                     |
-     * |      |-----|        |
-     * |      |潜水器|        |
-     * |      |-----|        |
-     * |                     |
-     * |         ↑           |
-     * |       启动点         |
-     * ---------------------零点
-     * */
-
-
-
-
-
-    private PathChainList pathChainList;
-
-    private final Pose startPose = new Pose(0,  52.75, Math.toRadians(0));
-
-    private final Pose midPose = new Pose(24, 36.5, Math.toRadians(0));
-    private final Pose controlPoseForPush1 = new Pose(46, 35, Math.toRadians(0));
-    private final Pose push1Pose = new Pose(48, 26, Math.toRadians(0));
-    private final Pose endPush1 = new Pose(13, 26, Math.toRadians(0));
-
-    private final Pose controlPoseForPush2 = new Pose(47, 26, Math.toRadians(0));
-    private final Pose push2Pose = new Pose(47, 12, Math.toRadians(0));
-    private final Pose endPush2 = new Pose(13, 12, Math.toRadians(0));
-
-    private final Pose controlPoseForPush3 = new Pose(47, 11, Math.toRadians(0));
-    private final Pose push3Pose = new Pose(47, 6, Math.toRadians(0));
-    private final Pose endPush3 = new Pose(13, 6, Math.toRadians(0));
-
-    private final Pose endPushToHPControlPose = new Pose(28,20,Math.toRadians(0));
-    private final Pose HPPose = new Pose(0, 29, Math.toRadians(0));
-
-    private final Pose scorePose0 = new Pose(28.2, 62, Math.toRadians(0));
-    private final Pose scorePose1 = new Pose(28.2, 62, Math.toRadians(0));
-    private final Pose scorePose2 = new Pose(28.2, 63, Math.toRadians(0));
-    private final Pose scorePose3 = new Pose(28.2, 64, Math.toRadians(0));
-    private final Pose scorePose4 = new Pose(28.2, 65, Math.toRadians(0));
-
-//    private final Pose parkControlPose = new Pose(, 25, Math.toRadians(0));
-    private final Pose parkPose = new Pose(7, 28, Math.toRadians(0));
-    private int currentPathId = 0;
-
-    @Override
-    public void initialize() {
-        this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        follower = new FollowerEx(hardwareMap, FConstants.class, LConstants.class);
-        follower.setStartingPose(startPose);
-        frontArm = new FrontArm(hardwareMap);
-        liftArm = new LiftArm(hardwareMap);
-        this.pathChainList = new PathChainList();
-        this.actions = new ArrayList<>();
-        this.autoCommand = new AutoCommand(frontArm, liftArm);
-        this.actionRunning = false;
-
-        buildPaths();
-        buildActions();
-
-        frontArm.autoChamberInitPos();
-        liftArm.autoChamberInitPos();
-        follower.setMaxPower(1);
-    }
-
-    @NonNull
-    private Point getCurrentPoint(){
-        return new Point(follower.getPose().getX(),follower.getPose().getY());
-    }
-
-//    public void followPath(PathChain pathChain) {
-//        this.followPath(pathChain, FollowerConstants.automaticHoldEnd);
+//package org.firstinspires.ftc.teamcode.opmodes.autos;
+//
+//import androidx.annotation.NonNull;
+//
+//import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+//import com.arcrobotics.ftclib.command.Command;
+//import com.arcrobotics.ftclib.command.CommandScheduler;
+//
+//import com.arcrobotics.ftclib.command.InstantCommand;
+//import com.pedropathing.follower.Follower;
+//import com.pedropathing.follower.FollowerConstants;
+//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.pedropathing.localization.Pose;
+//import com.pedropathing.pathgen.BezierCurve;
+//import com.pedropathing.pathgen.BezierLine;
+//import com.pedropathing.pathgen.PathChain;
+//import com.pedropathing.pathgen.Point;
+//import com.pedropathing.follower.FollowerConstants;
+//
+//import org.firstinspires.ftc.teamcode.Subsystems.FrontArm;
+//import org.firstinspires.ftc.teamcode.Subsystems.LiftArm;
+//import org.firstinspires.ftc.teamcode.utils.FollowerEx;
+//import org.firstinspires.ftc.teamcode.utils.PathChainList;
+//
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.Iterator;
+//import java.util.List;
+//
+//import pedroPathing.constants.FConstants;
+//import pedroPathing.constants.LConstants;
+//
+////@Autonomous(name = "Auto Chamber", group = "Competition")
+//public class AutoChamber_pushSample extends AutoOpModeEx {
+//    private FollowerEx follower;
+//    private AutoCommand autoCommand;
+//    private List<Command> actions;
+//    private FrontArm frontArm;
+//    private LiftArm liftArm;
+//    private Boolean actionRunning;
+//
+//
+//    /*
+//     * -----------------------
+//     * |                     |
+//     * |                     |
+//     * |      |-----|        |
+//     * |      |潜水器|        |
+//     * |      |-----|        |
+//     * |                     |
+//     * |         ↑           |
+//     * |       启动点         |
+//     * ---------------------零点
+//     * */
+//
+//
+//
+//
+//
+//    private PathChainList pathChainList;
+//
+//    private final Pose startPose = new Pose(0,  52.75, Math.toRadians(0));
+//
+//    private final Pose midPose = new Pose(24, 36.5, Math.toRadians(0));
+//    private final Pose controlPoseForPush1 = new Pose(46, 35, Math.toRadians(0));
+//    private final Pose push1Pose = new Pose(48, 26, Math.toRadians(0));
+//    private final Pose endPush1 = new Pose(13, 26, Math.toRadians(0));
+//
+//    private final Pose controlPoseForPush2 = new Pose(47, 26, Math.toRadians(0));
+//    private final Pose push2Pose = new Pose(47, 12, Math.toRadians(0));
+//    private final Pose endPush2 = new Pose(13, 12, Math.toRadians(0));
+//
+//    private final Pose controlPoseForPush3 = new Pose(47, 11, Math.toRadians(0));
+//    private final Pose push3Pose = new Pose(47, 6, Math.toRadians(0));
+//    private final Pose endPush3 = new Pose(13, 6, Math.toRadians(0));
+//
+//    private final Pose endPushToHPControlPose = new Pose(28,20,Math.toRadians(0));
+//    private final Pose HPPose = new Pose(0, 29, Math.toRadians(0));
+//
+//    private final Pose scorePose0 = new Pose(28.2, 62, Math.toRadians(0));
+//    private final Pose scorePose1 = new Pose(28.2, 62, Math.toRadians(0));
+//    private final Pose scorePose2 = new Pose(28.2, 63, Math.toRadians(0));
+//    private final Pose scorePose3 = new Pose(28.2, 64, Math.toRadians(0));
+//    private final Pose scorePose4 = new Pose(28.2, 65, Math.toRadians(0));
+//
+////    private final Pose parkControlPose = new Pose(, 25, Math.toRadians(0));
+//    private final Pose parkPose = new Pose(7, 28, Math.toRadians(0));
+//    private int currentPathId = 0;
+//
+//    @Override
+//    public void initialize() {
+//        this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+//        follower = new FollowerEx(hardwareMap, FConstants.class, LConstants.class);
+//        follower.setStartingPose(startPose);
+//        frontArm = new FrontArm(hardwareMap);
+//        liftArm = new LiftArm(hardwareMap);
+//        this.pathChainList = new PathChainList();
+//        this.actions = new ArrayList<>();
+//        this.autoCommand = new AutoCommand(frontArm, liftArm);
+//        this.actionRunning = false;
+//
+//        buildPaths();
+//        buildActions();
+//
+//        frontArm.autoChamberInitPos();
+//        liftArm.autoChamberInitPos();
+//        follower.setMaxPower(1);
 //    }
-
-    private double getCurrentHeading(){
-        return follower.getPose().getHeading();
-    }
-
-    private void buildPaths() {
-        PathChain toControlPoseForPush, toPush1, toPush2, toPush3,
-                pushEnd1, pushEnd2, pushEnd3, goToHP, goToHPAfterPush,
-                scoreChamber0, scoreChamber1, scoreChamber2, scoreChamber3, scoreChamber4, park;
-        scoreChamber0 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(startPose), new Point(scorePose0)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose0.getHeading())
-                .build();
-
-        toControlPoseForPush = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose0), new Point(midPose)))
-                .setLinearHeadingInterpolation(scorePose0.getHeading(), midPose.getHeading())
-                .build();
-
-        toPush1 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(midPose), new Point(controlPoseForPush1), new Point(push1Pose)))
-                .setLinearHeadingInterpolation(midPose.getHeading(), push1Pose.getHeading())
-                .build();
-
-        pushEnd1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(push1Pose),  new Point(endPush1)))
-                .setLinearHeadingInterpolation(push1Pose.getHeading(), endPush1.getHeading())
-                .build();
-
-        toPush2 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(endPush1), new Point(controlPoseForPush2), new Point(push2Pose)))
-                .setLinearHeadingInterpolation(endPush1.getHeading(), push2Pose.getHeading())
-                .build();
-
-        pushEnd2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(push2Pose),  new Point(endPush2)))
-                .setLinearHeadingInterpolation(push2Pose.getHeading(), endPush2.getHeading())
-                .build();
-
-        toPush3 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(endPush2), new Point(controlPoseForPush3), new Point(push3Pose)))
-                .setLinearHeadingInterpolation(endPush2.getHeading(), push3Pose.getHeading())
-                .build();
-
-        pushEnd3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(push3Pose),  new Point(endPush3)))
-                .setLinearHeadingInterpolation(push3Pose.getHeading(), endPush3.getHeading())
-                .build();
-
-        goToHPAfterPush = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(endPush3), new Point(HPPose)))
-                .setLinearHeadingInterpolation(endPush3.getHeading(), HPPose.getHeading())
-                .build();
-
-        goToHP = follower.pathBuilder()
-                .addPath(new BezierCurve(getCurrentPoint(), new Point(endPushToHPControlPose), new Point(HPPose)))
-                .setLinearHeadingInterpolation(endPush3.getHeading(), HPPose.getHeading())
-                .build();
-
-        scoreChamber1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose1)))
-                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose1.getHeading())
-                .build();
-
-        scoreChamber2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose2)))
-                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose2.getHeading())
-                .build();
-
-        scoreChamber3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose3)))
-                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose3.getHeading())
-                .build();
-
-        scoreChamber4 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose4)))
-                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose4.getHeading())
-                .build();
-
-        park = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose3), new Point(parkPose)))
-                .setLinearHeadingInterpolation(scorePose3.getHeading(), parkPose.getHeading())
-                .build();
-
-        pathChainList.addPath(scoreChamber0,
-                toControlPoseForPush, toPush1,
-                pushEnd1, toPush2,
-                pushEnd2, toPush3,
-                pushEnd3, goToHPAfterPush,
-                null, scoreChamber1, null, goToHP,
-                null, scoreChamber2, null, goToHP,
-                null, scoreChamber3, null, goToHP,
-                null, scoreChamber3, null, park);
-    }
-
-    private Command actionEnd(){
-        return new InstantCommand(()->this.actionRunning = false);
-    }
-
-    private void buildActions(){
-        Command intakeSpecimenCommand, scoreSpecimenCommand, scorePreloadCommand, scoreLastSpecimenCommand;
-        scorePreloadCommand = autoCommand.scorePreloadSpecimen().andThen(actionEnd());
-        intakeSpecimenCommand = autoCommand.autoIntakeSpecimen().andThen(actionEnd());
-        scoreSpecimenCommand = autoCommand.autoScoreSpecimen().andThen(actionEnd());
-        scoreLastSpecimenCommand = autoCommand.autoScoreLastSpecimen().andThen(actionEnd());
-
-
-        actions.addAll(Arrays.asList(scorePreloadCommand,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
-                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
-                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
-                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
-                intakeSpecimenCommand, null, scoreLastSpecimenCommand, null));
-    }
-
-    private void periodic() {
-        CommandScheduler.getInstance().run();
-        follower.update();
-        telemetry.addData("x", follower.getPose().getX());
-        telemetry.addData("y", follower.getPose().getY());
-        telemetry.addData("heading", follower.getPose().getHeading());
-        telemetry.addData("drive error",follower.driveError);
-        telemetry.addData("lift slide info", liftArm.slideInfo());
-        telemetry.addData("follower finished",!follower.isBusy());
-        telemetry.addData("action finished", !this.actionRunning);
-        telemetry.addData("current path id", currentPathId);
-        telemetry.addData("front arm", frontArm.state);
-        telemetry.addData("lift arm", liftArm.state);
-        /*telemetry.addData("Actions size", actions.size());
-        telemetry.addData("PathChainList size", pathChainList.size());*/
-        telemetry.update();
-    }
-
-    @Override
-    public void run() {
-        if(actions.size() != pathChainList.size()){
-            throw new IllegalStateException(
-                    "Actions count (" + actions.size() +
-                            ") does not match path count (" + pathChainList.size() + ")"
-            );
-        }
-        Iterator<PathChain> it = pathChainList.iterator();
-        int pathCount = 0;
-        while (it.hasNext()){
-            pathCount+=1;
-            if (!opModeIsActive())break;
-            periodic();
-            if(!follower.isBusy() && follower.driveError < 1.0 && !this.actionRunning){
-                PathChain path = it.next();
-                if(path!=null){
-                    if(pathCount==9){
-                        follower.setMaxPower(0.01);
-                        follower.followPath(path);
-                    }
-                    else if(pathCount==13 || pathCount==17 || pathCount==21) {
-                        follower.follow(path, 1.2, 1.8, Math.toRadians(10));
-                    }
-                    else follower.follow(path,1.2,1.8, Math.toRadians(10));
-                }
-//                if(path!=null) follower.followPath(path);
-                Command currentAction = actions.get(currentPathId);
-                if(currentAction!=null){
-                    currentAction.schedule();
-                    this.actionRunning = true;
-                }
-                currentPathId++;
-            }
-        }
-    }
-}
+//
+//    @NonNull
+//    private Point getCurrentPoint(){
+//        return new Point(follower.getPose().getX(),follower.getPose().getY());
+//    }
+//
+////    public void followPath(PathChain pathChain) {
+////        this.followPath(pathChain, FollowerConstants.automaticHoldEnd);
+////    }
+//
+//    private double getCurrentHeading(){
+//        return follower.getPose().getHeading();
+//    }
+//
+//    private void buildPaths() {
+//        PathChain toControlPoseForPush, toPush1, toPush2, toPush3,
+//                pushEnd1, pushEnd2, pushEnd3, goToHP, goToHPAfterPush,
+//                scoreChamber0, scoreChamber1, scoreChamber2, scoreChamber3, scoreChamber4, park;
+//        scoreChamber0 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(startPose), new Point(scorePose0)))
+//                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose0.getHeading())
+//                .build();
+//
+//        toControlPoseForPush = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(scorePose0), new Point(midPose)))
+//                .setLinearHeadingInterpolation(scorePose0.getHeading(), midPose.getHeading())
+//                .build();
+//
+//        toPush1 = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(midPose), new Point(controlPoseForPush1), new Point(push1Pose)))
+//                .setLinearHeadingInterpolation(midPose.getHeading(), push1Pose.getHeading())
+//                .build();
+//
+//        pushEnd1 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(push1Pose),  new Point(endPush1)))
+//                .setLinearHeadingInterpolation(push1Pose.getHeading(), endPush1.getHeading())
+//                .build();
+//
+//        toPush2 = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(endPush1), new Point(controlPoseForPush2), new Point(push2Pose)))
+//                .setLinearHeadingInterpolation(endPush1.getHeading(), push2Pose.getHeading())
+//                .build();
+//
+//        pushEnd2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(push2Pose),  new Point(endPush2)))
+//                .setLinearHeadingInterpolation(push2Pose.getHeading(), endPush2.getHeading())
+//                .build();
+//
+//        toPush3 = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(endPush2), new Point(controlPoseForPush3), new Point(push3Pose)))
+//                .setLinearHeadingInterpolation(endPush2.getHeading(), push3Pose.getHeading())
+//                .build();
+//
+//        pushEnd3 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(push3Pose),  new Point(endPush3)))
+//                .setLinearHeadingInterpolation(push3Pose.getHeading(), endPush3.getHeading())
+//                .build();
+//
+//        goToHPAfterPush = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(endPush3), new Point(HPPose)))
+//                .setLinearHeadingInterpolation(endPush3.getHeading(), HPPose.getHeading())
+//                .build();
+//
+//        goToHP = follower.pathBuilder()
+//                .addPath(new BezierCurve(getCurrentPoint(), new Point(endPushToHPControlPose), new Point(HPPose)))
+//                .setLinearHeadingInterpolation(endPush3.getHeading(), HPPose.getHeading())
+//                .build();
+//
+//        scoreChamber1 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose1)))
+//                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose1.getHeading())
+//                .build();
+//
+//        scoreChamber2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose2)))
+//                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose2.getHeading())
+//                .build();
+//
+//        scoreChamber3 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose3)))
+//                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose3.getHeading())
+//                .build();
+//
+//        scoreChamber4 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(HPPose), new Point(scorePose4)))
+//                .setLinearHeadingInterpolation(HPPose.getHeading(), scorePose4.getHeading())
+//                .build();
+//
+//        park = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(scorePose3), new Point(parkPose)))
+//                .setLinearHeadingInterpolation(scorePose3.getHeading(), parkPose.getHeading())
+//                .build();
+//
+//        pathChainList.addPath(scoreChamber0,
+//                toControlPoseForPush, toPush1,
+//                pushEnd1, toPush2,
+//                pushEnd2, toPush3,
+//                pushEnd3, goToHPAfterPush,
+//                null, scoreChamber1, null, goToHP,
+//                null, scoreChamber2, null, goToHP,
+//                null, scoreChamber3, null, goToHP,
+//                null, scoreChamber3, null, park);
+//    }
+//
+//    private Command actionEnd(){
+//        return new InstantCommand(()->this.actionRunning = false);
+//    }
+//
+//    private void buildActions(){
+//        Command intakeSpecimenCommand, scoreSpecimenCommand, scorePreloadCommand, scoreLastSpecimenCommand;
+//        scorePreloadCommand = autoCommand.scorePreloadSpecimen().andThen(actionEnd());
+//        intakeSpecimenCommand = autoCommand.autoIntakeSpecimen().andThen(actionEnd());
+//        scoreSpecimenCommand = autoCommand.autoScoreSpecimen().andThen(actionEnd());
+//        scoreLastSpecimenCommand = autoCommand.autoScoreLastSpecimen().andThen(actionEnd());
+//
+//
+//        actions.addAll(Arrays.asList(scorePreloadCommand,
+//                null, null,
+//                null, null,
+//                null, null,
+//                null, null,
+//                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
+//                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
+//                intakeSpecimenCommand, null, scoreSpecimenCommand, null,
+//                intakeSpecimenCommand, null, scoreLastSpecimenCommand, null));
+//    }
+//
+//    private void periodic() {
+//        CommandScheduler.getInstance().run();
+//        follower.update();
+//        telemetry.addData("x", follower.getPose().getX());
+//        telemetry.addData("y", follower.getPose().getY());
+//        telemetry.addData("heading", follower.getPose().getHeading());
+//        telemetry.addData("drive error",follower.driveError);
+//        telemetry.addData("lift slide info", liftArm.slideInfo());
+//        telemetry.addData("follower finished",!follower.isBusy());
+//        telemetry.addData("action finished", !this.actionRunning);
+//        telemetry.addData("current path id", currentPathId);
+//        telemetry.addData("front arm", frontArm.state);
+//        telemetry.addData("lift arm", liftArm.state);
+//        /*telemetry.addData("Actions size", actions.size());
+//        telemetry.addData("PathChainList size", pathChainList.size());*/
+//        telemetry.update();
+//    }
+//
+//    @Override
+//    public void run() {
+//        if(actions.size() != pathChainList.size()){
+//            throw new IllegalStateException(
+//                    "Actions count (" + actions.size() +
+//                            ") does not match path count (" + pathChainList.size() + ")"
+//            );
+//        }
+//        Iterator<PathChain> it = pathChainList.iterator();
+//        int pathCount = 0;
+//        while (it.hasNext()){
+//            pathCount+=1;
+//            if (!opModeIsActive())break;
+//            periodic();
+//            if(!follower.isBusy() && follower.driveError < 1.0 && !this.actionRunning){
+//                PathChain path = it.next();
+//                if(path!=null){
+//                    if(pathCount==9){
+//                        follower.setMaxPower(0.01);
+//                        follower.followPath(path);
+//                    }
+//                    else if(pathCount==13 || pathCount==17 || pathCount==21) {
+//                        follower.follow(path, 1.2, 1.8, Math.toRadians(10));
+//                    }
+//                    else follower.follow(path,1.2,1.8, Math.toRadians(10));
+//                }
+////                if(path!=null) follower.followPath(path);
+//                Command currentAction = actions.get(currentPathId);
+//                if(currentAction!=null){
+//                    currentAction.schedule();
+//                    this.actionRunning = true;
+//                }
+//                currentPathId++;
+//            }
+//        }
+//    }
+//}

@@ -18,20 +18,13 @@ import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(group = "0-competition", name = "TeleOp Dual")
-public class TeleOpDual extends CommandOpModeEx {
+@TeleOp(group = "0-competition", name = "TeleOp Solo")
+public class TeleOpSolo extends CommandOpModeEx {
     GamepadEx gamepadEx1, gamepadEx2;
     NewMecanumDrive driveCore;
     Shooter shooter;
     Intake intake;
 
-    //    private enum Tasks{
-//        SAMPLE,
-//        SPECIMEN,
-//        ASCENT
-//    };
-//    private Tasks mode;
-    private double forwardComponentOffset = 0;
 
     @Override
     public void initialize() {
@@ -46,8 +39,8 @@ public class TeleOpDual extends CommandOpModeEx {
         driveCore = new NewMecanumDrive(hardwareMap);
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
-                ()->gamepadEx1.getLeftX() + forwardComponentOffset,
-                ()->gamepadEx1.getLeftY() + forwardComponentOffset,
+                ()->gamepadEx1.getLeftX(),
+                ()->gamepadEx1.getLeftY(),
                 ()->gamepadEx1.getRightX(),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad));
 
@@ -83,19 +76,19 @@ public class TeleOpDual extends CommandOpModeEx {
         //leftTrigger -- preShooter
         //a -- preShooter & intake 反转
 
-        new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenPressed(new InstantCommand(()->intake.intake()))
                 .whenReleased(new InstantCommand(()->intake.init()));
 
-        new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
+        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.accelerate()))
                 .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
-        new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
+        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
                 .whenReleased(new InstantCommand(()->shooter.init()));
 
-        new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.A))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.A))
                 .whenPressed(new ParallelCommandGroup(
                         new InstantCommand(()->intake.outtake()),
                         new InstantCommand(()->shooter.outtake())))
@@ -103,7 +96,7 @@ public class TeleOpDual extends CommandOpModeEx {
                         new InstantCommand(()->intake.init()),
                         new InstantCommand(()->shooter.init())));
 
-        new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.DPAD_DOWN))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenPressed(new InstantCommand(()->shooter.emergency()))
                 .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
@@ -113,7 +106,7 @@ public class TeleOpDual extends CommandOpModeEx {
     public void run(){
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("forwardComponentOffset", forwardComponentOffset);
+        telemetry.addData("shooter velocity", shooter.shooter.getVelocity());
         telemetry.update();
     }
 }

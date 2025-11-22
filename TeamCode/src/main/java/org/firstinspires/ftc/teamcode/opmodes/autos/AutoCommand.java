@@ -11,8 +11,8 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.ServoConstants;
-import org.firstinspires.ftc.teamcode.Subsystems.FrontArm;
-import org.firstinspires.ftc.teamcode.Subsystems.LiftArm;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.follower.Follower;
@@ -22,201 +22,32 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 public class AutoCommand {
-    FrontArm frontArm;
-    LiftArm liftArm;
+    Shooter shooter;
+    Intake intake;
     Follower follower;
     boolean visionSucceed = false;
     int failedTime = 0;
-    public AutoCommand(FrontArm frontArm, LiftArm liftArm) {
-        this.frontArm = frontArm;
-        this.liftArm = liftArm;
-//        this.frontArmState = FrontArm.State.FREE;
+    public AutoCommand(Shooter shooter, Intake intake) {
+        this.shooter = shooter;
+        this.intake = intake;
     }
 
-    /*--------------SAMPLE----------------*/
-    public Command autoReleasePreloadSample_1(){
-        return new SequentialCommandGroup(
-//                new WaitCommand(100),
-                liftArm.releaseHigh()
-        );
+    public Command accelerate(){
+        return new InstantCommand(()->shooter.accelerate());
     }
-    public Command autoReleasePreloadSample_2(){
+
+    public Command shoot(){
         return new SequentialCommandGroup(
-                new WaitCommand(120),
-                liftArm.releaseHigh()
-        );
-    }
-    public Command autoIntakeSample() {
-        return new SequentialCommandGroup(
+                new InstantCommand(()->shooter.shoot()),
                 new WaitCommand(2000),
-                frontArm.intake(true,true),
-                new WaitCommand(180),
-                frontArm.intake(true, true),
-                new WaitCommand(50),
-                new SequentialCommandGroup(
-                        new ParallelCommandGroup(frontArm.handover_1(),liftArm.handover_1()),
-                        new SequentialCommandGroup(liftArm.handover_2(), frontArm.handover_2())
-                )
+                new InstantCommand(()->shooter.init())
         );
     }
 
-    public Command autoReleaseHigh() {
-        return new WaitCommand(300)
-                .andThen(liftArm.releaseHigh())
-                .andThen(
-                new WaitCommand(350),
-                liftArm.releaseHigh()
-//                new WaitCommand(0)
-        );
-    }
-
-    public Command autoIntakeLastSample(){
+    public Command intake(){
         return new SequentialCommandGroup(
-                new WaitCommand(800),
-                frontArm.intake(true,true),
-                new WaitCommand(180),
-                frontArm.intake(true, true),
-                new WaitCommand(50),
-                new ParallelCommandGroup(frontArm.handover(),liftArm.handover())
-        );
-    }
-
-
-    /*--------------SPECIMEN----------------*/
-    public Command scorePreloadSpecimen(){
-        return new SequentialCommandGroup(
-                liftArm.FirstHighChamber(),
-                new WaitCommand(400),
-                liftArm.highChamber()
-        );
-    }
-
-    public Command autoIntakeSpecimen(){
-        return new SequentialCommandGroup(
-                new WaitCommand(100),
-                liftArm.highChamber()
-        );
-    }
-
-    public Command autoScoreSpecimen(){
-        return new SequentialCommandGroup(
-                new WaitCommand(80),
-                liftArm.highChamber()
-        );
-    }
-
-    public Command autoScoreLastSpecimen(){
-        return new SequentialCommandGroup(
-                new WaitCommand(80),
-                new InstantCommand(()->liftArm.getClawUp().setPosition(ServoConstants.UP_CLAW_OPEN.value)),
-                liftArm.resetSlideForAutoChamberEnd()
-        );
-    }
-
-
-
-    /*--------------SAMPLE VERSION2----------------*/
-    public Command autoReleasePreloadSample_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(80),
-                liftArm.releaseHigh(),
-                new WaitCommand(150),
-                liftArm.releaseHigh()
-//                new WaitCommand(80)
-        );
-    }
-
-    public Command autoIntakeSample_v2() {
-        return new SequentialCommandGroup(
-                new WaitCommand(50),
-                frontArm.intake(true,true),
-                new WaitCommand(350),
-                frontArm.intake(true, true),
-                new WaitCommand(50),
-                new ParallelCommandGroup(frontArm.handover(),liftArm.handover())
-        );
-    }
-
-    public Command autoReleaseHigh_v2() {
-        return liftArm.releaseHigh().andThen(
-                new WaitCommand(180),
-                liftArm.releaseHigh()
-//                new WaitCommand(0)
-        );
-    }
-
-    public Command autoIntakeLastSample_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(80),
-                frontArm.intake(true,true),
-                new WaitCommand(350),
-                frontArm.intake(true, true),
-                new WaitCommand(50),
-                new ParallelCommandGroup(frontArm.handover(),liftArm.handover())
-        );
-    }
-
-
-    /*--------------SPECIMEN INTAKE VERSION----------------*/
-    public Command scorePreloadSpecimen_v2(){
-        return new SequentialCommandGroup(
-                frontArm.highChamber(),
-                liftArm.highChamber(),
-                new WaitCommand(200),
-                liftArm.highChamber()
-        );
-    }
-
-    public Command autoIntakeFirstSampleForHP_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(1000),
-                frontArm.intake(true,true),
-                new WaitCommand(100),
-                frontArm.intake(true, true),
-                new WaitCommand(50)
-        );
-    }
-
-    public Command autoIntakeSampleForHP_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(600),
-                frontArm.intake(true,true),
-                new WaitCommand(100),
-                frontArm.intake(true, true),
-                new WaitCommand(50)
-        );
-    }
-
-    public Command putSampleToHPCommand_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(300),
-                frontArm.giveHP(),
-                new WaitCommand(100)
-        );
-    }
-
-    public Command autoIntakeFirstSpecimen_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(50),
-                liftArm.highChamber(),
-                new WaitCommand(50)
-        );
-    }
-
-    public Command autoIntakeSpecimen_v2(){
-        return new SequentialCommandGroup(
-                new WaitCommand(700),
-                liftArm.highChamber(),
-                new WaitCommand(50)
-        );
-    }
-
-    public Command autoScoreSpecimen_v2(){
-        return new SequentialCommandGroup(
-//                new WaitCommand(80),
-                frontArm.highChamber(),
-                new WaitCommand(180),
-                liftArm.highChamber()
+                new InstantCommand(()->intake.intake()),
+                new WaitCommand(2000)
         );
     }
 

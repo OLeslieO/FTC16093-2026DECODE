@@ -16,7 +16,7 @@
 //   ###    ####     #########        ########                    #### ####      #########       ###          ###    ####        ###        ###     ###     #########
 //   ###    ####      #######          #######                    ####  ###       #######        ###          ###     ###        ###        ###     ###     ##########
 //   ###     ###         ##              ###                       ##   ###          ##          ###          ###     ####       ###        ###     ###    ###     ###
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.testing;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -34,7 +34,7 @@ public class testOpMode extends LinearOpMode {
         while(opModeIsActive()){
             drive.update();
             drive.updateOdo();
-            drive.setFieldCentric(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 1);
+            drive.setFieldCentric(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         }
     }
 }
