@@ -16,7 +16,7 @@
 //   ###    ####     #########        ########                    #### ####      #########       ###          ###    ####        ###        ###     ###     #########
 //   ###    ####      #######          #######                    ####  ###       #######        ###          ###     ###        ###        ###     ###     ##########
 //   ###     ###         ##              ###                       ##   ###          ##          ###          ###     ####       ###        ###     ###    ###     ###
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.testing;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

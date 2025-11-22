@@ -25,13 +25,6 @@ public class TeleOpSolo extends CommandOpModeEx {
     Shooter shooter;
     Intake intake;
 
-//    private enum Tasks{
-//        SAMPLE,
-//        SPECIMEN,
-//        ASCENT
-//    };
-//    private Tasks mode;
-    private double forwardComponentOffset = 0;
 
     @Override
     public void initialize() {
@@ -46,8 +39,8 @@ public class TeleOpSolo extends CommandOpModeEx {
         driveCore = new NewMecanumDrive(hardwareMap);
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
-                ()->gamepadEx1.getLeftX() + forwardComponentOffset,
-                ()->gamepadEx1.getLeftY() + forwardComponentOffset,
+                ()->gamepadEx1.getLeftX(),
+                ()->gamepadEx1.getLeftY(),
                 ()->gamepadEx1.getRightX(),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad));
 
@@ -89,7 +82,7 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.accelerate()))
-                .whenReleased(new InstantCommand(()->shooter.init()));
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
@@ -105,7 +98,7 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenPressed(new InstantCommand(()->shooter.emergency()))
-                .whenReleased(new InstantCommand(()->shooter.init()));
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
     }
 
@@ -113,7 +106,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     public void run(){
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("forwardComponentOffset", forwardComponentOffset);
+        telemetry.addData("shooter velocity", shooter.shooter.getVelocity());
         telemetry.update();
     }
 }

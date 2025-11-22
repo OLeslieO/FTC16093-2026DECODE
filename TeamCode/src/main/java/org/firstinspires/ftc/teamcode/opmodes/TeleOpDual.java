@@ -89,7 +89,7 @@ public class TeleOpDual extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.accelerate()))
-                .whenReleased(new InstantCommand(()->shooter.init()));
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
         new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
@@ -105,7 +105,7 @@ public class TeleOpDual extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenPressed(new InstantCommand(()->shooter.emergency()))
-                .whenReleased(new InstantCommand(()->shooter.init()));
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
     }
 
