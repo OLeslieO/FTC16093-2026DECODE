@@ -236,7 +236,7 @@ public class NewMecanumDrive extends MecanumDrive {
     }
 
     public static boolean ignoreDriveCoefficients = false;
-    public void setFieldCentric(double x, double y, double rx, double powerCoefficient) {
+    public void setFieldCentric(double x, double y, double rx) {
         double botHeading = getHeading();
 
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -244,10 +244,10 @@ public class NewMecanumDrive extends MecanumDrive {
         rotX = rotX * 1.1;
 
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator * powerCoefficient;
-        double backLeftPower = (rotY - rotX + rx) / denominator * powerCoefficient;
-        double frontRightPower = (rotY - rotX - rx) / denominator * powerCoefficient;
-        double backRightPower = (rotY + rotX - rx) / denominator * powerCoefficient;
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
 
         setMotorPowers(frontLeftPower, backLeftPower, backRightPower, frontRightPower);
     }

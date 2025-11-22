@@ -21,21 +21,18 @@ public class TestLocalizer extends LinearOpMode {
     Follower follower;
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-    // Dashboard configurable parameters
-    @Config
-    public static class MovementConfig {
-        public static double startX = -15;
-        public static double startY = 62.3;
-        public static double startHeading = 90;
+    public static double startX = -15;
+    public static double startY = 62.3;
+    public static double startHeading = 90;
 
-        public static double targetX = 24;
-        public static double targetY = 0;
-        public static double targetHeading = 0;
+    public static double targetX = 24;
+    public static double targetY = 0;
+    public static double targetHeading = 0;
 
-        public static double moveToleranceX = 2.0;
-        public static double moveToleranceY = 2.0;
-        public static double moveToleranceHeading = 5.0;
-    }
+    public static double moveToleranceX = 2.0;
+    public static double moveToleranceY = 2.0;
+    public static double moveToleranceHeading = 5.0;
+
 
     private Pose2d startPos;
     private boolean isMoving = false;
@@ -47,16 +44,16 @@ public class TestLocalizer extends LinearOpMode {
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
 
         // Set initial position
-        startPos = new Pose2d(MovementConfig.startX, MovementConfig.startY, Math.toRadians(MovementConfig.startHeading));
-        follower.setStartingPose(new Pose(MovementConfig.startX, MovementConfig.startY, Math.toRadians(MovementConfig.startHeading)));
+        startPos = new Pose2d(startX, startY, Math.toRadians(startHeading));
+        follower.setStartingPose(new Pose(startX, startY, Math.toRadians(startHeading)));
         follower.update();
 
         // Setup telemetry
         telemetry_M.addData("Status", "Initialized");
         telemetry_M.addData("Start Position", "X: %.2f, Y: %.2f, Heading: %.2f",
-            MovementConfig.startX, MovementConfig.startY, MovementConfig.startHeading);
+            startX, startY, startHeading);
         telemetry_M.addData("Target Position", "X: %.2f, Y: %.2f, Heading: %.2f",
-            MovementConfig.targetX, MovementConfig.targetY, MovementConfig.targetHeading);
+            targetX, targetY, targetHeading);
         telemetry_M.addData("Controls", "A: Move to target, B: Stop, X: Reset position");
         telemetry_M.update();
 
@@ -89,10 +86,10 @@ public class TestLocalizer extends LinearOpMode {
                     continue;
                 }
                 Point startPoint = new Point(robotPose.getX(), robotPose.getY(), Point.CARTESIAN);
-                Point targetPoint = new Point(MovementConfig.targetX, MovementConfig.targetY, Point.CARTESIAN);
+                Point targetPoint = new Point(targetX, targetY, Point.CARTESIAN);
 
                 Path movePath = new Path(new BezierLine(startPoint, targetPoint));
-                movePath.setLinearHeadingInterpolation(robotPose.getHeading(), Math.toRadians(MovementConfig.targetHeading));
+                movePath.setLinearHeadingInterpolation(robotPose.getHeading(), Math.toRadians(targetHeading));
 
                 follower.followPath(movePath);
                 isMoving = true;
@@ -119,7 +116,7 @@ public class TestLocalizer extends LinearOpMode {
 
             if (gamepad1.x) {
                 // Reset to start position
-                follower.setStartingPose(new Pose(MovementConfig.startX, MovementConfig.startY, Math.toRadians(MovementConfig.startHeading)));
+                follower.setStartingPose(new Pose(startX, startY, Math.toRadians(startHeading)));
                 follower.update();
                 isMoving = false;
                 telemetry_M.addData("Action", "Position reset to start");
@@ -167,7 +164,7 @@ public class TestLocalizer extends LinearOpMode {
 
             // Display telemetry
             telemetry_M.addData("Current Position", "X: %.3f, Y: %.3f, Heading: %.2f°", currentX, currentY, currentHeading);
-            telemetry_M.addData("Target Position", "X: %.3f, Y: %.3f, Heading: %.2f°", MovementConfig.targetX, MovementConfig.targetY, MovementConfig.targetHeading);
+            telemetry_M.addData("Target Position", "X: %.3f, Y: %.3f, Heading: %.2f°", targetX, targetY, targetHeading);
             telemetry_M.addData("Error", "X: %.3f, Y: %.3f, Heading: %.2f°", errorX, errorY, errorHeading);
             telemetry_M.addData("Movement Status", isMoving ? "Moving" : "Idle");
             telemetry_M.addData("Follower Busy", follower.isBusy());

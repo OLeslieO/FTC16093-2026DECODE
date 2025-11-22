@@ -14,21 +14,18 @@ public class TeleOpDriveCommand extends CommandBase {
     private final DoubleSupplier rotate;
     private final DoubleSupplier y;
     private final BooleanSupplier shouldReset;
-    private final DoubleSupplier powerCoefficient;
 
     public TeleOpDriveCommand(
             NewMecanumDrive drive,
             DoubleSupplier x,
             DoubleSupplier y,
             DoubleSupplier rotate,
-            BooleanSupplier shouldReset,
-            DoubleSupplier powerCoefficient) {
+            BooleanSupplier shouldReset) {
         this.drive = drive;
         this.x = x;
         this.rotate = rotate;
         this.y = y;
         this.shouldReset = shouldReset;
-        this.powerCoefficient = powerCoefficient;
     }
 
     @Override
@@ -37,7 +34,7 @@ public class TeleOpDriveCommand extends CommandBase {
             drive.resetHeading();
             drive.resetOdo();
         }
-        drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), powerCoefficient.getAsDouble());
+        drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble());
         drive.update();
         drive.updateOdo();
     }
