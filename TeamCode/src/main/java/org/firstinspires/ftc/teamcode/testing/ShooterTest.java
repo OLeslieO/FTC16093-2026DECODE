@@ -22,42 +22,51 @@ public class ShooterTest extends LinearOpMode {
   public static double setD = 0;
   public static double setF = 15;
   public static double setShooterPower = 1;
+  public static double setintakePower = 1;
   public static boolean isPowerMode = true;
-  public static double setPreShooterPower = 0.75;
+  public static double setPreShooterPower = 1;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = 1400;
+  public static double shooterVelocity = -1400;
 
   @Override
   public void runOpMode() throws InterruptedException {
-    DcMotorEx shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+    DcMotorEx shooter1 = hardwareMap.get(DcMotorEx.class, "shooter1");
+    DcMotorEx shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
 
-    shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+    shooter1.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    shooter.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+    shooter1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
 
-    shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    shooter1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    shooter2.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    shooter2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+
+    shooter2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    shooter2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     if (isPIDControl) {
-      shooter.setVelocityPIDFCoefficients(setP, setI, setD, setF);
+      shooter1.setVelocityPIDFCoefficients(setP, setI, setD, setF);
     }
 
     waitForStart();
 
     while (opModeIsActive()) {
       if(isPowerMode){
-        shooter.setPower(setShooterPower);
+        shooter1.setPower(setShooterPower);
       }
       else{
-        shooter.setVelocity(shooterVelocity);
+        shooter1.setVelocity(shooterVelocity);
+        shooter2.setVelocity(shooterVelocity);
       }
 
 //      if (frontShooter.getVelocity() > shooterMinVelocity) {
-      if(gamepad1.a){
+      if(gamepad1.right_bumper){
         preShooter.setPower(setPreShooterPower);
-        intake.setPower(1);
+        intake.setPower(setintakePower);
       }
       else{
         preShooter.setPower(0);
@@ -71,7 +80,7 @@ public class ShooterTest extends LinearOpMode {
 //        intake.setPower(0);
 //      }
 
-      telemetry_M.addData("Shooter Velocity", shooter.getVelocity());
+      telemetry_M.addData("Shooter Velocity", shooter1.getVelocity());
       telemetry_M.addData("PreShooter Velocity", preShooter.getVelocity());
       telemetry_M.update();
     }

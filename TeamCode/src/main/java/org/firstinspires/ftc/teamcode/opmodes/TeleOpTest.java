@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(group = "0-competition", name = "TeleOp Solo")
-public class TeleOpSolo extends CommandOpModeEx {
+@TeleOp(group = "0-competition", name = "TeleOp Test")
+public class TeleOpTest extends CommandOpModeEx {
     GamepadEx gamepadEx1, gamepadEx2;
     NewMecanumDrive driveCore;
     Shooter shooter;
@@ -78,28 +78,27 @@ public class TeleOpSolo extends CommandOpModeEx {
 
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER))
+                .whenPressed(new InstantCommand(()->shooter.midShoot()))
+                .whenReleased(new InstantCommand(()-> shooter.idle()));
+
+        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
+                .whenPressed(new InstantCommand(()->intake.outtake()))
+                .whenReleased(new InstantCommand(()-> intake.init()));
+
+
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.A))
+                .whenPressed(new InstantCommand(()->shooter.longShoot()))
+                .whenReleased(new InstantCommand(()->shooter.idle()));
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenPressed(new InstantCommand(()->shooter.shortShoot()))
+                .whenReleased(new InstantCommand(()->shooter.idle()));
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenPressed(new InstantCommand(()->intake.intake()))
                 .whenReleased(new InstantCommand(()->intake.init()));
 
-        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
-                .whenPressed(new InstantCommand(()->shooter.accelerate()))
-                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
-        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
-                .whenPressed(new InstantCommand(()->shooter.shoot()))
-                .whenReleased(new InstantCommand(()->shooter.init()));
-
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.A))
-                .whenPressed(new ParallelCommandGroup(
-                        new InstantCommand(()->intake.outtake()),
-                        new InstantCommand(()->shooter.outtake())))
-                .whenReleased(new ParallelCommandGroup(
-                        new InstantCommand(()->intake.init()),
-                        new InstantCommand(()->shooter.init())));
-
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_DOWN))
-                .whenPressed(new InstantCommand(()->shooter.emergency()))
-                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
     }
 
@@ -107,7 +106,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     public void run(){
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("shooter velocity", shooter.shooter.getVelocity());
+        telemetry.addData("shooter velocity", shooter.shooter1.getVelocity());
         telemetry.update();
     }
 }
