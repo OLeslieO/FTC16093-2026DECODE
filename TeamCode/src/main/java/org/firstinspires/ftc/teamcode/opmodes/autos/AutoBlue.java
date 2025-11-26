@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-
 import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -15,16 +14,13 @@ import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
-import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
 import org.firstinspires.ftc.teamcode.commands.autos.driveAutoCommand;
 import org.firstinspires.ftc.teamcode.utils.FollowerEx;
-
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
+//和手动一样，似乎已经没有意义尝试写auto，但是我可能太闲了。
 
 @Config
 @Autonomous(name = "AutoBlue")
@@ -43,11 +39,6 @@ public class AutoBlue extends AutoOpModeEx {
     public PathChain Path7;
     public PathChain Path8;
     public PathChain Path9;
-
-
-
-
-
 
         public Command runAutoCommand(){
 
@@ -187,12 +178,8 @@ public class AutoBlue extends AutoOpModeEx {
                             new WaitCommand(5000),
                             new InstantCommand(() -> shooter.longShoot())
                     )
-
-
             );
     }
-
-
 
     @Override
     public void initialize() {
@@ -210,8 +197,6 @@ public class AutoBlue extends AutoOpModeEx {
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
-
-
         telemetry.update();
     }
 

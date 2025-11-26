@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-
 
 @TeleOp(name = "IntakeTest")
 public class IntakeTest extends LinearOpMode {
@@ -53,11 +51,50 @@ public class IntakeTest extends LinearOpMode {
 
             currentVelocity = shooterMotor1.getVelocity();
 
-            if (gamepad2.dpad_up) {
+            if (gamepad1.dpad_up) {
                 shooterMotor1.setVelocity(-1000);  //近
                 shooterMotor2.setVelocity(-1000);
                 targetVelocity = -1000;
                 if (Math.abs(currentVelocity - targetVelocity) <= 60) {
+                    preShooterMotor.setPower(1);
+                } else {
+                    preShooterMotor.setPower(0);
+                }
+
+            } else if (gamepad1.left_bumper) {
+                shooterMotor1.setVelocity(-1150);  //中
+                shooterMotor2.setVelocity(-1150);
+                targetVelocity = -1150;
+                if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+                    preShooterMotor.setPower(1);
+                } else {
+                    preShooterMotor.setPower(0);
+                }
+
+            } else if (gamepad1.triangle) {
+                shooterMotor1.setVelocity(-1440); //远
+                shooterMotor2.setVelocity(-1440);
+                targetVelocity = -1440;
+                if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+                    gamepad1.rumble(250); //手柄震动尝试提示driver()
+                    preShooterMotor.setPower(1);
+                } else {
+                    preShooterMotor.setPower(0);
+                }
+            } else {
+                targetVelocity = -1150;
+                shooterMotor1.setVelocity(-1150);
+                shooterMotor2.setVelocity(-1150);
+                preShooterMotor.setPower(0);
+            }
+
+            /*
+            the alternative option
+            if (gamepad2.dpad_up) {
+                shooterMotor1.setVelocity(-1000);  //近
+                shooterMotor2.setVelocity(-1000);
+                targetVelocity = -1000;
+                if ((Math.abs(currentVelocity - targetVelocity) <= 60)&& (gamepad1.left_bumper)) {
                     preShooterMotor.setPower(1);
                 } else {
                     preShooterMotor.setPower(0);
@@ -77,25 +114,24 @@ public class IntakeTest extends LinearOpMode {
                 shooterMotor1.setVelocity(-1440); //远
                 shooterMotor2.setVelocity(-1440);
                 targetVelocity = -1440;
-                if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+                if ((Math.abs(currentVelocity - targetVelocity) <= 40)&& (gamepad1.left_bumper)) {
                     preShooterMotor.setPower(1);
                 } else {
                     preShooterMotor.setPower(0);
                 }
-
-
             } else {
                 targetVelocity = -1150;
                 shooterMotor1.setVelocity(-1150);
                 shooterMotor2.setVelocity(-1150);
                 preShooterMotor.setPower(0);
             }
+            */
 
-
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 intakeMotor.setPower(-1);  //intake
             } else if ((gamepad1.right_trigger) >= 0.5) {
                 intakeMotor.setPower(1);  //outtake
+                preShooterMotor.setPower(-0.7);
 
             } else {
                 intakeMotor.setPower(0);

@@ -23,14 +23,16 @@ public class ShooterTest extends LinearOpMode {
   public static double setF = 15;
   public static double setShooterPower = 1;
   public static double setintakePower = 1;
-  public static boolean isPowerMode = true;
+  public static boolean isPowerMode = false;
   public static double setPreShooterPower = 1;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = -800;
+  public static double shooterVelocity = -600;
+
+  public static String shooter_name = "shooter1";
 
   @Override
   public void runOpMode() throws InterruptedException {
-    DcMotorEx shooter1 = hardwareMap.get(DcMotorEx.class, "shooter1");
+    DcMotorEx shooter1 = hardwareMap.get(DcMotorEx.class, shooter_name);
     DcMotorEx shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
