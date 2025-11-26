@@ -14,18 +14,25 @@ public class TeleOpDriveCommand extends CommandBase {
     private final DoubleSupplier rotate;
     private final DoubleSupplier y;
     private final BooleanSupplier shouldReset;
+    private final BooleanSupplier isSlowMode;
+    private final boolean isFieldCentric;
 
     public TeleOpDriveCommand(
             NewMecanumDrive drive,
             DoubleSupplier x,
             DoubleSupplier y,
             DoubleSupplier rotate,
-            BooleanSupplier shouldReset) {
+            BooleanSupplier shouldReset,
+            BooleanSupplier isSlowMode,
+            boolean isFieldCentric) {
         this.drive = drive;
         this.x = x;
         this.rotate = rotate;
         this.y = y;
         this.shouldReset = shouldReset;
+        this.isSlowMode = isSlowMode;
+//        this.isFieldCentric = isFieldCentric;
+        this.isFieldCentric = isFieldCentric;
     }
 
     @Override
@@ -34,8 +41,23 @@ public class TeleOpDriveCommand extends CommandBase {
             drive.resetHeading();
             drive.resetOdo();
         }
-        drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble());
+        if (isFieldCentric) {
+            if(isSlowMode.getAsBoolean()){
+                drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 0.5);
+            }
+            else{
+                drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 1);
+            }
+            drive.update();
+            drive.updateOdo();
+        } else {
+            if(isSlowMode.getAsBoolean()){
+                drive.setBotCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 0.5);
+            }
+            else{
+                drive.setBotCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 1);
+            }
+        }
         drive.update();
-        drive.updateOdo();
     }
 }

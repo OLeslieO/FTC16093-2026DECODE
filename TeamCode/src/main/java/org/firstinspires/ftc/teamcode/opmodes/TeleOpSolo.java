@@ -24,6 +24,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     NewMecanumDrive driveCore;
     Shooter shooter;
     Intake intake;
+    private boolean isFieldCentric=false;
 
 
     @Override
@@ -42,7 +43,9 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->gamepadEx1.getLeftX(),
                 ()->gamepadEx1.getLeftY(),
                 ()->gamepadEx1.getRightX(),
-                ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad));
+                ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
+                ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
+                isFieldCentric);
 
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
@@ -66,6 +69,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     @Override
     public void onStart() {
         resetRuntime();
+        shooter.accelerate_slow();
     }
 
     @Override
@@ -76,13 +80,16 @@ public class TeleOpSolo extends CommandOpModeEx {
         //leftTrigger -- preShooter
         //a -- preShooter & intake 反转
 
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.BACK))
+                .whenPressed(new InstantCommand(()->isFieldCentric=!isFieldCentric));
+
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenPressed(new InstantCommand(()->intake.intake()))
                 .whenReleased(new InstantCommand(()->intake.init()));
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
-                .whenPressed(new InstantCommand(()->shooter.accelerate()))
-                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
+                .whenPressed(new InstantCommand(()->shooter.accelerate_mid()));
+//                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
@@ -100,13 +107,19 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenPressed(new InstantCommand(()->shooter.emergency()))
                 .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenPressed(new InstantCommand(()->shooter.stopAccelerate()));
+
     }
 
     @Override
     public void run(){
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("shooter velocity", shooter.shooter.getVelocity());
+        telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
+        if(isFieldCentric) telemetry.addData("Field Centric", isFieldCentric);
+        else telemetry.addData("Robot Centric", isFieldCentric);
+        telemetry.update();
         telemetry.update();
     }
 }

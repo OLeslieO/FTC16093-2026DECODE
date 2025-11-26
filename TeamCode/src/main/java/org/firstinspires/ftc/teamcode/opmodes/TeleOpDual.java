@@ -24,6 +24,7 @@ public class TeleOpDual extends CommandOpModeEx {
     NewMecanumDrive driveCore;
     Shooter shooter;
     Intake intake;
+    private boolean isFieldCentric=false;
 
     //    private enum Tasks{
 //        SAMPLE,
@@ -46,10 +47,12 @@ public class TeleOpDual extends CommandOpModeEx {
         driveCore = new NewMecanumDrive(hardwareMap);
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
-                ()->gamepadEx1.getLeftX() + forwardComponentOffset,
-                ()->gamepadEx1.getLeftY() + forwardComponentOffset,
+                ()->gamepadEx1.getLeftX(),
+                ()->gamepadEx1.getLeftY(),
                 ()->gamepadEx1.getRightX(),
-                ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad));
+                ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
+                ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
+                isFieldCentric);
 
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
@@ -77,18 +80,28 @@ public class TeleOpDual extends CommandOpModeEx {
 
     @Override
     public void functionalButtons() {
-
         //leftBumper -- intake
         //rightTrigger -- Shooter
         //leftTrigger -- preShooter
         //a -- preShooter & intake 反转
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.BACK))
+                .whenPressed(new InstantCommand(()->isFieldCentric=!isFieldCentric));
 
         new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenPressed(new InstantCommand(()->intake.intake()))
                 .whenReleased(new InstantCommand(()->intake.init()));
 
         new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
-                .whenPressed(new InstantCommand(()->shooter.accelerate()))
+                .whenPressed(new InstantCommand(()->shooter.accelerate_mid()))
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
+
+        new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.Y))
+                .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
+                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
+
+        new ButtonEx(()->gamepadEx2.getButton(GamepadKeys.Button.B))
+                .whenPressed(new InstantCommand(()->shooter.accelerate_fast()))
                 .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
 
         new ButtonEx(()->gamepadEx2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
@@ -113,7 +126,8 @@ public class TeleOpDual extends CommandOpModeEx {
     public void run(){
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("forwardComponentOffset", forwardComponentOffset);
+        if(isFieldCentric) telemetry.addData("Field Centric", isFieldCentric);
+        else telemetry.addData("Robot Centric", isFieldCentric);
         telemetry.update();
     }
 }

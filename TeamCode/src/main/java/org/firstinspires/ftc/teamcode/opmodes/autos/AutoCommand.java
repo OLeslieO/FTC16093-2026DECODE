@@ -4,21 +4,17 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ServoConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.Point;
-import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.pedropathing.localization.Pose;
+//import com.pedropathing.pathgen.Point;
 
 
 public class AutoCommand {
@@ -33,7 +29,7 @@ public class AutoCommand {
     }
 
     public Command accelerate(){
-        return new InstantCommand(()->shooter.accelerate());
+        return new InstantCommand(()->shooter.accelerate_mid());
     }
 
     public Command shoot(){
@@ -51,23 +47,31 @@ public class AutoCommand {
         );
     }
 
-
-    /*--------------OTHERS----------------*/
-    public Point midPoint(Pose start, Pose end){
-        return new Point((start.getX()+end.getX())/2,
-                (start.getY()+end.getY())/2);
+    public Command stopAll(){
+        return new ParallelCommandGroup(
+                new InstantCommand(()->intake.init()),
+                new InstantCommand(()->shooter.init()),
+                new InstantCommand(()->shooter.stopAccelerate())
+        );
     }
 
-    public Pose2d poseToPose2d(@NonNull Pose pose) {
-        return new Pose2d(pose.getX(), pose.getY(), pose.getHeading());
-    }
 
-    public Pose pose2dToPose(@NonNull Pose2d pose2d) {
-        return new Pose(pose2d.getX(), pose2d.getY(), pose2d.getHeading());
-    }
-
-    @NonNull
-    public Point getCurrentPoint(){
-        return new Point(follower.getPose().getX(),follower.getPose().getY());
-    }
+//    /*--------------OTHERS----------------*/
+//    public Point midPoint(Pose start, Pose end){
+//        return new Point((start.getX()+end.getX())/2,
+//                (start.getY()+end.getY())/2);
+//    }
+//
+//    public Pose2d poseToPose2d(@NonNull Pose pose) {
+//        return new Pose2d(pose.getX(), pose.getY(), pose.getHeading());
+//    }
+//
+//    public Pose pose2dToPose(@NonNull Pose2d pose2d) {
+//        return new Pose(pose2d.getX(), pose2d.getY(), pose2d.getHeading());
+//    }
+//
+//    @NonNull
+//    public Point getCurrentPoint(){
+//        return new Point(follower.getPose().getX(),follower.getPose().getY());
+//    }
 }

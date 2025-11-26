@@ -16,7 +16,7 @@ public class FConstants {
         FollowerConstants.rightRearMotorName = "rightRear";
 
         FollowerConstants.leftFrontMotorDirection = DcMotorSimple.Direction.REVERSE;
-        FollowerConstants.leftRearMotorDirection = DcMotorSimple.Direction.REVERSE;
+        FollowerConstants.leftRearMotorDirection = DcMotorSimple.Direction.FORWARD;
         FollowerConstants.rightFrontMotorDirection = DcMotorSimple.Direction.FORWARD;
         FollowerConstants.rightRearMotorDirection = DcMotorSimple.Direction.FORWARD;
 
@@ -28,20 +28,17 @@ public class FConstants {
         FollowerConstants.forwardZeroPowerAcceleration = -33;
         FollowerConstants.lateralZeroPowerAcceleration = -63;
 
-        /*FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.8,0,0.07,0.1);
-        FollowerConstants.useSecondaryTranslationalPID = true;
-        FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.2,0,0.025,0.1);*/
 
         FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.08, 0, 0.0005, 0.02);
         FollowerConstants.useSecondaryTranslationalPID = false;
         FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.15, 0, 0.03, 0.1);
 
-        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.6, 0, 0.01, 0.02);
-        FollowerConstants.useSecondaryHeadingPID = false;
-        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2.5, 0, 0.15, 0);
+        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.4, 0, 0.01, 0.1);
+        FollowerConstants.useSecondaryHeadingPID = true;
+        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2.5, 0, 0, 0.5);
 
-        FollowerConstants.drivePIDFCoefficients.setCoefficients(1,0,0.015,0.6,0.019);
-        FollowerConstants.useSecondaryDrivePID = false;
+        FollowerConstants.drivePIDFCoefficients.setCoefficients(1,0,0.005,0.6,0.019);
+        FollowerConstants.useSecondaryDrivePID = true;
         FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.01,0,0.0008,0,0);
 
         FollowerConstants.zeroPowerAccelerationMultiplier = 4;
