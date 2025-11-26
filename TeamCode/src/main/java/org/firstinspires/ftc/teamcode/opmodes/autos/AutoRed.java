@@ -124,7 +124,7 @@ public class AutoRed extends AutoOpModeEx {
         return new SequentialCommandGroup(
                 new ParallelRaceGroup(
                         new WaitCommand(4000),
-                        new InstantCommand(() -> shooter.shortShoot())
+                        new InstantCommand(() -> shooter.autoShortshoot())
                 ),
 
                 new driveAutoCommand(follower,Path1),
@@ -149,7 +149,7 @@ public class AutoRed extends AutoOpModeEx {
                      */
                 new ParallelRaceGroup(
                         new WaitCommand(4000),
-                        new InstantCommand(() -> shooter.midShoot())),
+                        new InstantCommand(() -> shooter.autoMidshoot())),
                 new driveAutoCommand(follower,Path4),
                 new ParallelRaceGroup(
                         new driveAutoCommand(follower,Path5),
@@ -165,7 +165,7 @@ public class AutoRed extends AutoOpModeEx {
                      */
                 new ParallelRaceGroup(
                         new WaitCommand(4000),
-                        new InstantCommand(() -> shooter.midShoot())
+                        new InstantCommand(() -> shooter.autoMidshoot())
                 ),
                 new driveAutoCommand(follower,Path7),
                 new ParallelRaceGroup(
@@ -182,7 +182,7 @@ public class AutoRed extends AutoOpModeEx {
                      */
                 new ParallelRaceGroup(
                         new WaitCommand(5000),
-                        new InstantCommand(() -> shooter.longShoot())
+                        new InstantCommand(() -> shooter.autoLongshoot())
                 )
 
 

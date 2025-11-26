@@ -30,7 +30,7 @@ public class ShooterVelTest extends LinearOpMode {
         DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftRear");
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightRear");
-        DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class,"shooter");
+        DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class,"shooterUp");
         DcMotorEx preShooterMotor = hardwareMap.get(DcMotorEx.class,"preShooter");
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class,"intake");
 
@@ -41,8 +41,8 @@ public class ShooterVelTest extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // only for this robot (Broken motor)
 
-        shooterMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        shooterMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        shooterUp.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        shooterUp.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
 
@@ -55,7 +55,7 @@ public class ShooterVelTest extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            currentVelocity = shooterMotor.getVelocity();
+            currentVelocity = shooterUp.getVelocity();
 
 
 
@@ -81,7 +81,7 @@ public class ShooterVelTest extends LinearOpMode {
                 preShooterMotor.setPower(0);
 
             }
-            telemetry.addData("currentVelocity", shooterMotor.getVelocity());
+            telemetry.addData("currentVelocity", shooterUp.getVelocity());
             telemetry.addData("Difference", Math.abs(currentVelocity-targetVelocity));
             telemetry.update();
 

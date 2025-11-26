@@ -22,10 +22,10 @@ public class IntakeTest extends LinearOpMode {
         DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class, "leftRear");
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class, "rightFront");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class, "rightRear");
-        DcMotorEx shooterMotor1 = hardwareMap.get(DcMotorEx.class, "shooter1");
+        DcMotorEx shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         DcMotorEx preShooterMotor = hardwareMap.get(DcMotorEx.class, "preShooter");
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "intake");
-        DcMotorEx shooterMotor2 = hardwareMap.get(DcMotorEx.class, "shooter2");
+        DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
 
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -36,10 +36,10 @@ public class IntakeTest extends LinearOpMode {
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        shooterMotor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        shooterMotor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        shooterMotor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        shooterMotor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        shooterDown.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        shooterDown.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        shooterUp.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        shooterUp.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -49,11 +49,11 @@ public class IntakeTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            currentVelocity = shooterMotor1.getVelocity();
+            currentVelocity = shooterDown.getVelocity();
 
             if (gamepad1.dpad_up) {
-                shooterMotor1.setVelocity(-1000);  //近
-                shooterMotor2.setVelocity(-1000);
+                shooterDown.setVelocity(-1000);  //近
+                shooterUp.setVelocity(-1000);
                 targetVelocity = -1000;
                 if (Math.abs(currentVelocity - targetVelocity) <= 60) {
                     preShooterMotor.setPower(1);
@@ -62,8 +62,8 @@ public class IntakeTest extends LinearOpMode {
                 }
 
             } else if (gamepad1.left_bumper) {
-                shooterMotor1.setVelocity(-1150);  //中
-                shooterMotor2.setVelocity(-1150);
+                shooterDown.setVelocity(-1150);  //中
+                shooterUp.setVelocity(-1150);
                 targetVelocity = -1150;
                 if (Math.abs(currentVelocity - targetVelocity) <= 40) {
                     preShooterMotor.setPower(1);
@@ -72,8 +72,8 @@ public class IntakeTest extends LinearOpMode {
                 }
 
             } else if (gamepad1.triangle) {
-                shooterMotor1.setVelocity(-1440); //远
-                shooterMotor2.setVelocity(-1440);
+                shooterDown.setVelocity(-1440); //远
+                shooterUp.setVelocity(-1440);
                 targetVelocity = -1440;
                 if (Math.abs(currentVelocity - targetVelocity) <= 40) {
                     gamepad1.rumble(250); //手柄震动尝试提示driver()
@@ -83,8 +83,8 @@ public class IntakeTest extends LinearOpMode {
                 }
             } else {
                 targetVelocity = -1150;
-                shooterMotor1.setVelocity(-1150);
-                shooterMotor2.setVelocity(-1150);
+                shooterDown.setVelocity(-1150);
+                shooterUp.setVelocity(-1150);
                 preShooterMotor.setPower(0);
             }
 
@@ -137,7 +137,7 @@ public class IntakeTest extends LinearOpMode {
                 intakeMotor.setPower(0);
             }
 
-            telemetry.addData("currentVelocity", shooterMotor1.getVelocity());
+            telemetry.addData("currentVelocity", shooterDown.getVelocity());
             telemetry.addData("Difference", Math.abs(currentVelocity - targetVelocity));
             telemetry.update();
 

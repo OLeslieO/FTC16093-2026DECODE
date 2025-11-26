@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
+    public double targetVelocity;
+    public double currentVelocity;
 
     public Shooter(HardwareMap hardwareMap) {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
@@ -28,6 +30,41 @@ public class Shooter {
 
         shooterUp.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
         shooterDown.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
+    }
+
+    public void autoLongshoot() {
+        currentVelocity = shooterDown.getVelocity();
+        shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
+        targetVelocity = MotorConstants.SHOOTER_FAST_VELOCITY.value;
+        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+            preShooter.setPower(1);
+        } else {
+            preShooter.setPower(0);
+        }
+    }
+    public void autoMidshoot() {
+        currentVelocity = shooterDown.getVelocity();
+        shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
+        targetVelocity = MotorConstants.SHOOTER_MID_VELOCITY.value;
+        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+            preShooter.setPower(1);
+        } else {
+            preShooter.setPower(0);
+        }
+    }
+
+    public void autoShortshoot() {
+        currentVelocity = shooterDown.getVelocity();
+        shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
+        targetVelocity = MotorConstants.SHOOTER_SLOW_VELOCITY.value;
+        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
+            preShooter.setPower(1);
+        } else {
+            preShooter.setPower(0);
+        }
     }
 
     public void accelerate_mid(){
