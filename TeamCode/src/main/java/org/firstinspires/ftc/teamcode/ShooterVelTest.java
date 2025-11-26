@@ -19,7 +19,7 @@ public class ShooterVelTest extends LinearOpMode {
     private DcMotorEx intakeMotor;
     IMU imu;
 
-    public static double targetVelocity = -1200;
+    public static double targetVelocity = -800;
 
     @Override
     public void runOpMode() throws InterruptedException {

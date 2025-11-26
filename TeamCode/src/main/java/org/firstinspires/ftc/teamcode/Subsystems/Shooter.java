@@ -69,10 +69,10 @@ public class Shooter {
         shooter.setPower(0);
     }
 
-    public void longShoot() { shooter1.setVelocity(1800);
-        shooter2.setVelocity(1800);
-        double targetVelocity = 1800;
-        if (Math.abs(currentVelocity-targetVelocity) <= 80){
+    public void longShoot() { shooter1.setVelocity(1440);
+        shooter2.setVelocity(1440);
+        double targetVelocity = 1440;
+        if (Math.abs(currentVelocity-targetVelocity) <= 40){
             preShooter.setPower(1);
         } else {
             preShooter.setPower(0);
@@ -80,21 +80,21 @@ public class Shooter {
 
     public void midShoot() {
 
-    shooter1.setVelocity(1200);
-        shooter2.setVelocity(1200);
+    shooter1.setVelocity(1150);
+        shooter2.setVelocity(1150);
 
-        double targetVelocity = 1200;
-        if (Math.abs(currentVelocity-targetVelocity) <= 80){
+        double targetVelocity = 1150;
+        if (Math.abs(currentVelocity-targetVelocity) <= 60){
             preShooter.setPower(1);
         } else {
             preShooter.setPower(0);
         }}
 
     public void shortShoot () {
-        shooter1.setVelocity(900);
-        shooter2.setVelocity(900);
-        double targetVelocity = 900;
-        if (Math.abs(currentVelocity-targetVelocity) <= 80){
+        shooter1.setVelocity(1000);
+        shooter2.setVelocity(1000);
+        double targetVelocity = 1000;
+        if (Math.abs(currentVelocity-targetVelocity) <= 60){
             preShooter.setPower(1);
         } else {
             preShooter.setPower(0);
@@ -102,9 +102,15 @@ public class Shooter {
     }
 
     public void idle (){
-        shooter1.setVelocity(900);
-        shooter2.setVelocity(900);
-        double targetVelocity = 900;
+        shooter1.setVelocity(1150);
+        shooter2.setVelocity(1150);
+        double targetVelocity = 1150;
+
+    }
+
+    public void acc(){
+        shooter1.setVelocity(1000);
+        shooter2.setVelocity(1000);
 
     }
 

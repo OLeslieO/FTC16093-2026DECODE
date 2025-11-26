@@ -26,7 +26,7 @@ public class ShooterTest extends LinearOpMode {
   public static boolean isPowerMode = true;
   public static double setPreShooterPower = 1;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = -1400;
+  public static double shooterVelocity = -800;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -60,7 +60,7 @@ public class ShooterTest extends LinearOpMode {
       }
       else{
         shooter1.setVelocity(shooterVelocity);
-        shooter2.setVelocity(shooterVelocity);
+
       }
 
 //      if (frontShooter.getVelocity() > shooterMinVelocity) {
