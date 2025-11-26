@@ -43,4 +43,18 @@ public class Intake {
     public void init(){
         intake.setPower(0);
     }
+
+    public Runnable autoIntake() {
+        return()->{
+            this.intake();
+        };
+    }
+    public Runnable autoOuttake(){
+        intake.setPower(-1);
+        return null;
+    }
+    public Runnable autoInit(){
+        intake.setPower(0);
+        return null;
+    }
 }

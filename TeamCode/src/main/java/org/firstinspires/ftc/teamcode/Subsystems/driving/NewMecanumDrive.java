@@ -131,7 +131,7 @@ public class NewMecanumDrive extends MecanumDrive {
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -236,7 +236,7 @@ public class NewMecanumDrive extends MecanumDrive {
     }
 
     public static boolean ignoreDriveCoefficients = false;
-    public void setFieldCentric(double x, double y, double rx) {
+    public void setFieldCentric(double x, double y, double rx, double powerCoefficient) {
         double botHeading = getHeading();
 
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -244,20 +244,20 @@ public class NewMecanumDrive extends MecanumDrive {
         rotX = rotX * 1.1;
 
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
+        double frontLeftPower = (rotY + rotX + rx) / denominator * powerCoefficient;
+        double backLeftPower = (rotY - rotX + rx) / denominator * powerCoefficient;
+        double frontRightPower = (rotY - rotX - rx) / denominator * powerCoefficient;
+        double backRightPower = (rotY + rotX - rx) / denominator * powerCoefficient;
 
         setMotorPowers(frontLeftPower, backLeftPower, backRightPower, frontRightPower);
     }
 
-    public void setBotCentric(double x, double y, double rx) {
+    public void setBotCentric(double x, double y, double rx, double powerCoefficient) {
         double denominator = Math.max(Math.abs(x) + Math.abs(y) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+        double frontLeftPower = (y + x + rx) / denominator * powerCoefficient;
+        double backLeftPower = (y - x + rx) / denominator * powerCoefficient;
+        double frontRightPower = (y - x - rx) / denominator * powerCoefficient;
+        double backRightPower = (y + x - rx) / denominator * powerCoefficient;
 
         setMotorPowers(frontLeftPower, backLeftPower, backRightPower, frontRightPower);
     }

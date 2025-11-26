@@ -72,4 +72,29 @@ public class FollowerEx extends Follower {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//Stop following and brake when nearing the end point.
         }
     }
+
+    public void setSlowPID(){
+        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.008, 0, 0.00005, 0.002);
+
+        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.04, 0, 0.001, 0.01);
+        FollowerConstants.useSecondaryHeadingPID = true;
+        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(0.25, 0, 0, 0.05);
+
+        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.1,0,0.0005,0.06,0.0019);
+        FollowerConstants.useSecondaryDrivePID = true;
+        FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.001,0,0.00008,0,0);
+    }
+
+    public void setFastPID(){
+        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.08, 0, 0.0005, 0.02);
+
+        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.4, 0, 0.01, 0.1);
+        FollowerConstants.useSecondaryHeadingPID = true;
+        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2.5, 0, 0, 0.5);
+
+        FollowerConstants.drivePIDFCoefficients.setCoefficients(1,0,0.005,0.6,0.019);
+        FollowerConstants.useSecondaryDrivePID = true;
+        FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.01,0,0.0008,0,0);
+    }
+
 }
