@@ -31,7 +31,7 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Auto Near Red", group = "Competition")
+@Autonomous(name = "Red Near Auto", group = "Competition")
 public class AutoNearRed extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;

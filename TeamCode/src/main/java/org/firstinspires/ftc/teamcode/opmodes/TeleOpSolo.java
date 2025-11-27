@@ -92,7 +92,7 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.B))
+        new ButtonEx(()->Math.abs(gamepadEx1.getRightY())>0.7)
                 .whenPressed(new InstantCommand(()->shooter.accelerate_fast()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 

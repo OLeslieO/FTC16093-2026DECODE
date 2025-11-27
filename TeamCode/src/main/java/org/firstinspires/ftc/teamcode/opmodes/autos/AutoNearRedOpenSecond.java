@@ -6,22 +6,18 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.FollowerEx;
 import org.firstinspires.ftc.teamcode.utils.PathChainList;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +27,8 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Z-Blue Open Second", group = "Competition")
-public class AutoNearBlueOpenSecond extends AutoOpModeEx {
+@Autonomous(name = "Z-Red Open Second", group = "Competition")
+public class AutoNearRedOpenSecond extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
     private List<Command> actions;
@@ -43,25 +39,25 @@ public class AutoNearBlueOpenSecond extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(45));
+    private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-45));
 
-    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(44));
+    private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-44));
 
-    private final Pose prepare1Pose = new Pose(79.249, -38.147, Math.toRadians(90));
-    private final Pose intake1Pose1 = new Pose(79.249, -28.239, Math.toRadians(90));
-    private final Pose intake1Pose2 = new Pose(79.249, -20.239, Math.toRadians(90));
-    private final Pose intake1Pose3 = new Pose(79.249, -8.239, Math.toRadians(90));
-    private final Pose prepare2Pose = new Pose(53.050, -35.834, Math.toRadians(90));
-    private final Pose intake2Pose1 = new Pose(53.764, -29.378, Math.toRadians(90));
-    private final Pose intake2Pose2 = new Pose(53.764, -20.378, Math.toRadians(90));
-    private final Pose intake2Pose3 = new Pose(53.764, 0, Math.toRadians(90));
-    private final Pose prepareGatePose = new Pose(53.764, -20.639, Math.toRadians(90));
-    private final Pose openGatePose = new Pose(67.982, -7.239, Math.toRadians(90));
-    private final Pose prepare3Pose = new Pose(30.000, -36.730, Math.toRadians(90));
-    private final Pose intake3Pose1 = new Pose(30.000, -29.932, Math.toRadians(90));
-    private final Pose intake3Pose2 = new Pose(30.000, -23.932, Math.toRadians(90));
-    private final Pose intake3Pose3 = new Pose(30.000, 3, Math.toRadians(90));
-    private final Pose parkPose = new Pose(67.982, -20.000, Math.toRadians(90));
+    private final Pose prepare1Pose = new Pose(79.249, 38.147, Math.toRadians(-90));
+    private final Pose intake1Pose1 = new Pose(79.249, 28.239, Math.toRadians(-90));
+    private final Pose intake1Pose2 = new Pose(79.249, 20.239, Math.toRadians(-90));
+    private final Pose intake1Pose3 = new Pose(79.249, 8.239, Math.toRadians(-90));
+    private final Pose prepare2Pose = new Pose(53.050, 35.834, Math.toRadians(-90));
+    private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-90));
+    private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-90));
+    private final Pose intake2Pose3 = new Pose(53.764, 0, Math.toRadians(-90));
+    private final Pose prepareGatePose = new Pose(53.764, 20.639, Math.toRadians(-90));
+    private final Pose openGatePose = new Pose(67.982, 7.239, Math.toRadians(-90));
+    private final Pose prepare3Pose = new Pose(30.000, 36.730, Math.toRadians(-90));
+    private final Pose intake3Pose1 = new Pose(30.000, 29.932, Math.toRadians(-90));
+    private final Pose intake3Pose2 = new Pose(30.000, 23.932, Math.toRadians(-90));
+    private final Pose intake3Pose3 = new Pose(30.000, -3, Math.toRadians(-90));
+    private final Pose parkPose = new Pose(67.982, 20.000, Math.toRadians(-90));
     private int currentPathId = 0;
 
 

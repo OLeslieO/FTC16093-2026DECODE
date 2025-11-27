@@ -27,7 +27,7 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Auto Far Blue", group = "Competition")
+@Autonomous(name = "Blue Far Auto", group = "Competition")
 public class AutoFarBlue extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
@@ -39,19 +39,19 @@ public class AutoFarBlue extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(1.846, -55.114, Math.toRadians(11.24));
+    private final Pose startPose = new Pose(1.939, -52.423, Math.toRadians(23.17));
 
-    private final Pose scorePose = new Pose(1.846, -55.114, Math.toRadians(11.24));
+    private final Pose scorePose = new Pose(1.939, -52.423, Math.toRadians(23.17));
 
-    private final Pose prepare1Pose = new Pose(-2.262, -23.878, Math.toRadians(90));
-    private final Pose intake1Pose1 = new Pose(-2.262, -15.563, Math.toRadians(90));
-    private final Pose intake1Pose2 = new Pose(-2.262, -10.563, Math.toRadians(90));
-    private final Pose intake1Pose3 = new Pose(-2.262, 1.563, Math.toRadians(90));
-    private final Pose prepare2Pose = new Pose(30.000, -32.834, Math.toRadians(90));
-    private final Pose intake2Pose1 = new Pose(30.000, -29.932, Math.toRadians(90));
-    private final Pose intake2Pose2 = new Pose(30.000, -23.932, Math.toRadians(90));
-    private final Pose intake2Pose3 = new Pose(30.000, 3, Math.toRadians(90));
-    private final Pose parkPose = new Pose(23.729, -49.009, Math.toRadians(11.24));
+    private final Pose prepare1Pose = new Pose(4.137, -7.539, Math.toRadians(90));
+    private final Pose intake1Pose1 = new Pose(8.091, 0.556, Math.toRadians(148));
+    private final Pose intake1Pose2 = new Pose(5.565, 3.287, Math.toRadians(180));
+    private final Pose intake1Pose3 = new Pose(-4.086, 3.046, Math.toRadians(180));
+    private final Pose prepare2Pose = new Pose(31.000, -32.834, Math.toRadians(90));
+    private final Pose intake2Pose1 = new Pose(31.000, -29.932, Math.toRadians(90));
+    private final Pose intake2Pose2 = new Pose(31.000, -23.932, Math.toRadians(90));
+    private final Pose intake2Pose3 = new Pose(31.000, 3, Math.toRadians(90));
+    private final Pose parkPose = new Pose(28.729, -49.009, Math.toRadians(11.24));
     private int currentPathId = 0;
 
 
@@ -153,8 +153,9 @@ public class AutoFarBlue extends AutoOpModeEx {
         pathChainList.addPath(null, null, null, null,
                 prepare1, intake1_1, intake1_2, intake1_3,
                 score1, null,
-                prepare2, intake2_1, intake2_2, intake2_3,
-                score2, null, park);
+                prepare2, intake2_1, intake2_2, intake2_3, //不拿远端那组球就注释掉
+//                score2, null, //最后一组如果不射就注释掉
+                park);
     }
 
     @NonNull
@@ -163,19 +164,21 @@ public class AutoFarBlue extends AutoOpModeEx {
     }
 
     private void buildActions(){
-        Command intakeCommand, accelerateFastCommand, scoreFarCommand, stopCommand, waitCommand;
+        Command intakeCommand, accelerateFastCommand, scoreFarCommand, stopCommand, waitCommand, parkCommand;
         scoreFarCommand = autoCommand.shootFar().andThen(actionEnd());
         intakeCommand = autoCommand.intake().andThen(actionEnd());
         accelerateFastCommand = autoCommand.accelerateFast().andThen(actionEnd());
 //        openGateCommand = new WaitCommand(600).andThen(actionEnd());
-        waitCommand = new WaitCommand(1000).andThen(actionEnd());
+        waitCommand = new WaitCommand(2000).andThen(actionEnd());
         stopCommand = autoCommand.stopAll();
+        parkCommand = autoCommand.park();
 
         actions.addAll(Arrays.asList(accelerateFastCommand, waitCommand, intakeCommand, scoreFarCommand,
                 null, null, null, null,
                 null, scoreFarCommand,
-                null, null, null, null,
-                null, scoreFarCommand, new WaitCommand(9999)));
+                null, null, null, null,  //不拿远端那组球就注释掉
+//                null, scoreFarCommand, //最后一组如果不射就注释掉
+                parkCommand));
     }
 
     private void periodic() {
@@ -219,7 +222,7 @@ public class AutoFarBlue extends AutoOpModeEx {
 //                    else {
 //                        follower.followPath(path, 1,true);
 //                    }
-                    follower.followPath(path, 0.9,true);
+                    follower.followPath(path, 0.6,true);
                 }
 
                 Command currentAction = actions.get(currentPathId);

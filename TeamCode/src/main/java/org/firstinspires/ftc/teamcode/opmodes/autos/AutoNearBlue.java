@@ -31,7 +31,7 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Auto Near Blue", group = "Competition")
+@Autonomous(name = "Blue Near Auto", group = "Competition")
 public class AutoNearBlue extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
@@ -54,8 +54,8 @@ public class AutoNearBlue extends AutoOpModeEx {
     private final Pose prepareGatePose = new Pose(79.249, -20.639, Math.toRadians(90));
     private final Pose openGatePose = new Pose(67.982, -7.239, Math.toRadians(90));
     private final Pose prepare2Pose = new Pose(53.050, -35.834, Math.toRadians(90));
-    private final Pose intake2Pose1 = new Pose(53.764, -29.378, Math.toRadians(90));
-    private final Pose intake2Pose2 = new Pose(53.764, -20.378, Math.toRadians(90));
+    private final Pose intake2Pose1 = new Pose(53.764, -29.978, Math.toRadians(90));
+    private final Pose intake2Pose2 = new Pose(53.764, -21.378, Math.toRadians(90));
     private final Pose intake2Pose3 = new Pose(53.764, 0, Math.toRadians(90));
     private final Pose prepare3Pose = new Pose(30.000, -36.730, Math.toRadians(90));
     private final Pose intake3Pose1 = new Pose(30.000, -29.932, Math.toRadians(90));

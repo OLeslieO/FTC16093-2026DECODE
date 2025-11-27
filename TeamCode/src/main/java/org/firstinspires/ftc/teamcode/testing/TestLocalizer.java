@@ -21,17 +21,13 @@ public class TestLocalizer extends LinearOpMode {
     Follower follower;
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-    public static double startX = -15;
-    public static double startY = 62.3;
-    public static double startHeading = 90;
+    public static double startX = 0;
+    public static double startY = 0;
+    public static double startHeading = 0;
 
-    public static double targetX = 24;
+    public static double targetX = 0;
     public static double targetY = 0;
     public static double targetHeading = 0;
-
-    public static double moveToleranceX = 2.0;
-    public static double moveToleranceY = 2.0;
-    public static double moveToleranceHeading = 5.0;
 
 
     private Pose2d startPos;

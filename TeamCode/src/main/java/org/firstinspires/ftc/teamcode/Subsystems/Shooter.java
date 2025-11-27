@@ -48,7 +48,7 @@ public class Shooter {
     }
 
     public void outtake(){
-        preShooter.setPower(-0.6);
+        preShooter.setPower(-0.8);
     }
 
     public void emergency(){
@@ -57,7 +57,7 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(0);
+        preShooter.setPower(-0.08);
     }
 
     public void stopAccelerate(){

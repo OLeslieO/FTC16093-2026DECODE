@@ -38,25 +38,18 @@ public class AutoCommand {
     public Command shoot(){
         return new SequentialCommandGroup(
                 new InstantCommand(()->shooter.shoot()),
-                new WaitCommand(900),
+                new WaitCommand(800),
                 new InstantCommand(()->shooter.init())
         );
     }
 
     public Command shootFar(){
         return new SequentialCommandGroup(
-                new InstantCommand(()->shooter.shoot()),
-                new WaitCommand(100),
-                new InstantCommand(()->shooter.init()),
                 new WaitCommand(500),
-                new InstantCommand(()->shooter.shoot()),
                 new WaitCommand(100),
-                new InstantCommand(()->shooter.init()),
-                new WaitCommand(500),
                 new InstantCommand(()->shooter.shoot()),
-                new WaitCommand(100),
-                new InstantCommand(()->shooter.init()),
-                new WaitCommand(300)
+                new WaitCommand(1500),
+                new InstantCommand(()->shooter.init())
         );
     }
 
@@ -72,6 +65,14 @@ public class AutoCommand {
                 new InstantCommand(()->intake.init()),
                 new InstantCommand(()->shooter.init()),
                 new InstantCommand(()->shooter.stopAccelerate())
+        );
+    }
+    public Command park(){
+        return new ParallelCommandGroup(
+                new InstantCommand(()->intake.init()),
+                new InstantCommand(()->shooter.init()),
+                new InstantCommand(()->shooter.stopAccelerate()),
+                new WaitCommand(99999999)
         );
     }
 
