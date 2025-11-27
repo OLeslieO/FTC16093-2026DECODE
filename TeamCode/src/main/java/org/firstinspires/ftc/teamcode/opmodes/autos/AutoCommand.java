@@ -29,21 +29,41 @@ public class AutoCommand {
     }
 
     public Command accelerate(){
-        return new InstantCommand(()->shooter.accelerate_mid());
+        return new InstantCommand(()->shooter.accelerate_slow());
+    }
+    public Command accelerateFast(){
+        return new InstantCommand(()->shooter.accelerate_fast());
     }
 
     public Command shoot(){
         return new SequentialCommandGroup(
                 new InstantCommand(()->shooter.shoot()),
-                new WaitCommand(2000),
+                new WaitCommand(900),
                 new InstantCommand(()->shooter.init())
+        );
+    }
+
+    public Command shootFar(){
+        return new SequentialCommandGroup(
+                new InstantCommand(()->shooter.shoot()),
+                new WaitCommand(100),
+                new InstantCommand(()->shooter.init()),
+                new WaitCommand(500),
+                new InstantCommand(()->shooter.shoot()),
+                new WaitCommand(100),
+                new InstantCommand(()->shooter.init()),
+                new WaitCommand(500),
+                new InstantCommand(()->shooter.shoot()),
+                new WaitCommand(100),
+                new InstantCommand(()->shooter.init()),
+                new WaitCommand(300)
         );
     }
 
     public Command intake(){
         return new SequentialCommandGroup(
                 new InstantCommand(()->intake.intake()),
-                new WaitCommand(2000)
+                new WaitCommand(200)
         );
     }
 

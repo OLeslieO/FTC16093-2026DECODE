@@ -34,9 +34,6 @@ public class TeleOpSolo extends CommandOpModeEx {
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
-//        this.mode = Tasks.SAMPLE;
-
-
         driveCore = new NewMecanumDrive(hardwareMap);
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
@@ -88,8 +85,16 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenReleased(new InstantCommand(()->intake.init()));
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
-                .whenPressed(new InstantCommand(()->shooter.accelerate_mid()));
-//                .whenReleased(new InstantCommand(()->shooter.stopAccelerate()));
+                .whenPressed(new InstantCommand(()->shooter.accelerate_mid()))
+                .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y))
+                .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
+                .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.B))
+                .whenPressed(new InstantCommand(()->shooter.accelerate_fast()))
+                .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.shoot()))

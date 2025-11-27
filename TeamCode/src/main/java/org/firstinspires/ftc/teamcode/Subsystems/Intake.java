@@ -33,27 +33,13 @@ public class Intake {
     }
 
     public void intake() {
-        intake.setPower(1);
+        intake.setPower(0.9);
     }
 
     public void outtake(){
-        intake.setPower(-1);
+        intake.setPower(-0.7);
     }
     public void init(){
         intake.setPower(0);
-    }
-
-    public Runnable autoIntake() {
-        return()->{
-            this.intake();
-        };
-    }
-    public Runnable autoOuttake(){
-        intake.setPower(-1);
-        return null;
-    }
-    public Runnable autoInit(){
-        intake.setPower(0);
-        return null;
     }
 }

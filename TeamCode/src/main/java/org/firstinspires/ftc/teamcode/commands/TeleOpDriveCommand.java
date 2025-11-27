@@ -52,7 +52,7 @@ public class TeleOpDriveCommand extends CommandBase {
             drive.updateOdo();
         } else {
             if(isSlowMode.getAsBoolean()){
-                drive.setBotCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 0.5);
+                drive.setBotCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 0.6);
             }
             else{
                 drive.setBotCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 1);
