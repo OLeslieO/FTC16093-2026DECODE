@@ -6,22 +6,18 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.FollowerEx;
 import org.firstinspires.ftc.teamcode.utils.PathChainList;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +27,8 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Blue Near Auto", group = "Competition")
-public class AutoNearBlue extends AutoOpModeEx {
+@Autonomous(name = "Blue Far Auto", group = "Competition")
+public class AutoFarBlue extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
     private List<Command> actions;
@@ -43,25 +39,19 @@ public class AutoNearBlue extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(45));
+    private final Pose startPose = new Pose(1.939, -52.423, Math.toRadians(23.17));
 
-    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(44));
+    private final Pose scorePose = new Pose(1.939, -52.423, Math.toRadians(23.17));
 
-    private final Pose prepare1Pose = new Pose(79.249, -38.147, Math.toRadians(90));
-    private final Pose intake1Pose1 = new Pose(79.249, -28.239, Math.toRadians(90));
-    private final Pose intake1Pose2 = new Pose(79.249, -20.239, Math.toRadians(90));
-    private final Pose intake1Pose3 = new Pose(79.249, -8.239, Math.toRadians(90));
-    private final Pose prepareGatePose = new Pose(79.249, -20.639, Math.toRadians(90));
-    private final Pose openGatePose = new Pose(67.982, -7.239, Math.toRadians(90));
-    private final Pose prepare2Pose = new Pose(53.050, -35.834, Math.toRadians(90));
-    private final Pose intake2Pose1 = new Pose(53.764, -29.978, Math.toRadians(90));
-    private final Pose intake2Pose2 = new Pose(53.764, -21.378, Math.toRadians(90));
-    private final Pose intake2Pose3 = new Pose(53.764, 0, Math.toRadians(90));
-    private final Pose prepare3Pose = new Pose(30.000, -36.730, Math.toRadians(90));
-    private final Pose intake3Pose1 = new Pose(30.000, -29.932, Math.toRadians(90));
-    private final Pose intake3Pose2 = new Pose(30.000, -23.932, Math.toRadians(90));
-    private final Pose intake3Pose3 = new Pose(30.000, 3, Math.toRadians(90));
-    private final Pose parkPose = new Pose(67.982, -20.000, Math.toRadians(90));
+    private final Pose prepare1Pose = new Pose(4.137, -7.539, Math.toRadians(90));
+    private final Pose intake1Pose1 = new Pose(8.091, 0.556, Math.toRadians(148));
+    private final Pose intake1Pose2 = new Pose(5.565, 3.287, Math.toRadians(180));
+    private final Pose intake1Pose3 = new Pose(-4.086, 3.046, Math.toRadians(180));
+    private final Pose prepare2Pose = new Pose(31.000, -32.834, Math.toRadians(90));
+    private final Pose intake2Pose1 = new Pose(31.000, -29.932, Math.toRadians(90));
+    private final Pose intake2Pose2 = new Pose(31.000, -23.932, Math.toRadians(90));
+    private final Pose intake2Pose3 = new Pose(31.000, 3, Math.toRadians(90));
+    private final Pose parkPose = new Pose(28.729, -49.009, Math.toRadians(11.24));
     private int currentPathId = 0;
 
 
@@ -93,17 +83,11 @@ public class AutoNearBlue extends AutoOpModeEx {
     }
 
     private void buildPaths() {
-        PathChain scorePreload,
-                prepare1, intake1_1, intake1_2, intake1_3, after1,
+        PathChain prepare1, intake1_1, intake1_2, intake1_3, after1,
                 prepare2, intake2_1, intake2_2, intake2_3, after2,
-                prepare3, intake3_1, intake3_2, intake3_3, after3,
-                score1, score2, score3, openGate, afterOpenGate;
+                score1, score2;
         PathChain park;
 
-        scorePreload = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(startPose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
-                .build();
 
         prepare1 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(scorePose), new Point(prepare1Pose)))
@@ -123,24 +107,14 @@ public class AutoNearBlue extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(intake1Pose2.getHeading(), intake1Pose3.getHeading())
                 .build();
 
-        after1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake1Pose3), new Point(prepareGatePose)))
-                .setLinearHeadingInterpolation(intake1Pose3.getHeading(), prepareGatePose.getHeading())
-                .build();
-
-        openGate = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepareGatePose), new Point(openGatePose)))
-                .setLinearHeadingInterpolation(prepareGatePose.getHeading(), openGatePose.getHeading())
-                .build();
-
-//        afterOpenGate = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(openGatePose), new Point(prepare1Pose)))
-//                .setLinearHeadingInterpolation(openGatePose.getHeading(), prepare1Pose.getHeading())
+//        after1 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(intake1Pose), new Point(prepareGatePose)))
+//                .setLinearHeadingInterpolation(intake1Pose.getHeading(), prepareGatePose.getHeading())
 //                .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepare1Pose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(prepare1Pose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(new Point(intake1Pose3), new Point(scorePose)))
+                .setLinearHeadingInterpolation(intake1Pose3.getHeading(), scorePose.getHeading())
                 .build();
 
         prepare2 = follower.pathBuilder()
@@ -161,56 +135,27 @@ public class AutoNearBlue extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(intake2Pose2.getHeading(), intake2Pose3.getHeading())
                 .build();
 
-        after2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake2Pose3), new Point(prepare2Pose)))
-                .setLinearHeadingInterpolation(intake2Pose3.getHeading(), prepare2Pose.getHeading())
-                .build();
+//        after2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(intake2Pose3), new Point(prepare2Pose)))
+//                .setLinearHeadingInterpolation(intake2Pose3.getHeading(), prepare2Pose.getHeading())
+//                .build();
 
         score2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepare2Pose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(prepare2Pose.getHeading(), scorePose.getHeading())
-                .build();
-
-        prepare3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(prepare3Pose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepare3Pose.getHeading())
-                .build();
-
-        intake3_1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepare3Pose), new Point(intake3Pose1)))
-                .setLinearHeadingInterpolation(prepare3Pose.getHeading(), intake3Pose1.getHeading())
-                .build();
-        intake3_2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake3Pose1), new Point(intake3Pose2)))
-                .setLinearHeadingInterpolation(intake3Pose1.getHeading(), intake3Pose2.getHeading())
-                .build();
-        intake3_3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake3Pose2), new Point(intake3Pose3)))
-                .setLinearHeadingInterpolation(intake3Pose2.getHeading(), intake3Pose3.getHeading())
-                .build();
-
-        after3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake3Pose3), new Point(prepare2Pose)))
-                .setLinearHeadingInterpolation(intake3Pose3.getHeading(), prepare3Pose.getHeading())
-                .build();
-
-        score3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepare3Pose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(prepare3Pose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(new Point(intake2Pose3), new Point(scorePose)))
+                .setLinearHeadingInterpolation(intake2Pose3.getHeading(), scorePose.getHeading())
                 .build();
 
         park = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(parkPose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(getCurrentPoint(), new Point(parkPose)))
+                .setLinearHeadingInterpolation(getCurrentHeading(), parkPose.getHeading())
                 .build();
 
-        pathChainList.addPath(scorePreload, null, null, null,
+        pathChainList.addPath(null, null, null, null,
                 prepare1, intake1_1, intake1_2, intake1_3,
-                after1, openGate, null, score1, null,
-                prepare2, intake2_1, intake2_2, intake2_3,
-                after2, score2, null,
-                prepare3, intake3_1, intake3_2, intake3_3,
-                after3, score3, null, park);
+                score1, null,
+                prepare2, intake2_1, intake2_2, intake2_3, //不拿远端那组球就注释掉
+//                score2, null, //最后一组如果不射就注释掉
+                park);
     }
 
     @NonNull
@@ -219,20 +164,21 @@ public class AutoNearBlue extends AutoOpModeEx {
     }
 
     private void buildActions(){
-        Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand;
-        scoreCommand = autoCommand.shoot().andThen(actionEnd());
+        Command intakeCommand, accelerateFastCommand, scoreFarCommand, stopCommand, waitCommand, parkCommand;
+        scoreFarCommand = autoCommand.shootFar().andThen(actionEnd());
         intakeCommand = autoCommand.intake().andThen(actionEnd());
-        accelerateCommand = autoCommand.accelerate().andThen(actionEnd());
-        openGateCommand = new WaitCommand(600).andThen(actionEnd());
-        waitCommand = new WaitCommand(450).andThen(actionEnd());
+        accelerateFastCommand = autoCommand.accelerateFast().andThen(actionEnd());
+//        openGateCommand = new WaitCommand(600).andThen(actionEnd());
+        waitCommand = new WaitCommand(2000).andThen(actionEnd());
+        stopCommand = autoCommand.stopAll();
+        parkCommand = autoCommand.park();
 
-        actions.addAll(Arrays.asList(accelerateCommand, waitCommand, intakeCommand, scoreCommand,
+        actions.addAll(Arrays.asList(accelerateFastCommand, waitCommand, intakeCommand, scoreFarCommand,
                 null, null, null, null,
-                null, null, openGateCommand, null, scoreCommand,
-                null, null, null, null,
-                null, null, scoreCommand,
-                null, null, null, null,
-                null, null, scoreCommand, new WaitCommand(99999)));
+                null, scoreFarCommand,
+                null, null, null, null,  //不拿远端那组球就注释掉
+//                null, scoreFarCommand, //最后一组如果不射就注释掉
+                parkCommand));
     }
 
     private void periodic() {
@@ -276,7 +222,7 @@ public class AutoNearBlue extends AutoOpModeEx {
 //                    else {
 //                        follower.followPath(path, 1,true);
 //                    }
-                    follower.followPath(path, 0.9,true);
+                    follower.followPath(path, 0.6,true);
                 }
 
                 Command currentAction = actions.get(currentPathId);

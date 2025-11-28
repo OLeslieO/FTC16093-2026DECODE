@@ -22,6 +22,7 @@ public class Shooter {
 
         shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        preShooter.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         shooterDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooterUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -80,11 +81,11 @@ public class Shooter {
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
     }
     public void shoot(){
-        preShooter.setPower(0.6);
+        preShooter.setPower(0.7);
     }
 
     public void outtake(){
-        preShooter.setPower(-1);
+        preShooter.setPower(-0.8);
     }
 
     public void emergency(){
@@ -93,39 +94,11 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(0);
+        preShooter.setPower(-0.08);
     }
 
     public void stopAccelerate(){
         shooterDown.setPower(0);
         shooterUp.setPower(0);
-    }
-
-    public Runnable autoAccelerate(){
-        shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
-        shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
-        return null;
-    }
-    public Runnable autoShoot(){
-        preShooter.setPower(0.6);
-        return null;
-    }
-    public Runnable autoOuttake(){
-        preShooter.setPower(-1);
-        return null;
-    }
-    public Runnable autoEmergency(){
-        shooterDown.setPower(-1);
-        shooterUp.setPower(-1);
-        return null;
-    }
-    public Runnable autoInit(){
-        preShooter.setPower(0);
-        return null;
-    }
-    public Runnable autoStopAccelerate(){
-        shooterDown.setPower(0);
-        shooterUp.setPower(0);
-        return null;
     }
 }
