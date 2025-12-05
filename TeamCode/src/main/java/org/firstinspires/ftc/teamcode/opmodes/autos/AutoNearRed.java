@@ -204,7 +204,7 @@ public class AutoNearRed extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
                 .build();
 
-        pathChainList.addPath(scorePreload, null, null, null,
+        pathChainList.addPath( scorePreload, null, null, null,
                 prepare1, intake1_1, intake1_2, intake1_3,
                 after1, openGate, null, score1, null,
                 prepare2, intake2_1, intake2_2, intake2_3,
