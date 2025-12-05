@@ -39,85 +39,96 @@ public class AutoBlue extends AutoOpModeEx {
     public PathChain Path7;
     public PathChain Path8;
     public PathChain Path9;
+    public PathChain Path10;
 
         public Command runAutoCommand(){
 
-            Path1 = follower
+            Path1 = follower  //start->score
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(24.000, 120.000), new Pose(44.000, 84.000))
+                            new BezierLine(new Pose(123.850, -21.490), new Pose(105.644, -32.950, Math.toRadians(44)))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(45), Math.toRadians(44))
                     .build();
 
-            Path2 = follower
+            Path2 = follower //score->intake1.1
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(44.000, 84.000), new Pose(20.000, 84.000))
+                            new BezierLine(new Pose(105.644, -32.950, Math.toRadians(44)), new Pose(79.249, -38.147, Math.toRadians(90)))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(44), Math.toRadians(90))
                     .build();
 
-            Path3 = follower
+            Path3 = follower// intake1.1->intake1.2
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(20.000, 84.000), new Pose(60.000, 84.000))
+                            new BezierLine(new Pose(79.249, -38.147), new Pose(79.249, -8.239))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(143))
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(90))
                     .build();
 
-            Path4 = follower
+            Path4 = follower //intake1.2->score
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(60.000, 84.000), new Pose(44.000, 60.000))
+                            new BezierLine(new Pose(79.249, -8.239), new Pose(105.644, -32.950))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(44))
                     .build();
 
-            Path5 = follower
+            Path5 = follower //score->intake2.1
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(44.000, 60.000), new Pose(20.000, 60.000))
+                            new BezierLine(new Pose(105.644, -32.950), new Pose(53.050, -35.834))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(44), Math.toRadians(90))
                     .build();
 
-            Path6 = follower
+            Path6 = follower //intake2.1->intake2.2
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(20.000, 60.000), new Pose(60.000, 84.000))
+                            new BezierLine(new Pose(53.050, -35.834), new Pose(53.764, 0.000))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(142))
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(90))
                     .build();
 
-            Path7 = follower
+            Path7 = follower //intake2.2->score
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(60.000, 84.000), new Pose(44.000, 36.000))
+                            new BezierLine(new Pose(53.764, 0.000), new Pose(105.644, -32.950))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(142), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(44))
                     .build();
 
-            Path8 = follower
+            Path8 = follower //score->intake3.1
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(44.000, 36.000), new Pose(20.000, 36.000))
+                            new BezierLine(new Pose(105.644, -32.950), new Pose(30.000, -36.730))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                    .setLinearHeadingInterpolation(Math.toRadians(44), Math.toRadians(90))
                     .build();
 
-            Path9 = follower
+            Path9 = follower //intake3.1->intake3.2
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(20.000, 36.000), new Pose(64.000, 16.000))
+                            new BezierLine(new Pose(30.000, -36.730), new Pose(30, 3))
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(120))
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(90))
                     .build();
+
+            //path10 intake3.2->score
+            Path10 = follower //intake3.1->intake3.2
+                    .pathBuilder()
+                    .addPath(
+                            new BezierLine(new Pose(30.000, -36.730), new Pose(30, 3))
+                    )
+                    .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(90))
+                    .build();
+
 
 
             return new SequentialCommandGroup(
                     new ParallelRaceGroup(
-                            new WaitCommand(4000),
+                            new WaitCommand(3000),
                             new InstantCommand(() -> shooter.autoShortshoot())
                     ),
 
@@ -142,7 +153,7 @@ public class AutoBlue extends AutoOpModeEx {
 
                      */
                     new ParallelRaceGroup(
-                            new WaitCommand(4000),
+                            new WaitCommand(3000),
                             new InstantCommand(() -> shooter.autoMidshoot())),
                     new driveAutoCommand(follower,Path4),
                     new ParallelRaceGroup(
@@ -158,7 +169,7 @@ public class AutoBlue extends AutoOpModeEx {
 
                      */
                     new ParallelRaceGroup(
-                            new WaitCommand(4000),
+                            new WaitCommand(3000),
                             new InstantCommand(() -> shooter.autoMidshoot())
                     ),
                     new driveAutoCommand(follower,Path7),
