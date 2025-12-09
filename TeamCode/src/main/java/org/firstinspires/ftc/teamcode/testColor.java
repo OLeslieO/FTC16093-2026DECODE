@@ -63,11 +63,15 @@ public class testColor extends LinearOpMode {
 
                 if (isPurple) {
                     colorRecord.add(1);   // 紫色
-                } else if (isGreen) {
-                    colorRecord.add(0);   // 绿色
+                    inZone = true;
                 }
-                inZone = true;
+                else if (isGreen) {
+                    colorRecord.add(0);   // 绿色
+                    inZone = true;
+                }
+
             }
+
             //2.2cm以内允许检测并记录，紫色记录为1，绿色记录为0
             if (distance > 3.4){
                 inZone =  false;
