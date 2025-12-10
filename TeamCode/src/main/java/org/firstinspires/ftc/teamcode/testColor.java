@@ -106,12 +106,10 @@ public class testColor extends LinearOpMode {
             }
             if(ballCount >= 4){
                 intake.setPower(0.9);
-                sleep(250);
+                sleep(240);
                 intake.setPower(-0.55);
                 ballCount = 0;
-
-
-            } else{
+            } else {
                 intake.setPower(-0.55);
             }
 

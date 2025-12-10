@@ -59,7 +59,7 @@ public class colorCurveDashboard extends OpMode {
         boolean isPurple =
                 (H >= PURPLE_MIN_H && H <= PURPLE_MAX_H &&
                         S >= PURPLE_MIN_S);
-        //紫色的v会不知道为什么会上下乱跳，所以把v删掉了
+        //紫色的v会不知道为什么会上下乱跳，所以判断里把v删掉了
 
 
 
