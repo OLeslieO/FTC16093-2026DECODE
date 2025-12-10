@@ -17,16 +17,17 @@ import java.util.Timer;
 public class testColor extends LinearOpMode {
 
     //green
-    public static int GREEN_MIN_H = 150;
-    public static int GREEN_MAX_H = 170;
-    public static int GREEN_MIN_S = 45;
-    public static int GREEN_MIN_V = 48;
+    // green
+    public static double GREEN_MIN_H = 150;
+    public static double GREEN_MAX_H = 170;
+    public static double GREEN_MIN_S = 0.6;
+    public static double GREEN_MIN_V = 0;
 
     // purple
-    public static int PURPLE_MIN_H = 205;
-    public static int PURPLE_MAX_H = 240;
-    public static int PURPLE_MIN_S = 30;
-    //public static int PURPLE_MIN_V = 1000;
+    public static double PURPLE_MIN_H = 205;
+    public static double PURPLE_MAX_H = 240;
+    public static double PURPLE_MIN_S = 0.4;
+    public static double PURPLE_MIN_V = 0;
 
     @Override
     public void runOpMode() {
@@ -72,8 +73,8 @@ public class testColor extends LinearOpMode {
             Color.RGBToHSV(r, g, b, hsv);
 
             float H = hsv[0];
-            float S = hsv[1] * 100;  // 转成百分比
-            float V = hsv[2] * 100;
+            float S = hsv[1] ;  // 转成百分比
+            float V = hsv[2] ;
 
 
             boolean isGreen =
@@ -83,7 +84,8 @@ public class testColor extends LinearOpMode {
 
             boolean isPurple =
                     (H >= PURPLE_MIN_H && H <= PURPLE_MAX_H &&
-                            S >= PURPLE_MIN_S );
+                            S >= PURPLE_MIN_S &&
+                            V >= PURPLE_MIN_V);
 
             double distance = ((DistanceSensor)colorSensor).getDistance(DistanceUnit.CM);
 
