@@ -5,13 +5,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "servo test", group = "tests")
+@TeleOp(name = "mixer test", group = "tests")
 @Config
-public class ServoTest extends LinearOpMode {
+public class mixerTest extends LinearOpMode {
 
     private final Telemetry telemetry_M =
             new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
