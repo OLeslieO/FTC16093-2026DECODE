@@ -42,7 +42,7 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->gamepadEx1.getRightX(),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
-                isFieldCentric);
+                ()->(gamepadEx1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5));
 
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
