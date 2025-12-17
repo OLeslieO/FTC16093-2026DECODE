@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "mixer test", group = "tests")
+@TeleOp(name = "Spindexer test", group = "tests")
 @Config
-public class mixerTest extends LinearOpMode {
+public class SpindexerTest extends LinearOpMode {
 
     private final Telemetry telemetry_M =
             new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
