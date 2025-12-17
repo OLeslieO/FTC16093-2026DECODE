@@ -42,7 +42,7 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->gamepadEx1.getRightX(),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
-                isFieldCentric);
+                ()->(isFieldCentric));
 
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
@@ -122,8 +122,9 @@ public class TeleOpSolo extends CommandOpModeEx {
         CommandScheduler.getInstance().run();
 
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
-        if(isFieldCentric) telemetry.addData("Field Centric", isFieldCentric);
-        else telemetry.addData("Robot Centric", isFieldCentric);
+        telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
+        if(isFieldCentric) telemetry.addLine("Field Centric");
+        else telemetry.addLine("Robot Centric");
         telemetry.update();
         telemetry.update();
     }

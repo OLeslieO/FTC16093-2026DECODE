@@ -15,7 +15,7 @@ public class TeleOpDriveCommand extends CommandBase {
     private final DoubleSupplier y;
     private final BooleanSupplier shouldReset;
     private final BooleanSupplier isSlowMode;
-    private final boolean isFieldCentric;
+    private final BooleanSupplier isFieldCentric;
 
     public TeleOpDriveCommand(
             NewMecanumDrive drive,
@@ -24,7 +24,7 @@ public class TeleOpDriveCommand extends CommandBase {
             DoubleSupplier rotate,
             BooleanSupplier shouldReset,
             BooleanSupplier isSlowMode,
-            boolean isFieldCentric) {
+            BooleanSupplier isFieldCentric) {
         this.drive = drive;
         this.x = x;
         this.rotate = rotate;
@@ -41,7 +41,7 @@ public class TeleOpDriveCommand extends CommandBase {
             drive.resetHeading();
             drive.resetOdo();
         }
-        if (isFieldCentric) {
+        if (isFieldCentric.getAsBoolean()) {
             if(isSlowMode.getAsBoolean()){
                 drive.setFieldCentric(x.getAsDouble(),y.getAsDouble(),rotate.getAsDouble(), 0.5);
             }
