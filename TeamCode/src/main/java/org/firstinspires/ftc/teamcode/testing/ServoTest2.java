@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "servo test", group = "tests")
 @Config
-public class ServoTest extends LinearOpMode {
+public class ServoTest2 extends LinearOpMode {
 
     private final Telemetry telemetry_M =
             new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
