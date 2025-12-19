@@ -43,7 +43,7 @@ public class AutoNearRed extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-45));
+    private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-46));
 
     private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-46));
 
@@ -52,7 +52,7 @@ public class AutoNearRed extends AutoOpModeEx {
     private final Pose intake1Pose2 = new Pose(78.949, 20.239, Math.toRadians(-90));
     private final Pose intake1Pose3 = new Pose(78.949, 9.239, Math.toRadians(-90));
     private final Pose prepareGatePose = new Pose(78.949, 20.639, Math.toRadians(-90));
-    private final Pose openGatePose = new Pose(67.982, 7.239, Math.toRadians(-90));
+    private final Pose openGatePose = new Pose(67.982, 7.239, Math.toRadians(-90));//67.982, 7.239
     private final Pose prepare2Pose = new Pose(53.050, 35.834, Math.toRadians(-90));
     private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-90));
     private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-90));
