@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems.Constants;
 
 public enum MotorConstants {
     SHOOTER_SLOW_VELOCITY(1000),
-    SHOOTER_MID_VELOCITY(1180),
+    SHOOTER_MID_VELOCITY(1230),
     SHOOTER_FAST_VELOCITY(1580),
     SHOOTER_AUTO_SLOW_VELOCITY(950),
 

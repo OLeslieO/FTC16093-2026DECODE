@@ -137,14 +137,6 @@ public class TeleOpSolo extends CommandOpModeEx {
     @Override
     public void run(){
         CommandScheduler.getInstance().run();
-
-
-
-
-
-
-
-
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");

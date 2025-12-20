@@ -41,6 +41,6 @@ public class Intake {
         intake.setPower(-0.8);
     }
     public void init(){
-        intake.setPower(0);
+        intake.setPower(0.5);
     }
 }

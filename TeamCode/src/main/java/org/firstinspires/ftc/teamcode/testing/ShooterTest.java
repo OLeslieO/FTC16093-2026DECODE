@@ -26,9 +26,9 @@ public class ShooterTest extends LinearOpMode {
     public static boolean isShooterUp = false;
     public static boolean isShooterDown = true;
 
-    public static double setPreShooterPower = 0.6;
+    public static double setPreShooterPower = 0.7;
     //  public static double shooterMinVelocity = 1400.0;
-    public static double shooterVelocity = 1100;
+    public static double shooterVelocity = 1000;
 
     @Override
     public void runOpMode() throws InterruptedException {

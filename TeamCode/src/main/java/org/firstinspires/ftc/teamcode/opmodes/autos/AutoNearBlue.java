@@ -53,6 +53,7 @@ public class AutoNearBlue extends AutoOpModeEx {
     private final Pose intake1Pose3 = new Pose(79.249, -8.239, Math.toRadians(90));
     private final Pose prepareGatePose = new Pose(79.249, -20.639, Math.toRadians(90));
     private final Pose openGatePose = new Pose(67.982, -7.239, Math.toRadians(90));
+    private final Pose openGatePose2 = new Pose(70.982, -10.239, Math.toRadians(0));
     private final Pose prepare2Pose = new Pose(53.050, -35.834, Math.toRadians(90));
     private final Pose intake2Pose1 = new Pose(53.764, -29.978, Math.toRadians(90));
     private final Pose intake2Pose2 = new Pose(53.764, -21.378, Math.toRadians(90));

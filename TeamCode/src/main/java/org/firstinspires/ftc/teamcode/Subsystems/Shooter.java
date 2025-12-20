@@ -19,7 +19,7 @@ public class Shooter {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
-        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
+//        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -91,7 +91,7 @@ public class Shooter {
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
     }
     public void shoot(){
-        preShooter.setPower(0.7);
+        preShooter.setPower(1);
     }
 
     public void outtake(){
@@ -104,8 +104,9 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(-0.08);
+        preShooter.setPower(-0.3);
     }
+
 
     public void stopAccelerate(){
         shooterDown.setPower(0);
