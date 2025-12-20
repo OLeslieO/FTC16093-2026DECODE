@@ -45,7 +45,7 @@ public class AutoNearBlue extends AutoOpModeEx {
 
     private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(46     ));
 
-    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(47));
+    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(49));
 
     private final Pose prepare1Pose = new Pose(79.249, -38.147, Math.toRadians(90));
     private final Pose intake1Pose1 = new Pose(79.249, -28.239, Math.toRadians(90));
@@ -242,6 +242,7 @@ public class AutoNearBlue extends AutoOpModeEx {
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.addData("drive error",follower.driveError);
+        telemetry.addData("shooterUpVelocity", shooter.shooterUp.getVelocity());
         telemetry.addData("follower finished",follower.isFinished);
         telemetry.addData("action finished", !this.actionRunning);
         telemetry.addData("current path /id", currentPathId);

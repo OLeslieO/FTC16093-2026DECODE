@@ -4,11 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
+    public Servo indicatorLight;
     public double targetVelocity;
     public double currentVelocity;
 
@@ -16,6 +19,7 @@ public class Shooter {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
+        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -67,10 +71,16 @@ public class Shooter {
             preShooter.setPower(0);
         }
     }
-
+    public void auto_accelerate_slow(){
+        shooterDown.setVelocity(MotorConstants.SHOOTER_AUTO_SLOW_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_AUTO_SLOW_VELOCITY.value);
+    }
     public void accelerate_mid(){
+
         shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
+
+
     }
     public void accelerate_slow(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);

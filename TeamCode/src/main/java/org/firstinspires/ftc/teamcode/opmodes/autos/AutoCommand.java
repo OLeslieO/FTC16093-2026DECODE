@@ -31,6 +31,12 @@ public class AutoCommand {
     public Command accelerate(){
         return new InstantCommand(()->shooter.accelerate_slow());
     }
+
+
+    public Command autoAccelerate(){
+        return new InstantCommand(()->shooter.auto_accelerate_slow());
+    }
+
     public Command accelerateFast(){
         return new InstantCommand(()->shooter.accelerate_fast());
     }

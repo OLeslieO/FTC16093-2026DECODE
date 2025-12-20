@@ -6,16 +6,22 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
 import org.firstinspires.ftc.teamcode.commands.TeleOpDriveCommand;
 import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 
 
 @TeleOp(group = "0-competition", name = "TeleOp Solo")
@@ -24,7 +30,9 @@ public class TeleOpSolo extends CommandOpModeEx {
     NewMecanumDrive driveCore;
     Shooter shooter;
     Intake intake;
+
     private boolean isFieldCentric=false;
+    public double currentVelocity;
 
 
     @Override
@@ -49,6 +57,8 @@ public class TeleOpSolo extends CommandOpModeEx {
         shooter = new Shooter(hardwareMap);
 
 
+
+
         driveCore.resetHeading();
 //        driveCore.yawHeading += 90; //如果specimen自动接solo手动就把这行去掉
 //        driveCore.yawHeading %= 360;    //如果specimen自动接solo手动就把这行去掉
@@ -61,12 +71,17 @@ public class TeleOpSolo extends CommandOpModeEx {
         new ButtonEx(()->getRuntime()>60).whenPressed(()->gamepad1.rumble(500));
         new ButtonEx(()->getRuntime()>110).whenPressed(()->gamepad1.rumble(1000));
 
+
+
+
     }
 
     @Override
     public void onStart() {
         resetRuntime();
         shooter.accelerate_slow();
+
+
     }
 
     @Override
@@ -87,6 +102,8 @@ public class TeleOpSolo extends CommandOpModeEx {
         new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
                 .whenPressed(new InstantCommand(()->shooter.accelerate_mid()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
+
+
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y))
                 .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
@@ -120,6 +137,13 @@ public class TeleOpSolo extends CommandOpModeEx {
     @Override
     public void run(){
         CommandScheduler.getInstance().run();
+
+
+
+
+
+
+
 
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));

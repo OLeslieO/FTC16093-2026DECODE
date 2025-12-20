@@ -23,9 +23,9 @@ public class TestShooterPID extends LinearOpMode {
   public static double setF = 15;
   public static double setShooterPower = 1;
   public static boolean isPowerMode = false;
-  public static double setPreShooterPower = 0.6;
+  public static double setPreShooterPower = 0.7;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = 1100;
+  public static double shooterVelocity = 1000;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -80,7 +80,9 @@ public class TestShooterPID extends LinearOpMode {
 //        intake.setPower(0);
 //      }
 
-      telemetry_M.addData("Shooter Velocity", shooterDown.getVelocity());
+      telemetry_M.addData("Shooter Down Velocity", shooterDown.getVelocity());
+      telemetry_M.addData("Shooter Up Velocity", shooterDown.getVelocity());
+
       telemetry_M.addData("PreShooter Velocity", preShooter.getVelocity());
       telemetry_M.update();
     }
