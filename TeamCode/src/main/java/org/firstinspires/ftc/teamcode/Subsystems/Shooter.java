@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
-    public Servo indicatorLight;
+
     public double targetVelocity;
     public double currentVelocity;
 
@@ -104,7 +104,7 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(-0.3);
+        preShooter.setPower(-0.2);
     }
 
 

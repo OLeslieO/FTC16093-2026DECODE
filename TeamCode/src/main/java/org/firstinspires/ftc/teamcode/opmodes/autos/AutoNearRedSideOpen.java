@@ -31,8 +31,8 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Red Near Auto", group = "Competition")
-public class AutoNearRed extends AutoOpModeEx {
+@Autonomous(name = "Red Near Auto - Side Open", group = "Competition")
+public class AutoNearRedSideOpen extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
     private List<Command> actions;
@@ -215,7 +215,7 @@ public class AutoNearRed extends AutoOpModeEx {
 
         pathChainList.addPath(scorePreload, null, null, null,
                 prepare1, intake1_1, intake1_2, intake1_3,
-                after1, openGate, null, score1, null,
+                after1, openGate2, null, score1, null,
                 prepare2, intake2_1, intake2_2, intake2_3,
                 after2, score2, null,
                 prepare3, intake3_1, intake3_2, intake3_3,
