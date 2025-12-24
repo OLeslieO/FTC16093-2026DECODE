@@ -3,7 +3,16 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+
 public enum ServoConstants {
+
+    SHOOTER_TURRET_SLOW(0.5),
+    SHOOTER_TURRET_MID(0.6),
+    SHOOTER_TURRET_LONG(0.7),
+    PRELIMIT_INIT(0),
+    PRELIMIT_SHOOT(0.35),
+
     CLAW_OPEN(0.87),
     CLAW_CLOSE(0.56),
     CLAW_HAS_BLOCK_MIN_DEGREE( 220),

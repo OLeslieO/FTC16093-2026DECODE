@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -22,6 +23,8 @@ public class ShooterTest extends LinearOpMode {
     public static double setD = 0;
     public static double setF = 15;
     public static double setShooterPower = 1;
+
+    public static volatile double servo_pos = 0.5;
     public static boolean isVelocityMode = true;
     public static boolean isShooterUp = false;
     public static boolean isShooterDown = true;
@@ -36,10 +39,13 @@ public class ShooterTest extends LinearOpMode {
         DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
         DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
+        Servo shooterRight = hardwareMap.get(Servo.class,"shooterRight");
+        Servo shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooterLeft.setDirection(Servo.Direction.REVERSE);
 
         shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);

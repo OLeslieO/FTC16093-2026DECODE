@@ -25,9 +25,11 @@ import lombok.Getter;
 
 public class Intake {
     private DcMotorEx intake;
+    private Servo preLimit;
 
     public Intake(@NonNull HardwareMap hardwareMap){
         this.intake = hardwareMap.get(DcMotorEx.class, "intake");
+        this.preLimit = hardwareMap.get(Servo.class,"preLimit");
 
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
@@ -41,6 +43,16 @@ public class Intake {
         intake.setPower(-0.8);
     }
     public void init(){
+
         intake.setPower(0.5);
+
+
+    }
+    public void limitOn(){
+        preLimit.setPosition(0);
+    }
+    public void limitOff(){
+        preLimit.setPosition(0.36);
+
     }
 }

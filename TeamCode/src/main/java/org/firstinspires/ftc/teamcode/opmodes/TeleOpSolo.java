@@ -18,11 +18,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
+import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
 import org.firstinspires.ftc.teamcode.commands.TeleOpDriveCommand;
 import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-
 
 @TeleOp(group = "0-competition", name = "TeleOp Solo")
 public class TeleOpSolo extends CommandOpModeEx {
@@ -32,7 +31,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     Intake intake;
 
     private boolean isFieldCentric=false;
-    public double currentVelocity;
+    public boolean isLimitOn = false;
 
 
     @Override
@@ -50,6 +49,8 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->gamepadEx1.getRightX(),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
+                ()->(isFieldCentric));
+        PreLimitCommand preLimitCommand = new PreLimitCommand(intake,
                 ()->(isFieldCentric));
 
         intake = new Intake(hardwareMap);
@@ -94,6 +95,10 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.BACK))
                 .whenPressed(new InstantCommand(()->isFieldCentric=!isFieldCentric));
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.A))
+                .whenPressed(new InstantCommand(()->isLimitOn=!isLimitOn));
+
+
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenPressed(new InstantCommand(()->intake.intake()))
@@ -117,7 +122,7 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
                 .whenReleased(new InstantCommand(()->shooter.init()));
 
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.A))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenPressed(new ParallelCommandGroup(
                         new InstantCommand(()->intake.outtake()),
                         new InstantCommand(()->shooter.outtake())))
@@ -131,6 +136,7 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.DPAD_UP))
                 .whenPressed(new InstantCommand(()->shooter.stopAccelerate()));
+
 
     }
 

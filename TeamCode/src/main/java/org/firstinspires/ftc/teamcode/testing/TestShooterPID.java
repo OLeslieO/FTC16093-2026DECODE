@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -17,15 +18,17 @@ public class TestShooterPID extends LinearOpMode {
   private final Telemetry telemetry_M =
       new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
   public static boolean isPIDControl = true;
-  public static double setP = 20;
+  public static double setP = 30;
   public static double setI = 0;
-  public static double setD = 2;
-  public static double setF = 14;
+  public static double setD = 0;
+  public static double setF = 15;
   public static double setShooterPower = 1;
   public static boolean isPowerMode = false;
   public static double setPreShooterPower = 0.7;
 //  public static double shooterMinVelocity = 1400.0;
   public static double shooterVelocity = 1000;
+
+  public static volatile double servo_pos = 0.5;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -33,10 +36,13 @@ public class TestShooterPID extends LinearOpMode {
     DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
+    Servo shooterRight = hardwareMap.get(Servo.class,"shooterRight");
+    Servo shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
 
     shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
     shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
     intake.setDirection(DcMotorSimple.Direction.REVERSE);
+    shooterLeft.setDirection(Servo.Direction.REVERSE);
 
     shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
     shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -61,6 +67,8 @@ public class TestShooterPID extends LinearOpMode {
       else{
         shooterDown.setVelocity(shooterVelocity);
         shooterUp.setVelocity(shooterVelocity);
+        shooterRight.setPosition(servo_pos);
+        shooterLeft.setPosition(servo_pos-0.1);
       }
 
 //      if (frontShooter.getVelocity() > shooterMinVelocity) {
