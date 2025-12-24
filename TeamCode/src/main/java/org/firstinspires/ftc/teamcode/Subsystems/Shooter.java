@@ -119,7 +119,7 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(-0.2);
+        preShooter.setPower(-0.1);
     }
 
 

@@ -22,13 +22,16 @@ import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
 import org.firstinspires.ftc.teamcode.commands.TeleOpDriveCommand;
 import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp(group = "0-competition", name = "TeleOp Solo")
 public class TeleOpSolo extends CommandOpModeEx {
     GamepadEx gamepadEx1, gamepadEx2;
     NewMecanumDrive driveCore;
+    PreLimitCommand preLimitCommand;
     Shooter shooter;
     Intake intake;
+
 
     private boolean isFieldCentric=false;
     public boolean isLimitOn = false;
@@ -42,6 +45,7 @@ public class TeleOpSolo extends CommandOpModeEx {
         gamepadEx2 = new GamepadEx(gamepad2);
 
         driveCore = new NewMecanumDrive(hardwareMap);
+
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
                 ()->gamepadEx1.getLeftX(),
@@ -50,12 +54,14 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.START) && !gamepad1.touchpad),
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
                 ()->(isFieldCentric));
-        PreLimitCommand preLimitCommand = new PreLimitCommand(intake,
-                ()->(isFieldCentric));
+
+
 
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
         shooter = new Shooter(hardwareMap);
+        preLimitCommand = new PreLimitCommand(intake,
+                ()->(isLimitOn));
 
 
 
@@ -66,6 +72,7 @@ public class TeleOpSolo extends CommandOpModeEx {
         driveCore.resetOdo();
         driveCore.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         CommandScheduler.getInstance().schedule(driveCommand);
+        CommandScheduler.getInstance().schedule(preLimitCommand);
 
         //timers
         new ButtonEx(()->getRuntime()>30).whenPressed(()->gamepad1.rumble(500));
@@ -81,6 +88,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     public void onStart() {
         resetRuntime();
         shooter.accelerate_slow();
+
 
 
     }
@@ -147,6 +155,10 @@ public class TeleOpSolo extends CommandOpModeEx {
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");
         else telemetry.addLine("Robot Centric");
+        if(isLimitOn) telemetry.addLine("Limit On");
+        else telemetry.addLine("Limit Off");
+
+
         telemetry.update();
         telemetry.update();
     }

@@ -44,7 +44,7 @@ public class Intake {
     }
     public void init(){
 
-        intake.setPower(0.5);
+        intake.setPower(0);
 
 
     }
@@ -52,7 +52,7 @@ public class Intake {
         preLimit.setPosition(0);
     }
     public void limitOff(){
-        preLimit.setPosition(0.36);
+        preLimit.setPosition(0.37);
 
     }
 }

@@ -11,8 +11,9 @@ import java.util.function.DoubleSupplier;
 
 public class PreLimitCommand extends CommandBase {
 
-    private BooleanSupplier isLimitOn;
-    private final Intake intake;
+    private final BooleanSupplier isLimitOn;
+
+    public final Intake intake;
 
     public PreLimitCommand(
             Intake intake,
