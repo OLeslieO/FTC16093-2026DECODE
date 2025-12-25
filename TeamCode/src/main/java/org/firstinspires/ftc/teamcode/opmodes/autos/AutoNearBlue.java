@@ -67,6 +67,9 @@ public class AutoNearBlue extends AutoOpModeEx {
     private int currentPathId = 0;
 
 
+    private boolean poseSaved = false;
+
+
     @Override
     public void initialize() {
         this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -263,45 +266,40 @@ public class AutoNearBlue extends AutoOpModeEx {
 
     @Override
     public void run() {
-        if(actions.size() != pathChainList.size()){
+        if (actions.size() != pathChainList.size()) {
             throw new IllegalStateException(
                     "Actions count (" + actions.size() +
                             ") does not match path count (" + pathChainList.size() + ")"
             );
         }
+
         Iterator<PathChain> it = pathChainList.iterator();
-        int pathCount = 0;
-        while (it.hasNext()){
-            pathCount+=1;
-            if (!opModeIsActive())break;
+
+        while (it.hasNext() && opModeIsActive()) {
             periodic();
-            if(!follower.isBusy() && !this.actionRunning){
+
+            if (!follower.isBusy() && !actionRunning) {
                 PathChain path = it.next();
 
-
-                if(path!=null){
-                    if (pathCount == 28){
-                        new InstantCommand(()->finalPosition());
-                    }
-//                    if (pathCount == 9 || pathCount == 10 || pathCount == 11 || pathCount == 13
-//                            || pathCount == 17 || pathCount == 18
-//                            || pathCount == 20
-//                            || pathCount == 24 || pathCount == 25){
-//                        follower.followPath(path,0.2,false);
-//                    }
-//                    else {
-//                        follower.followPath(path, 1,true);
-//                    }
-                    follower.followPath(path, 0.9,true);
+                if (path != null) {
+                    follower.followPath(path, 0.9, true);
                 }
 
                 Command currentAction = actions.get(currentPathId);
-                if(currentAction!=null){
+                if (currentAction != null) {
                     currentAction.schedule();
-                    this.actionRunning = true;
+                    actionRunning = true;
                 }
+
                 currentPathId++;
             }
         }
+
+        // ===== Auto 正常结束，保存位姿 =====
+        if (opModeIsActive() && !poseSaved) {
+            finalPosition();
+            poseSaved = true;
+        }
     }
+
 }
