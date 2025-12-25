@@ -17,6 +17,7 @@ import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.FollowerEx;
@@ -65,6 +66,7 @@ public class AutoNearRed extends AutoOpModeEx {
 
     private final Pose openGatePose2 = new Pose(72.982, 7.239, Math.toRadians(-1));
     private int currentPathId = 0;
+    private boolean poseSaved = false;
 
 
     @Override
@@ -225,6 +227,14 @@ public class AutoNearRed extends AutoOpModeEx {
         return new InstantCommand(()->this.actionRunning = false);
     }
 
+
+    private void finalPosition(){
+        Constants.Position.x = follower.getPose().getX();
+        Constants.Position.y = follower.getPose().getY();
+        Constants.Position.heading = follower.getPose().getHeading();
+        Constants.Position.autoFinished = true;
+    }
+
     private void buildActions(){
         Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand;
         scoreCommand = autoCommand.shoot().andThen(actionEnd());
@@ -261,31 +271,39 @@ public class AutoNearRed extends AutoOpModeEx {
 
     @Override
     public void run() {
-        if(actions.size() != pathChainList.size()){
+        if (actions.size() != pathChainList.size()) {
             throw new IllegalStateException(
                     "Actions count (" + actions.size() +
                             ") does not match path count (" + pathChainList.size() + ")"
             );
         }
+
         Iterator<PathChain> it = pathChainList.iterator();
-        int pathCount = 0;
-        while (it.hasNext()){
-            pathCount+=1;
-            if (!opModeIsActive())break;
+
+        while (it.hasNext() && opModeIsActive()) {
             periodic();
-            if(!follower.isBusy() && !this.actionRunning){
+
+            if (!follower.isBusy() && !actionRunning) {
                 PathChain path = it.next();
-                if(path!=null){
-                    follower.followPath(path, 1,true);
+
+                if (path != null) {
+                    follower.followPath(path, 0.9, true);
                 }
 
                 Command currentAction = actions.get(currentPathId);
-                if(currentAction!=null){
+                if (currentAction != null) {
                     currentAction.schedule();
-                    this.actionRunning = true;
+                    actionRunning = true;
                 }
+
                 currentPathId++;
             }
+        }
+
+        // ===== Auto 正常结束，保存Position =====
+        if (opModeIsActive() && !poseSaved) {
+            finalPosition();
+            poseSaved = true;
         }
     }
 }

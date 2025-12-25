@@ -13,6 +13,10 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
@@ -36,6 +40,8 @@ public class TeleOpSolo extends CommandOpModeEx {
     private boolean isFieldCentric=false;
     public boolean isLimitOn = false;
 
+    private boolean isAutoConveted = false;
+
 
     @Override
     public void initialize() {
@@ -46,7 +52,6 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         driveCore = new NewMecanumDrive(hardwareMap);
 
-        driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
                 ()->gamepadEx1.getLeftX(),
                 ()->gamepadEx1.getLeftY(),
@@ -61,10 +66,23 @@ public class TeleOpSolo extends CommandOpModeEx {
         preLimitCommand = new PreLimitCommand(intake,
                 ()->(isLimitOn));
 
-        driveCore.resetHeading();
-//        driveCore.yawHeading += 90; //如果specimen自动接solo手动就把这行去掉
-//        driveCore.yawHeading %= 360;    //如果specimen自动接solo手动就把这行去掉
-        driveCore.resetOdo();
+
+
+        if (Constants.Position.autoFinished) {
+            driveCore.setPoseFromAuto(
+                    Constants.Position.x,
+                    Constants.Position.y,
+                    Constants.Position.heading
+            );
+            Constants.Position.autoFinished = false;
+            isAutoConveted = true;
+        } else {
+            driveCore.init(); // 纯 TeleOp
+        }
+
+
+
+
         driveCore.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         CommandScheduler.getInstance().schedule(driveCommand);
         CommandScheduler.getInstance().schedule(preLimitCommand);
@@ -148,6 +166,14 @@ public class TeleOpSolo extends CommandOpModeEx {
         else telemetry.addLine("Robot Centric");
         if(isLimitOn) telemetry.addLine("Limit On");
         else telemetry.addLine("Limit Off");
+        Pose2D pose = driveCore.getPose();
+
+        telemetry.addData("X (in)", pose.getX(DistanceUnit.INCH));
+        telemetry.addData("Y (in)", pose.getY(DistanceUnit.INCH));
+        telemetry.addData("Heading (deg)",
+                Math.toDegrees(pose.getHeading(AngleUnit.RADIANS)));
+        telemetry.addData("isAutoConveted?",isAutoConveted);
+
 
 
         telemetry.update();

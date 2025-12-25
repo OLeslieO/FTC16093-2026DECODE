@@ -29,6 +29,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -39,6 +40,8 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.gobilda.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.lib.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.lib.roadrunner.trajectorysequence.TrajectorySequenceRunner;
@@ -49,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -475,6 +479,27 @@ public class NewMecanumDrive extends MecanumDrive {
 
     public void resetOdo(){
         odo.recalibrateIMU();
+    }
+
+
+    public void setPoseFromAuto(double x_in, double y_in, double heading_deg) {
+
+        Pose2D pose = new Pose2D(DistanceUnit.INCH,
+                x_in,
+                y_in,
+                AngleUnit.DEGREES,
+                heading_deg
+        );
+
+        odo.setPosition(pose);
+
+        // 同步 yawHeading，让 getHeading() == auto heading
+        yawHeading = odo.getHeading() - heading_deg;
+    }
+
+
+    public Pose2D getPose() {
+        return odo.getPosition();
     }
 
 
