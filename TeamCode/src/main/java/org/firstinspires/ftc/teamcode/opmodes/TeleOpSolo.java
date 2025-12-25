@@ -55,16 +55,11 @@ public class TeleOpSolo extends CommandOpModeEx {
                 ()->(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)),
                 ()->(isFieldCentric));
 
-
-
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
         shooter = new Shooter(hardwareMap);
         preLimitCommand = new PreLimitCommand(intake,
                 ()->(isLimitOn));
-
-
-
 
         driveCore.resetHeading();
 //        driveCore.yawHeading += 90; //如果specimen自动接solo手动就把这行去掉
@@ -78,10 +73,6 @@ public class TeleOpSolo extends CommandOpModeEx {
         new ButtonEx(()->getRuntime()>30).whenPressed(()->gamepad1.rumble(500));
         new ButtonEx(()->getRuntime()>60).whenPressed(()->gamepad1.rumble(500));
         new ButtonEx(()->getRuntime()>110).whenPressed(()->gamepad1.rumble(1000));
-
-
-
-
     }
 
     @Override

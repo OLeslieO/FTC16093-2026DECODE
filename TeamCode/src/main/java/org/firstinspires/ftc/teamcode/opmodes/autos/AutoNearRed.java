@@ -140,8 +140,6 @@ public class AutoNearRed extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(prepareGatePose.getHeading(), openGatePose2.getHeading())
                 .build();
 
-
-
 //        afterOpenGate = follower.pathBuilder()
 //                .addPath(new BezierLine(new Point(openGatePose), new Point(prepare1Pose)))
 //                .setLinearHeadingInterpolation(openGatePose.getHeading(), prepare1Pose.getHeading())
