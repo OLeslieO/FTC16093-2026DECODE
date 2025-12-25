@@ -85,7 +85,7 @@ public class TestShooterPID extends LinearOpMode {
       }
 
 //      if (frontShooter.getVelocity() < shooterMinVelocity) {
-//        //            if(gamepad1.b){
+//        //            if(gamepad1.b){\
 //        preShooter.setPower(0);
 //        blender.setPower(0);
 //        intake.setPower(0);
@@ -97,6 +97,7 @@ public class TestShooterPID extends LinearOpMode {
       telemetry_M.addData(
               "PreShooter Velocity", preShooter.getVelocity());
       telemetry_M.update();
+
     }
   }
 }
