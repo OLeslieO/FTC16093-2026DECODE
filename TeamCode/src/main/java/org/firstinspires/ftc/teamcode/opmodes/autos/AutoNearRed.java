@@ -263,14 +263,18 @@ public class AutoNearRed extends AutoOpModeEx {
 
     @Override
     public void run() {
+
         if(actions.size() != pathChainList.size()){
             throw new IllegalStateException(
                     "Actions count (" + actions.size() +
                             ") does not match path count (" + pathChainList.size() + ")"
             );
         }
+
         Iterator<PathChain> it = pathChainList.iterator();
+
         int pathCount = 0;
+
         while (it.hasNext()){
             pathCount+=1;
             if (!opModeIsActive())break;
