@@ -13,7 +13,7 @@ public class PreLimitCommand extends CommandBase {
 
     private final BooleanSupplier isLimitOn;
 
-    public final Intake intake;
+    private final Intake intake;
 
     public PreLimitCommand(
             Intake intake,

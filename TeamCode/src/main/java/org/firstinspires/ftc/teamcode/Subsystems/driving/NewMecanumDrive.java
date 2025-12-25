@@ -55,6 +55,11 @@ import java.util.function.BooleanSupplier;
  */
 @Config
 public class NewMecanumDrive extends MecanumDrive {
+
+    public static boolean USE_NEW_AUTO_TELEOP_HANDOFF = false;
+
+
+
     public static PIDCoefficients TRANS_PID = new PIDCoefficients(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0.001, 1); //i = 0
 
