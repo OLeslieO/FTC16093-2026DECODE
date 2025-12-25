@@ -24,13 +24,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants.SpinnerConstant;
 import lombok.Getter;
 
 public class Intake {
+
     private DcMotorEx intake;
+
     private Servo preLimit;
+
 
     public Intake(@NonNull HardwareMap hardwareMap){
         this.intake = hardwareMap.get(DcMotorEx.class, "intake");
         this.preLimit = hardwareMap.get(Servo.class,"preLimit");
-
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -38,19 +40,18 @@ public class Intake {
         intake.setPower(1);
     }
 
-
     public void outtake(){
         intake.setPower(-0.8);
     }
+
     public void init(){
-
-        intake.setPower(0);
-
-
+        intake.setPower(0.3);
     }
+
     public void limitOn(){
         preLimit.setPosition(0);
     }
+
     public void limitOff(){
         preLimit.setPosition(0.37);
 
