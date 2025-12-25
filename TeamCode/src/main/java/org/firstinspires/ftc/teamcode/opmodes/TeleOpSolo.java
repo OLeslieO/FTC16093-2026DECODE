@@ -163,8 +163,6 @@ public class TeleOpSolo extends CommandOpModeEx {
         else telemetry.addLine("Robot Centric");
         if(isLimitOn) telemetry.addLine("Limit On");
         else telemetry.addLine("Limit Off");
-
-
         telemetry.update();
         telemetry.update();
     }

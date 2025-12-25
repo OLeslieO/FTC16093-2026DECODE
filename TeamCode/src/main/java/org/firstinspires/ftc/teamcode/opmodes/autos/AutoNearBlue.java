@@ -43,7 +43,7 @@ public class AutoNearBlue extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(46     ));
+    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(46));
 
     private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(49));
 
