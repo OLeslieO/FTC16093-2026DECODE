@@ -17,6 +17,7 @@ import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.FollowerEx;
@@ -219,6 +220,14 @@ public class AutoNearBlue extends AutoOpModeEx {
         return new InstantCommand(()->this.actionRunning = false);
     }
 
+    private void finalPosition(){
+        Constants.Position.x = follower.getPose().getX();
+        Constants.Position.y = follower.getPose().getY();
+        Constants.Position.heading = follower.getPose().getHeading();
+        Constants.Position.autoFinished = true;
+    }
+
+
     private void buildActions(){
         Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand;
         scoreCommand = autoCommand.shoot().andThen(actionEnd());
@@ -268,7 +277,12 @@ public class AutoNearBlue extends AutoOpModeEx {
             periodic();
             if(!follower.isBusy() && !this.actionRunning){
                 PathChain path = it.next();
+
+
                 if(path!=null){
+                    if (pathCount == 28){
+                        new InstantCommand(()->finalPosition());
+                    }
 //                    if (pathCount == 9 || pathCount == 10 || pathCount == 11 || pathCount == 13
 //                            || pathCount == 17 || pathCount == 18
 //                            || pathCount == 20
