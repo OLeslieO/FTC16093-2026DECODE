@@ -26,9 +26,9 @@ public class TestShooterPID extends LinearOpMode {
   public static boolean isPowerMode = false;
   public static double setPreShooterPower = 0.7;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = 1000;
+  public static double shooterVelocity = 1440;
 
-  public static volatile double servo_pos = 0.5;
+  public static volatile double servo_pos = 0.7;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -81,7 +81,7 @@ public class TestShooterPID extends LinearOpMode {
       else{
         preShooter.setPower(0);
         intake.setPower(0);
-        preLimit.setPosition(0);
+        preLimit.setPosition(0.37);
       }
 
 //      if (frontShooter.getVelocity() < shooterMinVelocity) {
