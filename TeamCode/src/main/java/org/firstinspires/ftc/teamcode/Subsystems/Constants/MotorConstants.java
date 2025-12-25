@@ -9,7 +9,7 @@ public enum MotorConstants {
     SHOOTER_P(30),
     SHOOTER_I(0),
     SHOOTER_D(0),
-    SHOOTER_F(15)
+    SHOOTER_F(14)
     ;
 
     public final int value;

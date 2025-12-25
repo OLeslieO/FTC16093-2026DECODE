@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 public enum ServoConstants {
 
     SHOOTER_TURRET_SLOW(0.5),
-    SHOOTER_TURRET_MID(0.7),
+    SHOOTER_TURRET_MID(0.74),
     SHOOTER_TURRET_LONG(0.78),
 
     ;
