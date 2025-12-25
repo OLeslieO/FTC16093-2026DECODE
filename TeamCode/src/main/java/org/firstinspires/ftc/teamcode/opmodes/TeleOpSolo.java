@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
+import org.firstinspires.ftc.teamcode.Subsystems.LED;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
 import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
@@ -31,6 +32,7 @@ public class TeleOpSolo extends CommandOpModeEx {
     PreLimitCommand preLimitCommand;
     Shooter shooter;
     Intake intake;
+    LED led;
 
 
     private boolean isFieldCentric=false;
@@ -60,7 +62,9 @@ public class TeleOpSolo extends CommandOpModeEx {
         intake = new Intake(hardwareMap);
 //        frontArm.setLED(false);
         shooter = new Shooter(hardwareMap);
-        preLimitCommand = new PreLimitCommand(intake,
+
+        led = new LED(hardwareMap);
+        preLimitCommand = new PreLimitCommand(intake,led,
                 ()->(isLimitOn));
 
 
@@ -130,7 +134,7 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenPressed(new InstantCommand(()->shooter.shoot()))
                 .whenReleased(new InstantCommand(()->shooter.init()));
 
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.B))
                 .whenPressed(new ParallelCommandGroup(
                         new InstantCommand(()->intake.outtake()),
                         new InstantCommand(()->shooter.outtake())))
