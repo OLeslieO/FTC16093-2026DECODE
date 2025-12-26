@@ -244,11 +244,10 @@ public class AutoNearRedTest extends AutoOpModeEx {
                 .build();
 
         pathChainList.addPath(scorePreload, null, null, null,
-                prepare2,intake2,
-                after2,score2,null,
-                openGateIntake,null,score4,null,
                 prepare1, intake1,
-                score1, null,
+                after1, openGate, null, score1, null,
+                prepare2, intake2,
+                after2, score2, null,
                 prepare3, intake3,
                 score3, null, park);
     }
@@ -268,12 +267,11 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
         actions.addAll(Arrays.asList(accelerateCommand, waitCommand, intakeCommand, scoreCommand,
                 null, null,
-                null, null, scoreCommand,
-                null, openGateCommand,null,scoreCommand,
+                null, null, openGateCommand, null, scoreCommand,
                 null, null,
-                null, scoreCommand,
-                 null,null,
-                 null, scoreCommand, new WaitCommand(9999)));
+                null, null, scoreCommand,
+                null, null,
+                null, scoreCommand, new WaitCommand(9999)));
     }
 
     private void periodic() {
