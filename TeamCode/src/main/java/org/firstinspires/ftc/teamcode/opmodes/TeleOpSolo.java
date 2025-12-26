@@ -37,7 +37,7 @@ public class TeleOpSolo extends CommandOpModeEx {
 
 
     private boolean isFieldCentric=false;
-    public boolean isLimitOn = false;
+    public boolean isLimitOn = true;
 
 
     @Override
@@ -66,7 +66,9 @@ public class TeleOpSolo extends CommandOpModeEx {
         shooter = new Shooter(hardwareMap);
 
         led = new LED(hardwareMap);
-        preLimitCommand = new PreLimitCommand(intake,led,
+        preLimitCommand = new PreLimitCommand(shooter,
+                intake,
+                led,
                 ()->(isLimitOn));
 
 
@@ -88,12 +90,14 @@ public class TeleOpSolo extends CommandOpModeEx {
 
 
 
+
     }
 
     @Override
     public void onStart() {
         resetRuntime();
         shooter.accelerate_slow();
+
 
 
 
@@ -118,17 +122,21 @@ public class TeleOpSolo extends CommandOpModeEx {
                 .whenPressed(new InstantCommand(()->intake.intake()))
                 .whenReleased(new InstantCommand(()->intake.init()));
 
-        new ButtonEx(()->gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5)
+        new ButtonEx(()->
+                gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>0.5
+        && !isLimitOn)
                 .whenPressed(new InstantCommand(()->shooter.accelerate_mid()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
 
 
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y))
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y)
+        && !isLimitOn)
                 .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
-        new ButtonEx(()->Math.abs(gamepadEx1.getRightY())>0.7)
+        new ButtonEx(()->Math.abs(gamepadEx1.getRightY())>0.7
+        && !isLimitOn)
                 .whenPressed(new InstantCommand(()->shooter.accelerate_fast()))
                 .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
@@ -157,6 +165,9 @@ public class TeleOpSolo extends CommandOpModeEx {
     @Override
     public void run(){
         CommandScheduler.getInstance().run();
+
+
+
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");
@@ -164,6 +175,6 @@ public class TeleOpSolo extends CommandOpModeEx {
         if(isLimitOn) telemetry.addLine("Limit On");
         else telemetry.addLine("Limit Off");
         telemetry.update();
-        telemetry.update();
+
     }
 }

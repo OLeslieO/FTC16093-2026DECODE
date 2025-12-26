@@ -6,6 +6,8 @@ public enum MotorConstants {
     SHOOTER_FAST_VELOCITY(1500),
     SHOOTER_AUTO_SLOW_VELOCITY(950),
 
+    SHOOTER_IDLE_VELOCITY(500),
+
     SHOOTER_P(30),
     SHOOTER_I(0),
     SHOOTER_D(0),

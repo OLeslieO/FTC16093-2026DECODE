@@ -105,6 +105,14 @@ public class Shooter {
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value - 0.1);
 
     }
+
+    public void accelerate_idle(){
+        shooterDown.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+    }
+
     public void shoot(){
         preShooter.setPower(1);
     }
