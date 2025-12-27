@@ -32,6 +32,10 @@ public class AutoCommand {
         return new InstantCommand(()->shooter.accelerate_slow());
     }
 
+    public Command accelerateMid(){
+        return new InstantCommand(()->shooter.accelerate_mid());
+    }
+
 
 //    public Command autoAccelerate(){
 //        return new InstantCommand(()->shooter.auto_accelerate_slow());
@@ -45,6 +49,14 @@ public class AutoCommand {
         return new SequentialCommandGroup(
                 new InstantCommand(()->shooter.shoot()),
                 new WaitCommand(800),
+                new InstantCommand(()->shooter.init())
+        );
+    }
+
+    public Command shootMid(){
+        return new SequentialCommandGroup(
+                new InstantCommand(()->shooter.shoot()),
+                new WaitCommand(2000),
                 new InstantCommand(()->shooter.init())
         );
     }

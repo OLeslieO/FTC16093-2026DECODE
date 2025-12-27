@@ -21,7 +21,7 @@ public class PreLimitCommand extends CommandBase {
 
     private final LED led;
 
-    private boolean lastLimitOn = true;
+    private boolean lastLimitOn = false;
 
 
     public PreLimitCommand(
@@ -41,21 +41,19 @@ public class PreLimitCommand extends CommandBase {
 
         boolean limitOn = isLimitOn.getAsBoolean();
 
-        // 状态发生变化
         if (limitOn != lastLimitOn) {
 
             if (!limitOn) {
-                // ON -> OFF：立刻设默认 slow
+
                 shooter.accelerate_slow();
             } else {
-                // OFF -> ON：立刻 idle
+
                 shooter.accelerate_idle();
             }
 
             lastLimitOn = limitOn;
         }
 
-        // 持续行为
         if (limitOn) {
             intake.limitOn();
             led.setNone();

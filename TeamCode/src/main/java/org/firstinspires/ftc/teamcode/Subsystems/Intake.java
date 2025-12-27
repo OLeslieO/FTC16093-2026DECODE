@@ -53,7 +53,7 @@ public class Intake {
     }
 
     public void limitOff(){
-        preLimit.setPosition(0.37);
-
+        preLimit.setPosition(0.38);
+ 
     }
 }

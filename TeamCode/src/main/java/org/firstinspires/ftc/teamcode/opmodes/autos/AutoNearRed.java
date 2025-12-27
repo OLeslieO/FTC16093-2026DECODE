@@ -47,6 +47,8 @@ public class AutoNearRed extends AutoOpModeEx {
 
     private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-46));
 
+    private final Pose scoreMidPose = new Pose(86.644, 42.950, Math.toRadians(-46));
+
     private final Pose prepare1Pose = new Pose(78.949, 40.147, Math.toRadians(-90));
     private final Pose intake1Pose1 = new Pose(78.949, 28.239, Math.toRadians(-90));
     private final Pose intake1Pose2 = new Pose(78.949, 20.239, Math.toRadians(-90));
