@@ -488,7 +488,7 @@ public class NewMecanumDrive extends MecanumDrive {
                 x_in,
                 y_in,
                 AngleUnit.DEGREES,
-                heading_deg
+                Math.toDegrees(heading_deg)
         );
 
         odo.setPosition(pose);

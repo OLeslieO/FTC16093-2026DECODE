@@ -295,7 +295,7 @@ public class AutoNearBlue extends AutoOpModeEx {
             }
         }
 
-        // ===== Auto 正常结束，保存Position =====
+        // Auto 正常结束，保存Position
         if (opModeIsActive() && !poseSaved) {
             finalPosition();
             poseSaved = true;
