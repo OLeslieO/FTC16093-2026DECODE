@@ -47,7 +47,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
     private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-46));
 
-    private final Pose scoreMidPose = new Pose(76.644, 50.950, Math.toRadians(-60));
+    private final Pose scoreMidPose = new Pose(76.644, 50.950, Math.toRadians(-49));
 
     private final Pose prepare1Pose = new Pose(78.949, 40.147, Math.toRadians(-90));
     private final Pose intake1Pose1 = new Pose(78.949, 28.239, Math.toRadians(-90));
@@ -67,7 +67,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
     private final Pose intake3Pose2 = new Pose(32.000, 23.932, Math.toRadians(-87));
     private final Pose intake3Pose3 = new Pose(32.000, 0, Math.toRadians(-87));
     private final Pose intakeLoad1 = new Pose(7, 29, Math.toRadians(-87));
-    private final Pose intakeLoad3 = new Pose(7, 2, Math.toRadians(-87));
+    private final Pose intakeLoad3 = new Pose(7, -3, Math.toRadians(-87));
     private final Pose parkPose = new Pose(70, 20.000, Math.toRadians(-90));
 
     private final Pose openGatePose2 = new Pose(72.982, 7.239, Math.toRadians(-1));
@@ -265,8 +265,8 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
 
         park = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(parkPose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(new Point(scoreMidPose), new Point(parkPose)))
+                .setLinearHeadingInterpolation(scoreMidPose.getHeading(), parkPose.getHeading())
                 .build();
 
         pathChainList.addPath(scorePreload, null, null, null,

@@ -45,7 +45,7 @@ public class Intake {
     }
 
     public void init(){
-        intake.setPower(0.3);
+        intake.setPower(0.4);
     }
 
     public void limitOn(){
