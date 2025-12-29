@@ -45,7 +45,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
     private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-49));
 
-    private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-46));
+    private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-50));
 
     private final Pose scoreMidPose = new Pose(76.644, 50.950, Math.toRadians(-49));
 
@@ -62,12 +62,12 @@ public class AutoNearRedTest extends AutoOpModeEx {
     private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-88));
     private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-88));
     private final Pose intake2Pose3 = new Pose(53.764, 2, Math.toRadians(-88));
-    private final Pose prepare3Pose = new Pose(32.000, 36.730, Math.toRadians(-87));
-    private final Pose intake3Pose1 = new Pose(32.000, 29.932, Math.toRadians(-87));
-    private final Pose intake3Pose2 = new Pose(32.000, 23.932, Math.toRadians(-87));
-    private final Pose intake3Pose3 = new Pose(32.000, 0, Math.toRadians(-87));
-    private final Pose intakeLoad1 = new Pose(7, 29, Math.toRadians(-87));
-    private final Pose intakeLoad3 = new Pose(7, -3, Math.toRadians(-87));
+    private final Pose prepare3Pose = new Pose(32.000, 36.730, Math.toRadians(-88));
+    private final Pose intake3Pose1 = new Pose(32.000, 29.932, Math.toRadians(-88));
+    private final Pose intake3Pose2 = new Pose(32.000, 23.932, Math.toRadians(-88));
+    private final Pose intake3Pose3 = new Pose(32.000, 0, Math.toRadians(-88));
+    private final Pose intakeLoad1 = new Pose(20, 5, Math.toRadians(-105));
+    private final Pose intakeLoad3 = new Pose(7, 5, Math.toRadians(-105));
     private final Pose parkPose = new Pose(70, 20.000, Math.toRadians(-90));
 
     private final Pose openGatePose2 = new Pose(72.982, 7.239, Math.toRadians(-1));
@@ -263,7 +263,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(scoreMidPose.getHeading(), parkPose.getHeading())
                 .build();
 
-        pathChainList.addPath(scorePreload, null, null, null,
+        pathChainList.addPath(scorePreload, null, null, null,null,
                 prepare1, intake1,
                 after1, openGate, null, score1, null,
                 prepare2, intake2,
@@ -281,7 +281,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
     private void buildActions(){
         Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand,
-                scoreMidCommand, accelerateMidCommand;
+                scoreMidCommand, accelerateMidCommand, preLimitCommand;
         scoreCommand = autoCommand.shoot().andThen(actionEnd());
         scoreMidCommand = autoCommand.shootMid().andThen(actionEnd());
         intakeCommand = autoCommand.intake().andThen(actionEnd());
@@ -289,8 +289,9 @@ public class AutoNearRedTest extends AutoOpModeEx {
         accelerateMidCommand = autoCommand.accelerateMid().andThen(actionEnd());
         openGateCommand = new WaitCommand(700).andThen(actionEnd());
         waitCommand = new WaitCommand(450).andThen(actionEnd());
+        preLimitCommand = autoCommand.preLimitOn().andThen(actionEnd());
 
-        actions.addAll(Arrays.asList(accelerateCommand, waitCommand, intakeCommand, scoreCommand,
+        actions.addAll(Arrays.asList(accelerateCommand,preLimitCommand, waitCommand, intakeCommand, scoreCommand,
                 null, null,
                 null, null, openGateCommand, null, scoreCommand,
                 null, null,
@@ -316,6 +317,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
         telemetry.addData("Actions size", actions.size());
         telemetry.addData("PathChainList size", pathChainList.size());
         telemetry.update();
+
     }
 
     @Override
