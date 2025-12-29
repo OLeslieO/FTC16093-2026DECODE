@@ -43,7 +43,7 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-46));
+    private final Pose startPose = new Pose(123.850, 21.490, Math.toRadians(-49));
 
     private final Pose scorePose = new Pose(105.644, 32.950, Math.toRadians(-46));
 
@@ -256,12 +256,6 @@ public class AutoNearRedTest extends AutoOpModeEx {
                 .addPath(new BezierLine(new Point(intakeLoad3), new Point(scoreMidPose)))
                 .setLinearHeadingInterpolation(intakeLoad3.getHeading(), scoreMidPose.getHeading())
                 .build();
-
-
-
-
-
-
 
 
         park = follower.pathBuilder()
