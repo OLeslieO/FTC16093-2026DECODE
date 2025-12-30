@@ -33,7 +33,7 @@ public class FConstants {
         FollowerConstants.useSecondaryTranslationalPID = false;
         FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.15, 0, 0.03, 0.1);
 
-        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.45, 0.02, 0.001, 0.01);
+        FollowerConstants.headingPIDFCoefficients.setCoefficients(0.2, 0.02, 0.001, 0.01);
         FollowerConstants.useSecondaryHeadingPID = false;
         FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2.5, 0, 0, 0.5);
 

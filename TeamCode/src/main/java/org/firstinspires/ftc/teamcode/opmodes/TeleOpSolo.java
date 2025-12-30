@@ -130,8 +130,20 @@ public class TeleOpSolo extends CommandOpModeEx {
                         && !isLimitOn)
                 .whenPressed(new SequentialCommandGroup(
                         new InstantCommand(()->isVelocityDetecting= ! isVelocityDetecting),
-                        new InstantCommand(() -> shooter.accelerate_mid())
-                ))
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> shooter.accelerate_mid()),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(()->shooter.servosetpositon_mid_1()),
+                                        new WaitCommand(80),
+                                        new InstantCommand(()->shooter.servosetpositon_mid_2()),
+                                        new WaitCommand(80),
+                                        new InstantCommand(()->shooter.servosetpositon_mid_3()),
+                                        new WaitCommand(80),
+                                        new InstantCommand(()->shooter.servosetpositon_mid_4())
+                                )
+                        )
+                )
+                )
                 .whenReleased(
                         new SequentialCommandGroup(
                                 new WaitCommand(150),

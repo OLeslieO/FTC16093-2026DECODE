@@ -25,7 +25,7 @@ public class PreLimitCommand extends CommandBase {
 
     private boolean lastLimitOn = false;
 
-    private boolean ledFlashingTriggered = false;
+
 
     private boolean redLedTriggered = false;
 
@@ -65,19 +65,18 @@ public class PreLimitCommand extends CommandBase {
             lastLimitOn = limitOn;
         }
 
+
         if (limitOn) {
             intake.limitOn();
             led.setNone();
         } else {
             intake.limitOff();
             led.setBlue();
-            if (velocityDetecting){
-                if (shooter.isAsTargetVelocity && ! ledFlashingTriggered) {
-                    led.setRed();  //
-                    ledFlashingTriggered =  true;
-                }
-            } else  {
-                ledFlashingTriggered = false;
+
+
+            if (velocityDetecting && shooter.isAsTargetVelocity){
+
+                led.setGreen();  //
 
             }
         }

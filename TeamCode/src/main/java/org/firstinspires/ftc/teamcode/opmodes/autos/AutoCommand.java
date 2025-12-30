@@ -60,6 +60,7 @@ public class AutoCommand {
 
     public Command shootMid(){
         return new SequentialCommandGroup(
+                new InstantCommand(()->shooter.servosetpositon_mid_4()),
                 new InstantCommand(()->shooter.shoot()),
                 new WaitCommand(1800),
                 new InstantCommand(()->shooter.init())
