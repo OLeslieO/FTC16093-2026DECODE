@@ -27,6 +27,8 @@ public class PreLimitCommand extends CommandBase {
 
     private boolean ledFlashingTriggered = false;
 
+    private boolean redLedTriggered = false;
+
 
     public PreLimitCommand(
             Shooter shooter,
@@ -69,18 +71,18 @@ public class PreLimitCommand extends CommandBase {
         } else {
             intake.limitOff();
             led.setBlue();
-        }
+            if (velocityDetecting){
+                if (shooter.isAsTargetVelocity && ! ledFlashingTriggered) {
+                    led.setRed();  //
+                    ledFlashingTriggered =  true;
+                }
+            } else  {
+                ledFlashingTriggered = false;
 
-        if (velocityDetecting){
-            if (shooter.isAsTargetVelocity && !ledFlashingTriggered) {
-                ledFlashingTriggered = true;  // 设置标志位，确保只执行一次
-                led.setGreen();  // 闪烁
             }
-        } else  {
-            led.setBlue();
-            ledFlashingTriggered = false;
-
         }
+
+
 
 
     }

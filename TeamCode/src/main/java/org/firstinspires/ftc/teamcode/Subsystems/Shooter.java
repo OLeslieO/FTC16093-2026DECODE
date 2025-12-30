@@ -56,7 +56,8 @@ public class Shooter {
         shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1);
         targetVelocity = MotorConstants.SHOOTER_MID_VELOCITY.value;
-        if (Math.abs(shooterDown.getVelocity() - targetVelocity)<= 40){
+
+        if (Math.abs(shooterUp.getVelocity() - 1320)<= 40){
             isAsTargetVelocity = true;
         } else {
             isAsTargetVelocity = false;
@@ -76,8 +77,7 @@ public class Shooter {
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value - 0.1);
-        targetVelocity = MotorConstants.SHOOTER_FAST_VELOCITY.value;
-        if (Math.abs(shooterDown.getVelocity() - targetVelocity)<= 40){
+        if (Math.abs(shooterDown.getVelocity() - 1500) <= 40){
             isAsTargetVelocity = true;
         } else {
             isAsTargetVelocity = false;

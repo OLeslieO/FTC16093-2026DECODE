@@ -129,13 +129,13 @@ public class TeleOpSolo extends CommandOpModeEx {
                 gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5
                         && !isLimitOn)
                 .whenPressed(new SequentialCommandGroup(
-                        new InstantCommand(()->isVelocityDetecting= true),
+                        new InstantCommand(()->isVelocityDetecting= ! isVelocityDetecting),
                         new InstantCommand(() -> shooter.accelerate_mid())
                 ))
                 .whenReleased(
                         new SequentialCommandGroup(
                                 new WaitCommand(150),
-                                new InstantCommand(()->isVelocityDetecting=false),
+                                new InstantCommand(()->isVelocityDetecting= ! isVelocityDetecting),
                                 new InstantCommand(() -> shooter.accelerate_slow())
                         )
                 );
@@ -186,6 +186,12 @@ public class TeleOpSolo extends CommandOpModeEx {
 
     @Override
     public void run(){
+
+        if (Math.abs(shooter.shooterUp.getVelocity()-1320)<= 40){
+            shooter.isAsTargetVelocity = true;
+        } else {
+            shooter.isAsTargetVelocity = false;
+        }
         CommandScheduler.getInstance().run();
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
@@ -193,6 +199,12 @@ public class TeleOpSolo extends CommandOpModeEx {
         else telemetry.addLine("Robot Centric");
         if(isLimitOn) telemetry.addLine("Limit On");
         else telemetry.addLine("Limit Off");
+        if(isVelocityDetecting) telemetry.addLine("is velocity detesting" );
+        else telemetry.addLine("not detecting");
+        if(shooter.isAsTargetVelocity) telemetry.addLine("is At target velocity");
+        else telemetry.addLine("not at target vel");
+
+        telemetry.addData("vel diff", Math.abs(shooter.shooterUp.getVelocity()-1320));
         telemetry.update();
 
     }
