@@ -15,6 +15,8 @@ public class PreLimitCommand extends CommandBase {
 
     private final BooleanSupplier isLimitOn;
 
+    private final BooleanSupplier isVelocityDetecting;
+
     private final Shooter shooter;
 
     private final Intake intake;
@@ -23,23 +25,30 @@ public class PreLimitCommand extends CommandBase {
 
     private boolean lastLimitOn = false;
 
+    private boolean ledFlashingTriggered = false;
+
 
     public PreLimitCommand(
             Shooter shooter,
             Intake intake,
             LED led,
 
+            BooleanSupplier isVelocityDetecting,
+
             BooleanSupplier isLimitOn) {
         this.shooter = shooter;
         this.intake = intake;
         this.led = led;
         this.isLimitOn = isLimitOn;
+        this.isVelocityDetecting = isVelocityDetecting;
     }
 
     @Override
     public void execute() {
 
         boolean limitOn = isLimitOn.getAsBoolean();
+
+        boolean velocityDetecting = isVelocityDetecting.getAsBoolean();
 
         if (limitOn != lastLimitOn) {
 
@@ -61,6 +70,19 @@ public class PreLimitCommand extends CommandBase {
             intake.limitOff();
             led.setBlue();
         }
+
+        if (velocityDetecting){
+            if (shooter.isAsTargetVelocity && !ledFlashingTriggered) {
+                ledFlashingTriggered = true;  // 设置标志位，确保只执行一次
+                led.setGreen();  // 闪烁
+            }
+        } else  {
+            led.setBlue();
+            ledFlashingTriggered = false;
+
+        }
+
+
     }
 
 }

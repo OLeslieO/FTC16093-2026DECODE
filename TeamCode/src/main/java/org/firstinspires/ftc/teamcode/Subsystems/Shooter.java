@@ -15,7 +15,9 @@ public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
     public  Servo shooterRight, shooterLeft;
 
-    public double targetVelocity;
+    private double targetVelocity;
+
+    public boolean isAsTargetVelocity;
     public double currentVelocity;
 
     public Shooter(HardwareMap hardwareMap) {
@@ -45,50 +47,20 @@ public class Shooter {
         shooterDown.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
     }
 
-    public void autoLongshoot() {
-        currentVelocity = shooterDown.getVelocity();
-        shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
-        shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
-        targetVelocity = MotorConstants.SHOOTER_FAST_VELOCITY.value;
-        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
-            preShooter.setPower(1);
-        } else {
-            preShooter.setPower(0);
-        }
-    }
-    public void autoMidshoot() {
-        currentVelocity = shooterDown.getVelocity();
-        shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
-        shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
-        targetVelocity = MotorConstants.SHOOTER_MID_VELOCITY.value;
-        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
-            preShooter.setPower(1);
-        } else {
-            preShooter.setPower(0);
-        }
-    }
 
-    public void autoShortshoot() {
-        currentVelocity = shooterDown.getVelocity();
-        shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
-        shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
-        targetVelocity = MotorConstants.SHOOTER_SLOW_VELOCITY.value;
-        if (Math.abs(currentVelocity - targetVelocity) <= 40) {
-            preShooter.setPower(1);
-        } else {
-            preShooter.setPower(0);
-        }
-    }
-    public void auto_accelerate_slow(){
-        shooterDown.setVelocity(MotorConstants.SHOOTER_AUTO_SLOW_VELOCITY.value);
-        shooterUp.setVelocity(MotorConstants.SHOOTER_AUTO_SLOW_VELOCITY.value);
-    }
+
     public void accelerate_mid(){
 
         shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
         shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1);
+        targetVelocity = MotorConstants.SHOOTER_MID_VELOCITY.value;
+        if (Math.abs(shooterDown.getVelocity() - targetVelocity)<= 40){
+            isAsTargetVelocity = true;
+        } else {
+            isAsTargetVelocity = false;
+        }
 
 
     }
@@ -97,12 +69,19 @@ public class Shooter {
         shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
         shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+
     }
     public void accelerate_fast(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
         shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value - 0.1);
+        targetVelocity = MotorConstants.SHOOTER_FAST_VELOCITY.value;
+        if (Math.abs(shooterDown.getVelocity() - targetVelocity)<= 40){
+            isAsTargetVelocity = true;
+        } else {
+            isAsTargetVelocity = false;
+        }
 
     }
 

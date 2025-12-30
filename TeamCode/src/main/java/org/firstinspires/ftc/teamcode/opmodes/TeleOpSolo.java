@@ -39,6 +39,8 @@ public class TeleOpSolo extends CommandOpModeEx {
     private boolean isFieldCentric=false;
     public boolean isLimitOn = true;
 
+    public boolean isVelocityDetecting = false;
+
 
     @Override
     public void initialize() {
@@ -69,6 +71,7 @@ public class TeleOpSolo extends CommandOpModeEx {
         preLimitCommand = new PreLimitCommand(shooter,
                 intake,
                 led,
+                ()->(isVelocityDetecting),
                 ()->(isLimitOn));
 
 
@@ -125,10 +128,14 @@ public class TeleOpSolo extends CommandOpModeEx {
         new ButtonEx(() ->
                 gamepadEx1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5
                         && !isLimitOn)
-                .whenPressed(new InstantCommand(() -> shooter.accelerate_mid()))
+                .whenPressed(new SequentialCommandGroup(
+                        new InstantCommand(()->isVelocityDetecting= true),
+                        new InstantCommand(() -> shooter.accelerate_mid())
+                ))
                 .whenReleased(
                         new SequentialCommandGroup(
                                 new WaitCommand(150),
+                                new InstantCommand(()->isVelocityDetecting=false),
                                 new InstantCommand(() -> shooter.accelerate_slow())
                         )
                 );
@@ -143,10 +150,14 @@ public class TeleOpSolo extends CommandOpModeEx {
 
         new ButtonEx(()->Math.abs(gamepadEx1.getRightY())>0.7
         && !isLimitOn)
-                .whenPressed(new InstantCommand(()->shooter.accelerate_fast()))
+                .whenPressed(new SequentialCommandGroup(
+                        new InstantCommand(()->isVelocityDetecting= true),
+                        new InstantCommand(() -> shooter.accelerate_fast())
+                ))
                 .whenReleased(
                         new SequentialCommandGroup(
                                 new WaitCommand(150),
+                                new InstantCommand(()->isVelocityDetecting=false),
                                 new InstantCommand(() -> shooter.accelerate_slow())
                         )
                 );
