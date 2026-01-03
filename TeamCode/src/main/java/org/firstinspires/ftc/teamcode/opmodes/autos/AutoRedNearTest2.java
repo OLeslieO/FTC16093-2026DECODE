@@ -31,7 +31,7 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "AutoRedNearTest2", group = "Competition")
+@Autonomous(name = "Red Near Auto Test 2b", group = "Competition")
 public class AutoRedNearTest2 extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
@@ -44,29 +44,30 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(51.834, -48.224, Math.toRadians(309));
+    private final Pose startPose = new Pose(51.113, -47.224, Math.toRadians(309));
 
-    private final Pose scorePose = new Pose(31.551, -31.884, Math.toRadians(309));
+    private final Pose scorePose = new Pose(31.551, -31.884, Math.toRadians(317));
 
-    private final Pose scoreMidPose = new Pose(9.779, -9.589, Math.toRadians(310));
+    private final Pose scoreMidPose = new Pose(11.416, -10.589, Math.toRadians(315));
 
-    private final Pose prepare1Pose = new Pose(9.439, -27.770, Math.toRadians(270));
+    private final Pose prepare1Pose = new Pose(12.439, -27.770, Math.toRadians(270));
 
-    private final Pose intake1Pose3 = new Pose(9.439, -55.656, Math.toRadians(270));
+    private final Pose intake1Pose3 = new Pose(9.439, -53.656, Math.toRadians(270));
     private final Pose prepareGatePose = new Pose(1.635, -48.42, Math.toRadians(270));
-    private final Pose openGatePose = new Pose(-1.635, -55.905, Math.toRadians(270));
+    private final Pose openGatePose = new Pose(-5.635, -53.905, Math.toRadians(270));
 
-    private final Pose openGateIntakePose = new Pose(65,4,Math.toRadians(-70));
+    private final Pose openGateIntakePose = new Pose(-13.705,-61,Math.toRadians(312.54));
+    private final Pose openGateIntakePose2 = new Pose(-25.616,-60.493,Math.toRadians(316));
 
-    private final Pose prepare2Pose = new Pose(-11.764, -29.18, Math.toRadians(270));
+    private final Pose prepare2Pose = new Pose(-13.4, -29.18, Math.toRadians(270));
     private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-88));
     private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-88));
-    private final Pose intake2Pose3 = new Pose(-11.764, -60, Math.toRadians(268));
-    private final Pose prepare3Pose = new Pose(-38.52, -28.23, Math.toRadians(270));
+    private final Pose intake2Pose3 = new Pose(-15, -58, Math.toRadians(268));
+    private final Pose prepare3Pose = new Pose(-36.52, -28.23, Math.toRadians(270));
 
-    private final Pose intake3Pose3 = new Pose(-38.52, -60, Math.toRadians(270));
-    private final Pose intakeLoad1 = new Pose(-42.991, -59.992, Math.toRadians(180));
-    private final Pose intakeLoad3 = new Pose(-65, -59, Math.toRadians(180));
+    private final Pose intake3Pose3 = new Pose(-36.52, -58, Math.toRadians(270));
+    private final Pose intakeLoad1 = new Pose(-42.991, -57, Math.toRadians(180));
+    private final Pose intakeLoad3 = new Pose(-62, -57, Math.toRadians(180));
     private final Pose parkPose = new Pose(9.439, -27, Math.toRadians(270));
 
     private final Pose openGatePose2 = new Pose(72.982, 7.239, Math.toRadians(-1));
@@ -108,7 +109,8 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
                 score1, score2, score3,
                 openGate, afterOpenGate,openGate2,
                 intake1,intake2,intake3,
-                openGateIntake,score4,intakeLoad,scoreMidLoad,prepareMid;
+                openGateIntake,score4,intakeLoad,scoreMidLoad,prepareMid,
+                intakeGate,preGate;
         PathChain park;
 
         scorePreload = follower.pathBuilder()
@@ -129,13 +131,13 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
 
 
         after1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake1Pose3), new Point(prepareGatePose)))
-                .setLinearHeadingInterpolation(intake1Pose3.getHeading(), prepareGatePose.getHeading())
+                .addPath(new BezierLine(new Point(intake1Pose3), new Point(prepare1Pose)))
+                .setLinearHeadingInterpolation(intake1Pose3.getHeading(), prepare1Pose.getHeading())
                 .build();
 
         openGate = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(prepareGatePose), new Point(openGatePose)))
-                .setLinearHeadingInterpolation(prepareGatePose.getHeading(), openGatePose.getHeading())
+                .addPath(new BezierLine(new Point(prepare2Pose), new Point(openGatePose)))
+                .setLinearHeadingInterpolation(prepare2Pose.getHeading(), openGatePose.getHeading())
                 .build();
 
         openGate2 = follower.pathBuilder()
@@ -144,12 +146,12 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
                 .build();
 
         openGateIntake = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(scorePose), new Point(openGateIntakePose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), openGateIntakePose.getHeading())
+                .addPath(new BezierCurve(new Point(prepare2Pose), new Point(openGateIntakePose)))
+                .setLinearHeadingInterpolation(prepare2Pose.getHeading(), openGateIntakePose.getHeading())
                 .build();
         score4 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(openGateIntakePose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(openGateIntakePose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierCurve(new Point(openGateIntakePose2), new Point(scorePose)))
+                .setLinearHeadingInterpolation(openGateIntakePose2.getHeading(), scorePose.getHeading())
                 .build();
 
 
@@ -162,8 +164,8 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
 //                .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(openGatePose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(openGatePose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(new Point(prepare1Pose), new Point(scorePose)))
+                .setLinearHeadingInterpolation(prepare1Pose.getHeading(), scorePose.getHeading())
                 .build();
 
         prepare2 = follower.pathBuilder()
@@ -184,8 +186,8 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
                 .build();
 
         score2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake2Pose1), new Point(scorePose)))
-                .setLinearHeadingInterpolation(intake2Pose1.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(new Point(prepare2Pose), new Point(scorePose)))
+                .setLinearHeadingInterpolation(prepare2Pose.getHeading(), scorePose.getHeading())
                 .build();
 
         prepare3 = follower.pathBuilder()
@@ -224,21 +226,33 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
                 .addPath(new BezierLine(new Point(intakeLoad3), new Point(scoreMidPose)))
                 .setLinearHeadingInterpolation(intakeLoad3.getHeading(), scoreMidPose.getHeading())
                 .build();
+        intakeGate = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(openGateIntakePose), new Point(openGateIntakePose2)))
+                .setLinearHeadingInterpolation(openGateIntakePose.getHeading(), openGateIntakePose2.getHeading())
+                .build();
+
+        preGate = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(scorePose), new Point(prepare2Pose)))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), prepare2Pose.getHeading())
+                .build();
 
 
         park = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(parkPose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(new Point(scoreMidPose), new Point(parkPose)))
+                .setLinearHeadingInterpolation(scoreMidPose.getHeading(), parkPose.getHeading())
                 .build();
 
         pathChainList.addPath(scorePreload, null, null, null,null,
-                prepare1, intake1,
-                after1, openGate, null, score1, null,
-                prepare2, intake2,
-                after2, score2, null,
-                prepare3, intake3,
-                after3,score3, null,park
-                );
+                prepare2,intake2,
+                after2,score2,null,
+                preGate,openGateIntake,intakeGate,null,
+                score4,null,
+                preGate,openGateIntake,intakeGate,null,
+                score4,null,
+                prepare1,intake1,
+                after1,score1,null,
+                prepare3,intake3,
+                after3,score3,null,park);
     }
 
     @NonNull
@@ -260,11 +274,15 @@ public class AutoRedNearTest2 extends AutoOpModeEx {
 
         actions.addAll(Arrays.asList(accelerateCommand,preLimitCommand, waitCommand, intakeCommand, scoreCommand,
                 null, null,
-                null, null, openGateCommand, null, scoreCommand,
-                null, null,
                 null, null, scoreCommand,
+                null,null, null, openGateCommand,
+                null, scoreCommand,
+                null,null, null, openGateCommand,
+                null, scoreCommand,
                 null, null,
-                null, null, scoreCommand, new WaitCommand(99999)));
+                null,null,scoreCommand,
+                null,null,
+                null, null,scoreMidCommand, new WaitCommand(99999)));
     }
 
     private void periodic() {

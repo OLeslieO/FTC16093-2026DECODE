@@ -44,29 +44,29 @@ public class AutoNearRedTest extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(51.834, -46.224, Math.toRadians(308));
+    private final Pose startPose = new Pose(51.113, -47.224, Math.toRadians(309));
 
-    private final Pose scorePose = new Pose(31.551, -31.884, Math.toRadians(312));
+    private final Pose scorePose = new Pose(31.551, -31.884, Math.toRadians(317));
 
-    private final Pose scoreMidPose = new Pose(9.779, -9.589, Math.toRadians(320));
+    private final Pose scoreMidPose = new Pose(11.416, -10.589, Math.toRadians(315));
 
     private final Pose prepare1Pose = new Pose(12.439, -27.770, Math.toRadians(270));
 
-    private final Pose intake1Pose3 = new Pose(9.439, -55.656, Math.toRadians(270));
+    private final Pose intake1Pose3 = new Pose(9.439, -53.656, Math.toRadians(270));
     private final Pose prepareGatePose = new Pose(1.635, -48.42, Math.toRadians(270));
-    private final Pose openGatePose = new Pose(-5.635, -55.905, Math.toRadians(270));
+    private final Pose openGatePose = new Pose(-5.635, -53.905, Math.toRadians(270));
 
     private final Pose openGateIntakePose = new Pose(65,4,Math.toRadians(-70));
 
     private final Pose prepare2Pose = new Pose(-13.4, -29.18, Math.toRadians(270));
     private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-88));
     private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-88));
-    private final Pose intake2Pose3 = new Pose(-15, -60, Math.toRadians(268));
+    private final Pose intake2Pose3 = new Pose(-15, -58, Math.toRadians(268));
     private final Pose prepare3Pose = new Pose(-36.52, -28.23, Math.toRadians(270));
 
-    private final Pose intake3Pose3 = new Pose(-36.52, -60, Math.toRadians(270));
-    private final Pose intakeLoad1 = new Pose(-42.991, -56, Math.toRadians(180));
-    private final Pose intakeLoad3 = new Pose(-65, -56, Math.toRadians(180));
+    private final Pose intake3Pose3 = new Pose(-36.52, -58, Math.toRadians(270));
+    private final Pose intakeLoad1 = new Pose(-42.991, -57, Math.toRadians(180));
+    private final Pose intakeLoad3 = new Pose(-62, -57, Math.toRadians(180));
     private final Pose parkPose = new Pose(9.439, -27, Math.toRadians(270));
 
     private final Pose openGatePose2 = new Pose(72.982, 7.239, Math.toRadians(-1));
