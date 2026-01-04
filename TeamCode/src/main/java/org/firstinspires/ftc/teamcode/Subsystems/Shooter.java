@@ -124,6 +124,11 @@ public class Shooter {
         preShooter.setPower(1);
     }
 
+
+    public void stopShoot(){
+        preShooter.setPower(0);
+    }
+
     public void outtake(){
         preShooter.setPower(-0.8);
     }

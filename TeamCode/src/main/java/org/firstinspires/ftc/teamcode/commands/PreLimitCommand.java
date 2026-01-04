@@ -17,6 +17,8 @@ public class PreLimitCommand extends CommandBase {
 
     private final BooleanSupplier isVelocityDetecting;
 
+    private final BooleanSupplier isShooting;
+
     private final Shooter shooter;
 
     private final Intake intake;
@@ -37,12 +39,16 @@ public class PreLimitCommand extends CommandBase {
 
             BooleanSupplier isVelocityDetecting,
 
-            BooleanSupplier isLimitOn) {
+            BooleanSupplier isLimitOn,
+
+            BooleanSupplier isShooting
+            ) {
         this.shooter = shooter;
         this.intake = intake;
         this.led = led;
         this.isLimitOn = isLimitOn;
         this.isVelocityDetecting = isVelocityDetecting;
+        this.isShooting = isShooting;
     }
 
     @Override
@@ -51,6 +57,8 @@ public class PreLimitCommand extends CommandBase {
         boolean limitOn = isLimitOn.getAsBoolean();
 
         boolean velocityDetecting = isVelocityDetecting.getAsBoolean();
+
+        boolean shooting = isShooting.getAsBoolean();
 
         if (limitOn != lastLimitOn) {
 
@@ -70,8 +78,15 @@ public class PreLimitCommand extends CommandBase {
             intake.limitOn();
             led.setNone();
         } else {
-            intake.limitOff();
+
             led.setBlue();
+
+
+            if (shooting){
+                intake.limitOff();
+            } else {
+                intake.limitOn();
+            }
 
 
             if (velocityDetecting && shooter.isAsTargetVelocity){
