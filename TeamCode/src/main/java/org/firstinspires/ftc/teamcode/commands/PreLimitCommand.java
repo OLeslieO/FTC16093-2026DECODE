@@ -28,21 +28,13 @@ public class PreLimitCommand extends CommandBase {
     private boolean lastLimitOn = false;
 
 
-
-    private boolean redLedTriggered = false;
-
-
     public PreLimitCommand(
             Shooter shooter,
             Intake intake,
             LED led,
-
             BooleanSupplier isVelocityDetecting,
-
             BooleanSupplier isLimitOn,
-
-            BooleanSupplier isShooting
-            ) {
+            BooleanSupplier isShooting) {
         this.shooter = shooter;
         this.intake = intake;
         this.led = led;
@@ -81,13 +73,11 @@ public class PreLimitCommand extends CommandBase {
 
             led.setBlue();
 
-
             if (shooting){
                 intake.limitOff();
             } else {
                 intake.limitOn();
             }
-
 
             if (velocityDetecting && shooter.isAsTargetVelocity){
 
