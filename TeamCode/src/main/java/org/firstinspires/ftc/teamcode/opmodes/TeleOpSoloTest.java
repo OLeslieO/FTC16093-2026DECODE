@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -13,10 +13,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-
 import org.firstinspires.ftc.teamcode.Subsystems.LED;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
@@ -34,7 +32,6 @@ public class TeleOpSoloTest extends CommandOpModeEx {
     Shooter shooter;
     Intake intake;
     LED led;
-
 
     private boolean isFieldCentric=false;
 
@@ -94,7 +91,6 @@ public class TeleOpSoloTest extends CommandOpModeEx {
     public void onStart() {
         resetRuntime();
         shooter.accelerate_slow();
-
     }
 
     @Override
@@ -187,12 +183,22 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 
     @Override
     public void run(){
+        driveCore.updateOdo();
+        driveCore.update();
         if (Math.abs(shooter.shooterUp.getVelocity()-1320)<= 40){
             shooter.isAsTargetVelocity = true;
         } else {
             shooter.isAsTargetVelocity = false;
         }
         CommandScheduler.getInstance().run();
+        Vector2d robotVel = driveCore.getRobotLinearVelocity();
+        telemetry.addData("Robot vx (in/s)", robotVel.getX());
+        telemetry.addData("Robot vy (in/s)", robotVel.getY());
+        telemetry.addData("Robot speed", Math.hypot(robotVel.getX(), robotVel.getY()));
+        telemetry.addData("LF vel", driveCore.leftFront.getVelocity());
+        telemetry.addData("RF vel", driveCore.rightFront.getVelocity());
+        telemetry.addData("LR vel", driveCore.leftRear.getVelocity());
+        telemetry.addData("RR vel", driveCore.rightRear.getVelocity());
         telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");

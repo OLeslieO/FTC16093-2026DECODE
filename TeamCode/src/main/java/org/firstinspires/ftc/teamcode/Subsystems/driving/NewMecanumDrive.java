@@ -190,6 +190,22 @@ public class NewMecanumDrive extends MecanumDrive {
         }
     }
 
+    public Vector2d getRobotLinearVelocity() {
+        Pose2d vel = getPoseVelocity();
+        if (vel == null) return new Vector2d(0.0, 0.0);
+
+        double heading = getPoseEstimate().getHeading();
+
+        double vx =
+                vel.getX() * Math.cos(-heading)
+                        - vel.getY() * Math.sin(-heading);
+
+        double vy =
+                vel.getX() * Math.sin(-heading)
+                        + vel.getY() * Math.cos(-heading);
+
+        return new Vector2d(vx, vy);
+    }
 
     public void setMode(DcMotor.RunMode runMode) {
         for (DcMotorEx motor : motors) {

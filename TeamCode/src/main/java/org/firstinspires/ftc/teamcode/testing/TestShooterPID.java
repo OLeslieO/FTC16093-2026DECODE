@@ -36,14 +36,14 @@ public class TestShooterPID extends LinearOpMode {
     DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
-    Servo shooterRight = hardwareMap.get(Servo.class,"shooterRight");
-    Servo shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
+    Servo shooterTurret = hardwareMap.get(Servo.class,"shooterTurret");
+
     Servo preLimit = hardwareMap.get(Servo.class,"preLimit");
 
     shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
     shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
     intake.setDirection(DcMotorSimple.Direction.REVERSE);
-    shooterLeft.setDirection(Servo.Direction.REVERSE);
+
 
     shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
     shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -68,8 +68,8 @@ public class TestShooterPID extends LinearOpMode {
       else{
         shooterDown.setVelocity(shooterVelocity);
         shooterUp.setVelocity(shooterVelocity);
-        shooterRight.setPosition(servo_pos);
-        shooterLeft.setPosition(servo_pos-0.1);
+        shooterTurret.setPosition(servo_pos);
+
       }
 
 //      if (frontShooter.getVelocity() > shooterMinVelocity) {

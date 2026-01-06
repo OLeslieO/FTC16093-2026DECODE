@@ -22,7 +22,7 @@ public class ServoSingleTest extends LinearOpMode {
     public static volatile double servo_pos = 0.5;
 
 
-    public static String servo_name0 = "shooterRight";
+    public static String servo_name0 = "shooterTurret";
 
 
 

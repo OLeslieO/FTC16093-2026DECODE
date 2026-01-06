@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.testing.ShooterTest;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
-    public  Servo shooterRight, shooterLeft;
+    public  Servo shooterTurret;
 
     private double targetRightPosition;
     private double targetLeftPosition;
@@ -32,14 +32,14 @@ public class Shooter {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
-        this.shooterRight = hardwareMap.get(Servo.class,"shooterRight");
-        this.shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
+        this.shooterTurret = hardwareMap.get(Servo.class,"shooterTurret");
+
 //        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
-        shooterRight.setDirection(Servo.Direction.FORWARD);
-        shooterLeft.setDirection(Servo.Direction.REVERSE);
+        shooterTurret.setDirection(Servo.Direction.FORWARD);
+
 
 
         shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -57,20 +57,18 @@ public class Shooter {
 
 
     public void servosetpositon_mid_4(){
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
     }
     public void servosetpositon_mid_3(){
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.02);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.02);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.02);
+
     }
     public void servosetpositon_mid_2(){
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.04);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.04);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.04);
     }
     public void servosetpositon_mid_1(){
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.06);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.06);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.06);
+
     }
 
 
@@ -96,15 +94,15 @@ public class Shooter {
     public void accelerate_slow(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+
 
     }
     public void accelerate_fast(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value - 0.1);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
+
         if (Math.abs(shooterDown.getVelocity() - 1500) <= 40){
             isAsTargetVelocity = true;
         } else {
@@ -116,8 +114,8 @@ public class Shooter {
     public void accelerate_idle(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
-        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
-        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+
     }
 
     public void shoot(){
