@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -23,9 +24,11 @@ public class TestShooterPID extends LinearOpMode {
   public static double setF = 15;
   public static double setShooterPower = 1;
   public static boolean isPowerMode = false;
-  public static double setPreShooterPower = 0.6;
+  public static double setPreShooterPower = 0.7;
 //  public static double shooterMinVelocity = 1400.0;
-  public static double shooterVelocity = 1100;
+  public static double shooterVelocity = 1440;
+
+  public static volatile double servo_pos = 0.7;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -33,10 +36,14 @@ public class TestShooterPID extends LinearOpMode {
     DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
+    Servo shooterRight = hardwareMap.get(Servo.class,"shooterRight");
+    Servo shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
+    Servo preLimit = hardwareMap.get(Servo.class,"preLimit");
 
     shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
     shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
     intake.setDirection(DcMotorSimple.Direction.REVERSE);
+    shooterLeft.setDirection(Servo.Direction.REVERSE);
 
     shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
     shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -61,28 +68,36 @@ public class TestShooterPID extends LinearOpMode {
       else{
         shooterDown.setVelocity(shooterVelocity);
         shooterUp.setVelocity(shooterVelocity);
+        shooterRight.setPosition(servo_pos);
+        shooterLeft.setPosition(servo_pos-0.1);
       }
 
 //      if (frontShooter.getVelocity() > shooterMinVelocity) {
       if(gamepad1.a){
         preShooter.setPower(setPreShooterPower);
         intake.setPower(1);
+        preLimit.setPosition(0.37);
       }
       else{
         preShooter.setPower(0);
         intake.setPower(0);
+        preLimit.setPosition(0.37);
       }
 
 //      if (frontShooter.getVelocity() < shooterMinVelocity) {
-//        //            if(gamepad1.b){
+//        //            if(gamepad1.b){\
 //        preShooter.setPower(0);
 //        blender.setPower(0);
 //        intake.setPower(0);
 //      }
 
-      telemetry_M.addData("Shooter Velocity", shooterDown.getVelocity());
-      telemetry_M.addData("PreShooter Velocity", preShooter.getVelocity());
+      telemetry_M.addData("Shooter Down Velocity", shooterDown.getVelocity());
+      telemetry_M.addData("Shooter Up Velocity", shooterDown.getVelocity());
+
+      telemetry_M.addData(
+              "PreShooter Velocity", preShooter.getVelocity());
       telemetry_M.update();
+
     }
   }
 }

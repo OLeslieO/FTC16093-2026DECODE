@@ -4,19 +4,43 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
+import org.firstinspires.ftc.teamcode.Subsystems.Constants.ServoConstants;
+import org.firstinspires.ftc.teamcode.testing.ShooterTest;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
+    public  Servo shooterRight, shooterLeft;
+
+    private double targetRightPosition;
+    private double targetLeftPosition;
+
+    private double currentRightPosition;
+    private double currentLeftPosition;
+
+    private double targetVelocity;
+
+    public boolean isAsTargetVelocity;
+    public double currentVelocity;
+
+
 
     public Shooter(HardwareMap hardwareMap) {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
+        this.shooterRight = hardwareMap.get(Servo.class,"shooterRight");
+        this.shooterLeft = hardwareMap.get(Servo.class,"shooterLeft");
+//        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
+        shooterRight.setDirection(Servo.Direction.FORWARD);
+        shooterLeft.setDirection(Servo.Direction.REVERSE);
+
 
         shooterDown.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -31,20 +55,78 @@ public class Shooter {
         shooterDown.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
     }
 
+
+    public void servosetpositon_mid_4(){
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1);
+    }
+    public void servosetpositon_mid_3(){
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.02);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.02);
+    }
+    public void servosetpositon_mid_2(){
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.04);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.04);
+    }
+    public void servosetpositon_mid_1(){
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_MID.value-0.06);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_MID.value - 0.1-0.06);
+    }
+
+
+
+
+
     public void accelerate_mid(){
+
         shooterDown.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_MID_VELOCITY.value);
+
+
+        targetVelocity = MotorConstants.SHOOTER_MID_VELOCITY.value;
+
+        if (Math.abs(shooterUp.getVelocity() - 1320)<= 40){
+            isAsTargetVelocity = true;
+        } else {
+            isAsTargetVelocity = false;
+        }
+
+
     }
     public void accelerate_slow(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+
     }
     public void accelerate_fast(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value - 0.1);
+        if (Math.abs(shooterDown.getVelocity() - 1500) <= 40){
+            isAsTargetVelocity = true;
+        } else {
+            isAsTargetVelocity = false;
+        }
+
     }
+
+    public void accelerate_idle(){
+        shooterDown.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
+        shooterUp.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
+        shooterRight.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+        shooterLeft.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value - 0.1);
+    }
+
     public void shoot(){
-        preShooter.setPower(0.7);
+        preShooter.setPower(1);
+    }
+
+
+    public void stopShoot(){
+        preShooter.setPower(0);
     }
 
     public void outtake(){
@@ -57,8 +139,9 @@ public class Shooter {
     }
 
     public void init(){
-        preShooter.setPower(-0.08);
+        preShooter.setPower(-0.1);
     }
+
 
     public void stopAccelerate(){
         shooterDown.setPower(0);

@@ -27,8 +27,8 @@ import java.util.List;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "Z-Red Open Second", group = "Competition")
-public class AutoNearRedOpenSecond extends AutoOpModeEx {
+@Autonomous(name = "12527 Red Near", group = "Competition")
+public class AutoRed12527 extends AutoOpModeEx {
     private FollowerEx follower;
     private AutoCommand autoCommand;
     private List<Command> actions;
@@ -51,7 +51,7 @@ public class AutoNearRedOpenSecond extends AutoOpModeEx {
     private final Pose intake2Pose1 = new Pose(53.764, 29.378, Math.toRadians(-90));
     private final Pose intake2Pose2 = new Pose(53.764, 20.378, Math.toRadians(-90));
     private final Pose intake2Pose3 = new Pose(53.764, 0, Math.toRadians(-90));
-    private final Pose prepareGatePose = new Pose(53.764, 20.639, Math.toRadians(-90));
+    private final Pose prepareGatePose = new Pose(78.984, 20.639, Math.toRadians(-90));
     private final Pose openGatePose = new Pose(67.982, 7.239, Math.toRadians(-90));
     private final Pose prepare3Pose = new Pose(30.000, 36.730, Math.toRadians(-90));
     private final Pose intake3Pose1 = new Pose(30.000, 29.932, Math.toRadians(-90));
@@ -93,7 +93,8 @@ public class AutoNearRedOpenSecond extends AutoOpModeEx {
                 prepare1, intake1_1, intake1_2, intake1_3, after1,
                 prepare2, intake2_1, intake2_2, intake2_3, after2,
                 prepare3, intake3_1, intake3_2, intake3_3, after3,
-                score1, score2, score3, openGate, afterOpenGate;
+                score1, score2, score3, openGate, afterOpenGate,
+                 waitopengate,afterintake2, prepareopengate2;
         PathChain park;
 
         scorePreload = follower.pathBuilder()
@@ -156,6 +157,14 @@ public class AutoNearRedOpenSecond extends AutoOpModeEx {
                 .addPath(new BezierLine(new Point(intake2Pose3), new Point(prepareGatePose)))
                 .setLinearHeadingInterpolation(intake2Pose3.getHeading(), prepareGatePose.getHeading())
                 .build();
+        afterintake2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(intake2Pose3), new Point(intake2Pose1)))
+                .setLinearHeadingInterpolation(intake2Pose3.getHeading(), intake2Pose1.getHeading())
+                .build();
+        prepareopengate2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(intake2Pose1), new Point(prepareGatePose)))
+                .setLinearHeadingInterpolation(intake2Pose1.getHeading(), prepareGatePose.getHeading())
+                .build();
 
         openGate = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(prepareGatePose), new Point(openGatePose)))
@@ -200,13 +209,19 @@ public class AutoNearRedOpenSecond extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
                 .build();
 
+
+
+        waitopengate = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(openGatePose), new Point(prepareGatePose)))
+                .setLinearHeadingInterpolation(openGatePose.getHeading(), prepareGatePose.getHeading())
+                .build();
+
         pathChainList.addPath(scorePreload, null, null, null,
                 prepare1, intake1_1, intake1_2, intake1_3,
-                after1, null, score1, null,
+                after1, openGate, null, score1, null,
                 prepare2, intake2_1, intake2_2, intake2_3,
-                after2, openGate, score2, null,
-                prepare3, intake3_1, intake3_2, intake3_3,
-                after3, score3, null, park);
+                afterintake2,prepareopengate2, openGate,null, score2, null,
+                park );
     }
 
     @NonNull
@@ -215,20 +230,21 @@ public class AutoNearRedOpenSecond extends AutoOpModeEx {
     }
 
     private void buildActions(){
-        Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand;
+        Command intakeCommand, accelerateCommand, scoreCommand, openGateCommand, waitCommand, openGateWaitCommand;
         scoreCommand = autoCommand.shoot().andThen(actionEnd());
         intakeCommand = autoCommand.intake().andThen(actionEnd());
         accelerateCommand = autoCommand.accelerate().andThen(actionEnd());
         openGateCommand = new WaitCommand(550).andThen(actionEnd());
         waitCommand = new WaitCommand(450).andThen(actionEnd());
+        openGateWaitCommand = new WaitCommand(3000).andThen(actionEnd());
 
         actions.addAll(Arrays.asList(accelerateCommand, waitCommand, intakeCommand, scoreCommand,
                 null, null, null, null,
-                null, null, null, scoreCommand,
+                null, null, openGateCommand, null, scoreCommand,
                 null, null, null, null,
-                null, null, openGateCommand, scoreCommand,
-                null, null, null, null,
-                null, null, scoreCommand, new WaitCommand(99999)));
+                null, null, null, openGateCommand, null, scoreCommand,
+                new WaitCommand(99999)
+                ));
     }
 
     private void periodic() {

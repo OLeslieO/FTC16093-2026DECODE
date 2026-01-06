@@ -20,6 +20,7 @@ import com.pedropathing.follower.Follower;
 public class AutoCommand {
     Shooter shooter;
     Intake intake;
+
     Follower follower;
     boolean visionSucceed = false;
     int failedTime = 0;
@@ -31,6 +32,20 @@ public class AutoCommand {
     public Command accelerate(){
         return new InstantCommand(()->shooter.accelerate_slow());
     }
+
+    public Command accelerateMid(){
+        return new InstantCommand(()->shooter.accelerate_mid());
+    }
+
+    public Command preLimitOn(){
+        return new InstantCommand(()->intake.limitOff());
+    }
+
+
+//    public Command autoAccelerate(){
+//        return new InstantCommand(()->shooter.auto_accelerate_slow());
+//    }
+
     public Command accelerateFast(){
         return new InstantCommand(()->shooter.accelerate_fast());
     }
@@ -39,6 +54,16 @@ public class AutoCommand {
         return new SequentialCommandGroup(
                 new InstantCommand(()->shooter.shoot()),
                 new WaitCommand(800),
+                new InstantCommand(()->shooter.init())
+        );
+    }
+
+    public Command shootMid(){
+        return new SequentialCommandGroup(
+                new InstantCommand(()->shooter.servosetpositon_mid_4()),
+                new WaitCommand(130), 
+                new InstantCommand(()->shooter.shoot()),
+                new WaitCommand(1800),
                 new InstantCommand(()->shooter.init())
         );
     }

@@ -43,9 +43,9 @@ public class AutoNearBlue extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(45));
+    private final Pose startPose = new Pose(123.850, -21.490, Math.toRadians(46));
 
-    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(44));
+    private final Pose scorePose = new Pose(105.644, -32.950, Math.toRadians(49));
 
     private final Pose prepare1Pose = new Pose(79.249, -38.147, Math.toRadians(90));
     private final Pose intake1Pose1 = new Pose(79.249, -28.239, Math.toRadians(90));
@@ -53,6 +53,7 @@ public class AutoNearBlue extends AutoOpModeEx {
     private final Pose intake1Pose3 = new Pose(79.249, -8.239, Math.toRadians(90));
     private final Pose prepareGatePose = new Pose(79.249, -20.639, Math.toRadians(90));
     private final Pose openGatePose = new Pose(67.982, -7.239, Math.toRadians(90));
+    private final Pose openGatePose2 = new Pose(70.982, -10.239, Math.toRadians(0));
     private final Pose prepare2Pose = new Pose(53.050, -35.834, Math.toRadians(90));
     private final Pose intake2Pose1 = new Pose(53.764, -29.978, Math.toRadians(90));
     private final Pose intake2Pose2 = new Pose(53.764, -21.378, Math.toRadians(90));
@@ -242,6 +243,7 @@ public class AutoNearBlue extends AutoOpModeEx {
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.addData("drive error",follower.driveError);
+        telemetry.addData("shooterUpVelocity", shooter.shooterUp.getVelocity());
         telemetry.addData("follower finished",follower.isFinished);
         telemetry.addData("action finished", !this.actionRunning);
         telemetry.addData("current path /id", currentPathId);
