@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.testing.ShooterTest;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
-    public  Servo shooterTurret;
+    public  Servo shooterAngleServo;
 
     private double targetRightPosition;
     private double targetLeftPosition;
@@ -32,13 +32,13 @@ public class Shooter {
         this.shooterDown = hardwareMap.get(DcMotorEx.class, "shooterDown");
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
-        this.shooterTurret = hardwareMap.get(Servo.class,"shooterTurret");
+        this.shooterAngleServo = hardwareMap.get(Servo.class,"shooterAngle");
 
 //        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
-        shooterTurret.setDirection(Servo.Direction.FORWARD);
+        shooterAngleServo.setDirection(Servo.Direction.FORWARD);
 
 
 
@@ -57,17 +57,17 @@ public class Shooter {
 
 
     public void servosetpositon_mid_4(){
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
     }
     public void servosetpositon_mid_3(){
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.02);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.02);
 
     }
     public void servosetpositon_mid_2(){
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.04);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.04);
     }
     public void servosetpositon_mid_1(){
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.06);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.06);
 
     }
 
@@ -94,14 +94,14 @@ public class Shooter {
     public void accelerate_slow(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_SLOW_VELOCITY.value);
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
 
 
     }
     public void accelerate_fast(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_FAST_VELOCITY.value);
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
 
         if (Math.abs(shooterDown.getVelocity() - 1500) <= 40){
             isAsTargetVelocity = true;
@@ -114,7 +114,7 @@ public class Shooter {
     public void accelerate_idle(){
         shooterDown.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
         shooterUp.setVelocity(MotorConstants.SHOOTER_IDLE_VELOCITY.value);
-        shooterTurret.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
+        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_SLOW.value);
 
     }
 

@@ -39,12 +39,12 @@ public class AutoFarRed extends AutoOpModeEx {
 
     private PathChainList pathChainList;
 
-    private final Pose startPose = new Pose(1.939, 51.423, Math.toRadians(-23.17));
+    private final Pose startPose = new Pose(0.1, -16.907, Math.toRadians(0));
 
-    private final Pose scorePose = new Pose(1.939, 51.423, Math.toRadians(-23.17));
+    private final Pose scorePose = new Pose(1.939, -12.894, Math.toRadians(341.17));
 
-    private final Pose prepare1Pose = new Pose(4.137, 7.539, Math.toRadians(-90));
-    private final Pose intake1Pose1 = new Pose(8.091, 2.056, Math.toRadians(-148));
+    private final Pose prepare1Pose = new Pose(-2, -18.524, Math.toRadians(270));
+    private final Pose intake1Pose1 = new Pose(-2, -59, Math.toRadians(-270));
     private final Pose intake1Pose2 = new Pose(5.565, 0.287, Math.toRadians(-180));
     private final Pose intake1Pose3 = new Pose(-4.086, 0.046, Math.toRadians(-180));
     private final Pose prepare2Pose  = new Pose(31.000, 32.834, Math.toRadians(-90));
@@ -113,13 +113,13 @@ public class AutoFarRed extends AutoOpModeEx {
 //                .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(intake1Pose3), new Point(scorePose)))
-                .setLinearHeadingInterpolation(intake1Pose3.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(new Point(startPose), new Point(scorePose)))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
 
         prepare2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(prepare2Pose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepare2Pose.getHeading())
+                .addPath(new BezierLine(new Point(intake1Pose1), new Point(scorePose)))
+                .setLinearHeadingInterpolation(intake1Pose1.getHeading(), scorePose.getHeading())
                 .build();
 
         intake2_1 = follower.pathBuilder()
@@ -150,8 +150,8 @@ public class AutoFarRed extends AutoOpModeEx {
                 .setLinearHeadingInterpolation(getCurrentHeading(), parkPose.getHeading())
                 .build();
 
-        pathChainList.addPath(null, null, null, null,
-                prepare1, intake1_1, intake1_2, intake1_3,
+        pathChainList.addPath(null, null, score1, null,
+                prepare1, intake1_1, score2,
 //                score1, null,  //不射Loading zone那组就注释掉
 //                prepare2, intake2_1, intake2_2, intake2_3, //不拿远端那组球就注释掉
 //                score2, null, //最后一组如果不射就注释掉
@@ -174,7 +174,7 @@ public class AutoFarRed extends AutoOpModeEx {
         parkCommand = autoCommand.park();
 
         actions.addAll(Arrays.asList(accelerateFastCommand, waitCommand, intakeCommand, scoreFarCommand,
-                null, null, null, null,
+                    null, null, scoreFarCommand,
 //                null, scoreFarCommand,  //不射Loading zone那组就注释掉
 //                null, null, null, null,  //不拿远端那组球就注释掉`
 //                null, scoreFarCommand, //最后一组如果不射就注释掉

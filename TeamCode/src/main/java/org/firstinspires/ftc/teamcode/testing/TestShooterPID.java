@@ -24,11 +24,11 @@ public class TestShooterPID extends LinearOpMode {
   public static double setF = 15;
   public static double setShooterPower = 1;
   public static boolean isPowerMode = false;
-  public static double setPreShooterPower = 0.7;
+  public static double setPreShooterPower = 1;
 //  public static double shooterMinVelocity = 1400.0;
   public static double shooterVelocity = 1440;
 
-  public static volatile double servo_pos = 0.7;
+  public static volatile double servo_pos = 0.98;
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -36,7 +36,7 @@ public class TestShooterPID extends LinearOpMode {
     DcMotorEx shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
     DcMotorEx preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
     DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
-    Servo shooterTurret = hardwareMap.get(Servo.class,"shooterTurret");
+    Servo shooterAngleServo = hardwareMap.get(Servo.class,"shooterAngle");
 
     Servo preLimit = hardwareMap.get(Servo.class,"preLimit");
 
@@ -68,7 +68,7 @@ public class TestShooterPID extends LinearOpMode {
       else{
         shooterDown.setVelocity(shooterVelocity);
         shooterUp.setVelocity(shooterVelocity);
-        shooterTurret.setPosition(servo_pos);
+        shooterAngleServo.setPosition(servo_pos);
 
       }
 
@@ -76,12 +76,12 @@ public class TestShooterPID extends LinearOpMode {
       if(gamepad1.a){
         preShooter.setPower(setPreShooterPower);
         intake.setPower(1);
-        preLimit.setPosition(0.37);
+        preLimit.setPosition(0.4);
       }
       else{
         preShooter.setPower(0);
         intake.setPower(0);
-        preLimit.setPosition(0.37);
+        preLimit.setPosition(0.4);
       }
 
 //      if (frontShooter.getVelocity() < shooterMinVelocity) {
