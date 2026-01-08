@@ -26,6 +26,8 @@ public class Shooter {
     public boolean isAsTargetVelocity;
     public double currentVelocity;
 
+    private double powerScale = 1.0;
+
 
 
     public Shooter(HardwareMap hardwareMap) {
@@ -53,6 +55,10 @@ public class Shooter {
 
         shooterUp.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
         shooterDown.setVelocityPIDFCoefficients(MotorConstants.SHOOTER_P.value, MotorConstants.SHOOTER_I.value, MotorConstants.SHOOTER_D.value, MotorConstants.SHOOTER_F.value);
+    }
+
+    public void setPowerScale(double scale) {
+        powerScale = scale;
     }
 
 
@@ -119,7 +125,7 @@ public class Shooter {
     }
 
     public void shoot(){
-        preShooter.setPower(1);
+        preShooter.setPower(1.0 * powerScale);
     }
 
 

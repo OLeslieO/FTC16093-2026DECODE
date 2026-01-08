@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 public class LED {
     public Servo indicatorLight;
 
-
     public LED(HardwareMap hardwareMap) {
         this.indicatorLight = hardwareMap.get(Servo.class, "indicatorLight");
     }
@@ -32,12 +31,9 @@ public class LED {
         indicatorLight.setPosition(0.5);
     }
 
-
     public void setNone(){
         indicatorLight.setPosition(0);
     }
-
-
 
     public enum ledColor{
 
